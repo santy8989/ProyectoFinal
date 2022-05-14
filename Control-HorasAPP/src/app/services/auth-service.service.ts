@@ -4,31 +4,46 @@ import {
   AngularFireList,
   AngularFireObject,
 } from '@angular/fire/compat/database';
+import { usuario } from '../interfaces/usuario';
+import { Usuario } from '../Clases/usuario';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthServiceService {
-  usersList!: AngularFireList<any>;
+  usersList!: AngularFireList<usuario>;
   // studentsRef: AngularFireList<any>;
   userRef!: AngularFireObject<any>;
 
   constructor(private db: AngularFireDatabase) {}
-  AddUser() {
-    console.log("servicio")
+
+  GetUserList(){
+    console.log("read")
+    return this.usersList = this.db.list('users');
+  }
+  AddUser( user:usuario) {
+    console.log("add")
     this.usersList.push({
-        name: 'test',
-        pass: "2222",
+        nombre: user.nombre,
+        contra: user.contra,
+        tipo: user.tipo,
+        DNI: user.DNI
+
       })
       .catch((error) => {
         this.errorMgmt(error);
       });
   }
-  GetUserList() {
-    console.log("read")
-    this.usersList = this.db.list('users');
-    this.AddUser()
-    return this.usersList;
+  UpdateUser(user:usuario){
+    
+    this.usersList.update(user.$key|| '111',{
+      nombre: user.nombre,
+      contra: user.contra,
+      tipo: user.tipo,
+      DNI: user.DNI
+    })
+
   }
   private errorMgmt(error: any) {
     console.log(error);

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,20 +12,25 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 // import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import{ environment} from '../environments/environment'
 import { AngularFireModule } from '@angular/fire/compat';
+import { RoutesModule } from './components/routes/routes.module';
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     AngularFireDatabaseModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig)
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    FormsModule,
+    RoutesModule,
+    AppRoutingModule
   ],
+ 
   providers: [],
   bootstrap: [AppComponent]
 })

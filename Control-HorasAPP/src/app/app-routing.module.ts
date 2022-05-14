@@ -1,17 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
+import { DashboardComponent } from './components/routes/dashboard/dashboard.component';
+import { LoginComponent } from './components/routes/login/login.component';
+
+
 
 const routes: Routes = [
+ 
   {
-    path:'login',
-    component:LoginComponent,
+    path: 'inicio',
+    component: LoginComponent,
     pathMatch:'full'
-    
   },
   {
+    path: 'dashboard',
+    component: DashboardComponent,
+    pathMatch:'full'
+  },
+  
+  
+     {
     path: '**',
-    redirectTo:'login',
+    redirectTo:'inicio',
     pathMatch:'full'
   }
 ];
