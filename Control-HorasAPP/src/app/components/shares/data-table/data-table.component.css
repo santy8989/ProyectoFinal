@@ -1,0 +1,25 @@
+
+table {
+    width: 90% !important;
+    margin:1rem auto;
+ }
+ ::ng-deep .hide-arrow .mat-sort-header-arrow {
+    color: white;
+}
+ th{
+    text-align: center !important;
+    vertical-align: middle !important;
+    background-color: rgb(167, 167, 167);
+    color: white;
+    font: 300;
+    font-weight:400;
+    font-size: medium;
+    /* margin: 21px; */
+}
+
+.acciones{
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+ 

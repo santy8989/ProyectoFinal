@@ -7,6 +7,8 @@ import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SharesModule } from '../shares/shares.module';
+import { UsuariosComponent } from './usuarios/usuarios.component';
 // import { RoutesModule } from './components/routes/routes.module';
 
 
@@ -15,6 +17,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   declarations: [
     LoginComponent,
     DashboardComponent,
+    UsuariosComponent,
     
   ],
   imports: [
@@ -23,12 +26,14 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     MatButtonModule,
     FormsModule,    //import here
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    SharesModule
     
   ],
   exports:[
     LoginComponent,
     DashboardComponent,
+    UsuariosComponent
   ]
   
   

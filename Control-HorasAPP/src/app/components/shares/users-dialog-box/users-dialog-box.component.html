@@ -1,0 +1,39 @@
+<!-- dialog-box.component.html -->
+
+<div mat-dialog-content>
+    <h1 mat-dialog-title class="text-center"> <strong>{{action}} Usuario</strong></h1>
+    <ng-container >
+      <ng-container >
+        <mat-form-field class="">
+          <input required #name placeholder="Nombre" matInput  [(ngModel)]="local_data.nombre"  >
+        </mat-form-field>
+        
+        <mat-form-field >
+            <input required type="apellido"  matInput  [(ngModel)]="local_data.apellido" >
+          </mat-form-field>
+        <mat-form-field >
+            <input required placeholder="Dni" matInput  [(ngModel)]="local_data.DNI" >
+          </mat-form-field>
+          <mat-form-field >
+            <!-- <input required placeholder="Tipo" matInput  [(ngModel)]="local_data.tipo" > -->
+            <mat-select [(ngModel)]="local_data.tipo">
+                <mat-option value=1>
+                  Admin
+                </mat-option>
+                <mat-option value=2>
+                    Profesor
+                  </mat-option>
+              </mat-select>
+              
+          </mat-form-field>
+      
+      </ng-container>
+  </ng-container>
+  </div>
+  <div mat-dialog-actions class="boton">
+    <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancelar</button>
+    <button type="submit"  [disabled]="!isValid" mat-flat-button color="primary" (click)="Submit()">{{action}}</button>
+    
+  
+  </div>
+  
