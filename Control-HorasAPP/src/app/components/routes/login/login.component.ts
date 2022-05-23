@@ -61,8 +61,12 @@ export class LoginComponent implements OnInit {
           const element:usuario = resultado[index];
           console.log($event.value.password)
           if (element.contra==$event.value.password) {
-            console.log("yes")
-            this.router.navigate(["/dashboard"])
+            console.log(btoa(element.nombre),"nice",element.nombre)
+            localStorage.setItem('Nombre', btoa(element.nombre));
+            localStorage.setItem('Apellido', btoa(element.apellido));    
+            localStorage.setItem('Tipo', btoa(element.tipo.toString()));
+            // location.reload();
+            this.router.navigate(["/dashboard/2"])
           }else{
             console.log("contraseña erronea")
           }

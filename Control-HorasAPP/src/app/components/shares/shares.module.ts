@@ -7,6 +7,8 @@ import { RouterModule } from '@angular/router';
 import { DataTableComponent } from './data-table/data-table.component';
 import { UsersDialogBoxComponent } from './users-dialog-box/users-dialog-box.component';
 import { FormsModule } from '@angular/forms';
+import {  ReactiveFormsModule } from '@angular/forms';
+
 
 
 
@@ -21,6 +23,7 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     AngularMaterialModule,
     RouterModule,
+    ReactiveFormsModule,
     
     FormsModule
     

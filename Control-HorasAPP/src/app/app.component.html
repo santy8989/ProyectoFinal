@@ -1,5 +1,5 @@
 
-<div class="table" [class.example-is-mobile]="mobileQuery.matches" >
+<div *ngIf="usuario!=null" class="table" [class.example-is-mobile]="mobileQuery.matches" >
     <mat-toolbar color="primary" class="example-toolbar">
       <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
       <h1 class="example-app-name">FCEE</h1>
@@ -10,7 +10,7 @@
         <mat-nav-list>
           <a mat-list-item routerLink="/dashboard">Inicio</a>
           <a mat-list-item routerLink="/usuarios">Usuarios</a>
-          <a mat-list-item routerLink="/login">Login</a>
+          <a mat-list-item (click)="salir()">Salir</a>
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content>
@@ -18,5 +18,7 @@
       </mat-sidenav-content>
     </mat-sidenav-container>
 </div>
-  
+  <div *ngIf="usuario==null">
+    <router-outlet></router-outlet>
+  </div>
   <!-- <div *ngIf="!shouldRun">Please open on Stackblitz to see result</div> -->

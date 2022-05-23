@@ -34,12 +34,13 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   @ViewChild('empTbSort') empTbSort = new MatSort();
   ngOnInit(): void {
     console.log("tipo",this.type)
+    console.log(); 
     
     // this.dataSource.sort = this.sort;
   }
   GetData(){
     switch (this.type) {
-      case "user": {
+      case "usuario": {
         this._UserService.GetUserListFirebase().then(resultado => {
           console.log("hi",resultado)
           if(resultado.length>0){
@@ -88,4 +89,10 @@ export class DataTableComponent implements AfterViewInit, OnInit{
     }
   }
   
+  applyFilter(filterValue: any) {
+    console.log(filterValue.value)
+    this.dataSource.filter = filterValue.value.trim().toLowerCase();
+
+    
+  }
 }

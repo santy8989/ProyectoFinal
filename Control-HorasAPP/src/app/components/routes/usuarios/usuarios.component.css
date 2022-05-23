@@ -3,3 +3,7 @@
     height: 100vh !important    ;
     width: 100%;
 }
+.snackBar{
+    background-color: white;
+    color: red;
+}

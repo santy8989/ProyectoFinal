@@ -1,6 +1,6 @@
 import {MediaMatcher} from '@angular/cdk/layout';
 import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AppComponent implements OnDestroy,OnInit {
   mobileQuery: MediaQueryList;
+  usuario:string
 
   fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
 
@@ -24,7 +25,7 @@ export class AppComponent implements OnDestroy,OnInit {
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private router: ActivatedRoute) {
+  constructor(private router2: Router,changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private router: ActivatedRoute) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -33,8 +34,17 @@ export class AppComponent implements OnDestroy,OnInit {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
   ngOnInit(): void {
+    this.usuario = localStorage.getItem('Nombre');
     // this.id = ;
 
+  }
+  salir(){
+    localStorage.removeItem("Nombre");
+    localStorage.removeItem("Tipo");
+    localStorage.removeItem("Apellido");
+    localStorage.removeItem("FlagLogged");
+    location.reload()
+    // this.router2.navigate(["/login"])
   }
 
   

@@ -3,36 +3,55 @@
 <div mat-dialog-content>
     <h1 mat-dialog-title class="text-center"> <strong>{{action}} Usuario</strong></h1>
     <ng-container >
-      <ng-container >
-        <mat-form-field class="">
-          <input required #name placeholder="Nombre" matInput  [(ngModel)]="local_data.nombre"  >
-        </mat-form-field>
-        
-        <mat-form-field >
-            <input required type="apellido"  matInput  [(ngModel)]="local_data.apellido" >
-          </mat-form-field>
-        <mat-form-field >
-            <input required placeholder="Dni" matInput  [(ngModel)]="local_data.DNI" >
+      <ng-container *ngIf="action!='Borrar';else deleteview" >
+        <form [formGroup]="form"  (ngSubmit)="Submit()" class="example-form">
+          <mat-form-field class="">
+            <input  [(ngModel)]="local_data.nombre" formControlName="name" required  placeholder="Nombre" type="text" matInput >
+            <mat-error *ngIf="checkError('name', 'required')">El nombre es requerido</mat-error>
+            <mat-error *ngIf="checkError('name', 'minlength')">El nombre tiene que ser de mas de 3 caractares</mat-error>
+            <mat-error *ngIf="checkError('name', 'maxlength')">El nombre tiene que ser de menos de 30 caractares</mat-error>
           </mat-form-field>
           <mat-form-field >
-            <!-- <input required placeholder="Tipo" matInput  [(ngModel)]="local_data.tipo" > -->
-            <mat-select [(ngModel)]="local_data.tipo">
-                <mat-option value=1>
-                  Admin
-                </mat-option>
-                <mat-option value=2>
-                    Profesor
+              <input required placeholder="Apellido" [(ngModel)]="local_data.apellido" formControlName="apellido" matInput >
+              <mat-error *ngIf="checkError('apellido', 'required')">El apellido es requerido</mat-error>
+              <mat-error *ngIf="checkError('apellido', 'minlength')">El apellido tiene que ser de mas de 3 caractares</mat-error>
+              <mat-error *ngIf="checkError('apellido', 'maxlength')">El apellido tiene que ser de menos de 30 caractares</mat-error>
+            </mat-form-field>
+          <mat-form-field >
+              <input formControlName="NUMDNI" required  [(ngModel)]="local_data.DNI" placeholder="Número DNI" type="number"   matInput   >
+              <mat-error *ngIf="checkError('NUMDNI', 'required')">Ingrese un DNI valido</mat-error>
+              <mat-error *ngIf="checkError('NUMDNI', 'min')">Ingrese un DNI valido</mat-error>
+              <mat-error *ngIf="checkError('NUMDNI', 'max')">Ingrese un DNI valido</mat-error>
+            </mat-form-field>
+            <mat-form-field >
+              <mat-select formControlName="tipo" [(ngModel)]="local_data.tipo" required placeholder="Tipo" >
+                  <mat-option value=1>
+                    Admin
                   </mat-option>
-              </mat-select>
-              
-          </mat-form-field>
-      
+                  <mat-option value=2>
+                      Profesor
+                    </mat-option>
+                    <mat-option value=3>
+                      Encargado
+                    </mat-option>
+                </mat-select>  
+                <mat-error *ngIf="checkError('tipo', 'required')">Seleccione un tipo</mat-error>
+            </mat-form-field>
+          </form>
       </ng-container>
+      <ng-template #deleteview>
+        <div class="fs-5 parrafo">
+          ¿Seguro quiere eliminar al usuario con DNI: <b>{{local_data.DNI}}</b>? una vez eliminado no es posible recuperarlo.
+        </div> 
+      </ng-template>
+      
   </ng-container>
   </div>
   <div mat-dialog-actions class="boton">
     <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancelar</button>
-    <button type="submit"  [disabled]="!isValid" mat-flat-button color="primary" (click)="Submit()">{{action}}</button>
+    <!-- <button type="submit"  [disabled]="!isValid" mat-flat-button color="primary" (click)="Submit()">{{action}}</button> -->
+    <button type="submit"  [disabled]="!form.valid" (click)="Submit()"  mat-flat-button color="primary">{{action}}</button>
+
     
   
   </div>

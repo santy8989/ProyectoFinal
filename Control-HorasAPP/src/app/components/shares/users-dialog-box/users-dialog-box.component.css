@@ -9,3 +9,6 @@ mat-form-field{
 button{
     margin: 1vw;
 }
+.parrafo{
+    line-height:1.2em !important;
+}

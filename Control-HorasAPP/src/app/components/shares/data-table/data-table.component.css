@@ -1,14 +1,24 @@
 
 table {
     width: 90% !important;
+    min-width: 700px;
     margin:1rem auto;
  }
+.filter{
+    width: 90% !important;
+    min-width: 700px;
+    margin:1rem auto;
+}
+.input-filter{
+    width: 100% !important;
+    /* min-width: 700px; */
+}
  ::ng-deep .hide-arrow .mat-sort-header-arrow {
     color: white;
 }
  th{
-    text-align: center !important;
-    vertical-align: middle !important;
+    /* text-align: center !important; */
+    /* vertical-align: middle !important; */
     background-color: rgb(167, 167, 167);
     color: white;
     font: 300;
@@ -20,6 +30,14 @@ table {
 .acciones{
     text-align: center !important;
     vertical-align: middle !important;
+}
+.test {
+   max-width: 120px;
+}
+.action{
+    width: 59px !important;
+    height: 40px !important;
+
 }
 
  

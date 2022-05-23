@@ -69,8 +69,8 @@ export class UserService {
        id_firebase: doc.id,
         ...doc.data()
       }));
-      console.log("query")
-    
+      console.log("query",this.user)
+      
   return  this.user
   }catch(err){
     console.log("error al ingresar",err)
@@ -78,6 +78,7 @@ export class UserService {
   }
 }
 async GetUserListFirebase(){
+  console.log("test")
  try{
    const query=  await this.Firestore.firestore.collection(`users`).get()
      this.user =query.docs.map((doc:any)=> ({
@@ -85,6 +86,8 @@ async GetUserListFirebase(){
        ...doc.data()
      }));
      console.log("query",this.user)
+     console.log("test",this.user)
+
  return  this.user
  }catch(err){
    console.log("error al ingresar",err)
@@ -105,13 +108,36 @@ async UpdateUserFirebase(User:usuario){
       );
   return  this.user
   }catch(err){
+    console.log("error al Editar",err)
+    return null
+  }
+ }
+ async AddUserFirebase(User:usuario){
+  try{
+    const query=  await this.Firestore.firestore.collection(`users`).add(
+     {
+      nombre: User.nombre,
+      apellido: User.apellido,
+      DNI: User.DNI,
+      tipo: User.tipo,
+      contra: User.DNI
+     }
+      );
+  return  this.user
+  }catch(err){
+    console.log("error al agregar",err)
+    return null
+  }
+ }
+ async DeleteUserFirebase(id:string){
+  try{
+  return  this.Firestore.firestore.collection(`users`).doc(id).delete()
+  }catch(err){
     console.log("error al ingresar",err)
     return null
   }
  }
-  private errorMgmt(error: any) {
-    console.log(error);
-  }
+ 
   async login(email:string, password:string){
     try{
       return await this.afauth.signInWithEmailAndPassword( email,password);
@@ -119,5 +145,8 @@ async UpdateUserFirebase(User:usuario){
       console.log("error al ingresar",err)
       return null
     }
+  }
+  private errorMgmt(error: any) {
+    console.log(error);
   }
 }

@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/routes/dashboard/dashboard.component';
 import { LoginComponent } from './components/routes/login/login.component';
 import { UsuariosComponent } from './components/routes/usuarios/usuarios.component';
+import { AdminGuard } from './guards/admin.guard';
+import { LoginGuard } from './guards/login-guard.guard';
 
 
 
@@ -16,12 +18,15 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    pathMatch:'full'
+    pathMatch:'full',
+    canActivate: [LoginGuard]
+    
   },
   {
     path: 'usuarios',
     component: UsuariosComponent,
-    pathMatch:'full'
+    pathMatch:'full',
+    canActivate: [LoginGuard,AdminGuard]
   },
   
   
