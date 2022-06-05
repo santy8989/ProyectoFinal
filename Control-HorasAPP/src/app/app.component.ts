@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AppComponent implements OnDestroy,OnInit {
   mobileQuery: MediaQueryList;
   usuario:string
+  tipo:any
 
   fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
 
@@ -35,6 +36,7 @@ export class AppComponent implements OnDestroy,OnInit {
   }
   ngOnInit(): void {
     this.usuario = localStorage.getItem('Nombre');
+    this.tipo = atob(localStorage.getItem('Tipo'));
     // this.id = ;
 
   }

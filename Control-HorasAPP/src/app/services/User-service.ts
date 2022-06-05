@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import {AngularFirestore,AngularFirestoreDocument,} from '@angular/fire/compat/firestore';
-import { getAuth, signInAnonymously } from "firebase/auth";
+import {AngularFirestore,} from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFireDatabase,
@@ -8,69 +7,25 @@ import {
   AngularFireObject,
 } from '@angular/fire/compat/database';
 import { usuario } from '../interfaces/usuario';
-import { Usuario } from '../Clases/usuario';
-import { Observable } from 'rxjs';
-// import { Console } from 'console';
+
+
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  usersList!: AngularFireList<usuario>;
-  // studentsRef: AngularFireList<any>;
-  userRef!: AngularFireObject<any>;
   user!:any;
 
-  constructor(private db: AngularFireDatabase,public Firestore: AngularFirestore,private afauth:AngularFireAuth) {}
-
-  GetUserList(){
-    console.log("read")
-    console.log(this.GetFavoritosMovie())
-    return this.usersList = this.db.list('users')
-  }
-  // AddUser( user:usuario) {
-  //   console.log("add")
-  //   this.usersList.push({
-  //       nombre: user.nombre,
-  //       contra: user.contra,
-  //       tipo: user.tipo,
-  //       DNI: user.DNI
-
-  //     })
-  //     .catch((error) => {
-  //       this.errorMgmt(error);
-  //     });
-  // }
-  UpdateUser(user:usuario){
-    
-    this.usersList.update(user.$key|| '111',{
-      nombre: user.nombre,
-      contra: user.contra,
-      tipo: user.tipo,
-      DNI: user.DNI
-    })
-
-  }
-  GetFavoritosMovie():Observable<any>{
-    this.Firestore.firestore.collection(`users`).where("DNI","==",234).get().then((results:any) => { 
-      this.user =results.docs.map((doc:any)=> ({
-       id_firebase: doc.id,
-        ...doc.data()
-      }));
-    })
-  return this.user
- }
+  constructor(public Firestore: AngularFirestore,private afauth:AngularFireAuth) {}
+ 
  async AuthWithFirebase(DNI:number){
-   console.log("dni",DNI)
   try{
     const query=  await this.Firestore.firestore.collection(`users`).where("DNI","==",DNI).get()
       this.user =query.docs.map((doc:any)=> ({
        id_firebase: doc.id,
         ...doc.data()
       }));
-      console.log("query",this.user)
-      
   return  this.user
   }catch(err){
     console.log("error al ingresar",err)
@@ -146,7 +101,5 @@ async UpdateUserFirebase(User:usuario){
       return null
     }
   }
-  private errorMgmt(error: any) {
-    console.log(error);
-  }
+  
 }

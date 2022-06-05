@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/routes/dashboard/dashboard.component';
+import { FacultadesComponent } from './components/routes/facultades/facultades.component';
 import { LoginComponent } from './components/routes/login/login.component';
 import { UsuariosComponent } from './components/routes/usuarios/usuarios.component';
 import { AdminGuard } from './guards/admin.guard';
@@ -25,6 +26,12 @@ const routes: Routes = [
   {
     path: 'usuarios',
     component: UsuariosComponent,
+    pathMatch:'full',
+    canActivate: [LoginGuard,AdminGuard]
+  },
+  {
+    path: 'facultades',
+    component: FacultadesComponent,
     pathMatch:'full',
     canActivate: [LoginGuard,AdminGuard]
   },

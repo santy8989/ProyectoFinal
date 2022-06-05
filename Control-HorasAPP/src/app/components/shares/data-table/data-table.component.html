@@ -2,7 +2,8 @@
 
 <div class="filter">
   <mat-form-field class="input-filter">
-    <input matInput (keyup)="applyFilter($event.target)" placeholder="Buscar {{type|titlecase }}s">
+    <input *ngIf="type=='usuario'" matInput (keyup)="applyFilter($event.target)" placeholder="Buscar {{type|titlecase }}s">
+    <input *ngIf="type=='facultad'" matInput (keyup)="applyFilter($event.target)" placeholder="Buscar {{type|titlecase }}es">
   </mat-form-field>
 </div>
 
@@ -32,11 +33,11 @@
     <td mat-cell *matCellDef="let element"> {{element.apellido}} </td>
   </ng-container>
 
-  <ng-container *ngIf="type=='facultad'" matColumnDef="universidad">
-    <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
-      Facultad
+  <ng-container *ngIf="type=='facultad'" matColumnDef="Sigla">
+    <th mat-header-cell class="hide-arrow" *matHeaderCellDef  sortActionDescription="Sort by name">
+      Sigla
     </th>
-    <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.sigla}} </td>
   </ng-container>
 
   <!-- Weight Column -->
@@ -53,7 +54,9 @@
   <ng-container matColumnDef="Acciones">
     <th   mat-header-cell *matHeaderCellDef>
       <button mat-icon-button color="primary" class="acciones"  >
-        <a (click)="openDialog('Agregar',{})"><button   matTooltip="Crear un nuevo usuario"  matTooltipPosition="above" type="button" class="btn btn-success ">Nuevo usuario</button></a>
+        <a *ngIf="type=='facultad'"(click)="openDialog('Agregar',{})"><button   matTooltip="Crear un nuevo usuario"  matTooltipPosition="above" type="button" class="btn btn-success ">Nueva {{type}}</button></a>
+
+        <a *ngIf="type=='usuario'"(click)="openDialog('Agregar',{})"><button   matTooltip="Crear un nuevo usuario"  matTooltipPosition="above" type="button" class="btn btn-success ">Nuevo {{type}}</button></a>
       </button>
     </th>
     <td mat-cell *matCellDef="let element">

@@ -8,6 +8,7 @@ import {MatTableDataSource} from '@angular/material/table';
 // import { AuthServiceService } from 'src/app/services/auth-service.service';
 import { usuario } from 'src/app/interfaces/usuario';
 import { UserService } from 'src/app/services/User-service';
+import { FacultadService } from 'src/app/services/facultad.service';
 
 
 
@@ -26,10 +27,10 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   }
   // @Input() pageSize = 6;
   UserDisplayedColumns: string[] = ['nombre', 'apellido', 'DNI', 'tipo','Acciones'];
-  FacultadDisplayedColumns: string[] = ['nombre', 'universidad','Acciones'];
+  FacultadDisplayedColumns: string[] = ['nombre', 'Sigla','Acciones'];
   dataSource: MatTableDataSource < any > ;
 
-  constructor(private _liveAnnouncer: LiveAnnouncer,private _UserService:UserService,public dialog: MatDialog) {}
+  constructor(private _liveAnnouncer: LiveAnnouncer,private _UserService:UserService,public dialog: MatDialog,private _FacultadService:FacultadService) {}
 
   @ViewChild('empTbSort') empTbSort = new MatSort();
   ngOnInit(): void {
@@ -52,7 +53,14 @@ export class DataTableComponent implements AfterViewInit, OnInit{
         });
       }
       break;
-      case "Facultad": {
+      case "facultad": {
+        this._FacultadService.GetFacultadListFirebase().then(resultado => {
+          // console.log("hi",resultado)
+          if(resultado.length>0){
+            this.dataSource = new MatTableDataSource(resultado);
+            this.dataSource.sort = this.empTbSort;
+          }
+        });
        
       }
       break;
@@ -63,25 +71,21 @@ export class DataTableComponent implements AfterViewInit, OnInit{
 }
   openDialog(action:string, obj:any) {
     obj.action = action;
+    obj.type=this.type
     console.log(obj)
-    // obj.type = this.type
     const dialogRef = this.dialog.open(UsersDialogBoxComponent, {
       width: '500px',
-      data: obj
+      data: obj,
+      
     });
-
     dialogRef.afterClosed().subscribe(result => {
-      console.log("asdasd",result)
       this.GetData();
     });
+
+    
   }
-  /** Announce the change in sort state for assistive technology. */
+
   announceSortChange(sortState: Sort) {
-    // This example uses English messages. If your application supports
-    // multiple language, you would internationalize these strings.
-    // Furthermore, you can customize the message to add additional
-    // details about the values being sorted.
-    console.log("banana",sortState)
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {

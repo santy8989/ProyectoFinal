@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SharesModule } from '../shares/shares.module';
 import { UsuariosComponent } from './usuarios/usuarios.component';
+import { FacultadesComponent } from './facultades/facultades.component';
 // import { RoutesModule } from './components/routes/routes.module';
 
 
@@ -18,6 +19,7 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
     LoginComponent,
     DashboardComponent,
     UsuariosComponent,
+    FacultadesComponent,
     
   ],
   imports: [

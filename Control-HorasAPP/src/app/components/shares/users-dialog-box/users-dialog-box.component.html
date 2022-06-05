@@ -1,10 +1,10 @@
 <!-- dialog-box.component.html -->
 
 <div mat-dialog-content>
-    <h1 mat-dialog-title class="text-center"> <strong>{{action}} Usuario</strong></h1>
+    <h1 mat-dialog-title class="text-center"> <strong>{{action}} {{data.type}}</strong></h1>
     <ng-container >
       <ng-container *ngIf="action!='Borrar';else deleteview" >
-        <form [formGroup]="form"  (ngSubmit)="Submit()" class="example-form">
+        <form *ngIf="data.type=='usuario'" [formGroup]="formUsuario"  (ngSubmit)="SubmitUser()" class="example-form">
           <mat-form-field class="">
             <input  [(ngModel)]="local_data.nombre" formControlName="name" required  placeholder="Nombre" type="text" matInput >
             <mat-error *ngIf="checkError('name', 'required')">El nombre es requerido</mat-error>
@@ -38,10 +38,25 @@
                 <mat-error *ngIf="checkError('tipo', 'required')">Seleccione un tipo</mat-error>
             </mat-form-field>
           </form>
+
+          <form *ngIf="data.type=='facultad'" [formGroup]="formFacultad"  (ngSubmit)="SubmitFacultad()" class="example-form">
+            <mat-form-field class="">
+              <input  [(ngModel)]="local_data.nombre" formControlName="name" required  placeholder="Nombre" type="text" matInput >
+              <mat-error *ngIf="checkError('name', 'required')">El nombre es requerido</mat-error>
+              <mat-error *ngIf="checkError('name', 'minlength')">El nombre tiene que ser de mas de 3 caractares</mat-error>
+              <!-- <mat-error *ngIf="checkError('name', 'maxlength')">El nombre tiene que ser de menos de 30 caractares</mat-error> -->
+            </mat-form-field>
+            <mat-form-field >
+                <input required placeholder="Sigla" [(ngModel)]="local_data.sigla" formControlName="sigla" matInput >
+            </mat-form-field>
+            </form>
       </ng-container>
       <ng-template #deleteview>
-        <div class="fs-5 parrafo">
+        <div *ngIf="data.type=='usuario'"  class="fs-5 parrafo">
           ¿Seguro quiere eliminar al usuario con DNI: <b>{{local_data.DNI}}</b>? una vez eliminado no es posible recuperarlo.
+        </div> 
+        <div *ngIf="data.type=='facultad'"  class="fs-5 parrafo">
+          ¿Seguro quiere eliminar la facultad <b>{{local_data.nombre}}</b>? una vez eliminada no es posible recuperarla.
         </div> 
       </ng-template>
       
@@ -50,8 +65,8 @@
   <div mat-dialog-actions class="boton">
     <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancelar</button>
     <!-- <button type="submit"  [disabled]="!isValid" mat-flat-button color="primary" (click)="Submit()">{{action}}</button> -->
-    <button type="submit"  [disabled]="!form.valid" (click)="Submit()"  mat-flat-button color="primary">{{action}}</button>
-
+    <button type="submit" *ngIf="data.type=='usuario'"   [disabled]="!formUsuario.valid" (click)="SubmitUser()"  mat-flat-button color="primary">{{action}}</button>
+    <button type="submit" *ngIf="data.type=='facultad'"   [disabled]="!formFacultad.valid" (click)="SubmitFacultad()"  mat-flat-button color="primary">{{action}}</button>
     
   
   </div>
