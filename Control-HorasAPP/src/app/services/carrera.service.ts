@@ -6,12 +6,12 @@ import {
   AngularFireList,
   AngularFireObject,
 } from '@angular/fire/compat/database';
-import { facultad } from '../interfaces/facultad';
+import { carrera } from '../interfaces/carrera';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FacultadService {
+export class CarreraService {
   facultad!:any
 
   constructor(public Firestore: AngularFirestore,private afauth:AngularFireAuth) {}
@@ -31,7 +31,7 @@ export class FacultadService {
      return null
    }
   }
-  async UpdateFacultadFirebase(Facultad:facultad){
+  async UpdateCarreraFirebase(Facultad:carrera){
     try{
       const query=  await this.Firestore.firestore.collection(`facultades`).doc(Facultad.$key).update(
        {
@@ -46,7 +46,7 @@ export class FacultadService {
       return null
     }
    }
-   async AddFacultadFirebase(Facultad:facultad){
+   async AddCarreraFirebase(Facultad:carrera){
      console.log(Facultad,"thisones")
     try{
       const query=  await this.Firestore.firestore.collection(`facultades`).add(
@@ -61,7 +61,7 @@ export class FacultadService {
       return null
     }
    }
-   async DeleteFacultadFirebase(id:string){
+   async DeleteCarreraFirebase(id:string){
     try{
     return  this.Firestore.firestore.collection(`facultades`).doc(id).delete()
     }catch(err){

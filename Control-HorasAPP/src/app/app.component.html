@@ -10,7 +10,8 @@
         <mat-nav-list class="side-nav">
           <a mat-list-item routerLink="/dashboard">Inicio</a>
           <a *ngIf="tipo==1" mat-list-item routerLink="/usuarios">Usuarios</a>
-          <a *ngIf="tipo==1" mat-list-item routerLink="/facultades">Facultades</a>
+          <a *ngIf="tipo==1" mat-list-item routerLink="/carreras">Carreras</a>
+          <a *ngIf="tipo==1" mat-list-item routerLink="/materias">Materias</a>
 
           <a mat-list-item (click)="salir()">Salir</a>
         </mat-nav-list>

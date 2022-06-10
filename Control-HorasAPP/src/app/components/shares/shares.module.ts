@@ -5,7 +5,7 @@ import { AngularMaterialModule } from 'src/app/angular-material.module';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { RouterModule } from '@angular/router';
 import { DataTableComponent } from './data-table/data-table.component';
-import { UsersDialogBoxComponent } from './users-dialog-box/users-dialog-box.component';
+import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { FormsModule } from '@angular/forms';
 import {  ReactiveFormsModule } from '@angular/forms';
 
@@ -17,7 +17,7 @@ import {  ReactiveFormsModule } from '@angular/forms';
     NavBarComponent,
     SideBarComponent,
     DataTableComponent,
-    UsersDialogBoxComponent
+    DialogBoxComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +33,7 @@ import {  ReactiveFormsModule } from '@angular/forms';
     NavBarComponent,
     SideBarComponent,
     DataTableComponent,
-    UsersDialogBoxComponent,
+    DialogBoxComponent,
     
   ]
 })

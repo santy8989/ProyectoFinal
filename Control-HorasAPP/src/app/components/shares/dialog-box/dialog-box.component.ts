@@ -9,19 +9,19 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { style } from '@angular/animations';
-import { facultad } from 'src/app/interfaces/facultad';
-import { FacultadService } from 'src/app/services/facultad.service';
+import { carrera } from 'src/app/interfaces/carrera';
+import { CarreraService } from 'src/app/services/carrera.service';
 
 
 @Component({
   selector: 'app-users-dialog-box',
-  templateUrl: './users-dialog-box.component.html',
-  styleUrls: ['./users-dialog-box.component.css']
+  templateUrl: './dialog-box.component.html',
+  styleUrls: ['./dialog-box.component.css']
 })
-export class UsersDialogBoxComponent implements OnInit {
+export class DialogBoxComponent implements OnInit {
   local_data:any;
   public formUsuario: FormGroup; 
-  public formFacultad: FormGroup; 
+  public formCarrera: FormGroup; 
   action:string;
   type:string;
   nombre:string;
@@ -39,7 +39,7 @@ export class UsersDialogBoxComponent implements OnInit {
     DNI:1,
 
   }
-  Facultad:facultad={
+  Facultad:carrera={
     nombre:"none",
     sigla:"none"
 
@@ -54,7 +54,7 @@ export class UsersDialogBoxComponent implements OnInit {
     public dialogRef: MatDialogRef<any>,
     private _snackBar: MatSnackBar,
     private _UserService:UserService,
-    private _FacultadService:FacultadService,
+    private _CarreraService:CarreraService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
       console.log(data,"niceeeeeee")
     this.local_data = {...data};
@@ -78,7 +78,7 @@ export class UsersDialogBoxComponent implements OnInit {
       NUMDNI : new FormControl(this.local_data.DNI, [Validators.required, Validators.min(10000000), Validators.max(55000000)]),
       tipo : new FormControl(this.local_data.tipo, [Validators.required]),
     });
-    this.formFacultad = new FormGroup({
+    this.formCarrera = new FormGroup({
       name : new FormControl(this.local_data.nombre, [Validators.required, Validators.minLength(3)]),
       sigla : new FormControl(this.local_data.nombre,[])
      
@@ -151,7 +151,7 @@ export class UsersDialogBoxComponent implements OnInit {
     this.Facultad.$key= this.local_data.id_firebase
     switch (this.action) {
       case "Agregar": {
-        this._FacultadService.AddFacultadFirebase(this.Facultad).then(response => {
+        this._CarreraService.AddCarreraFirebase(this.Facultad).then(response => {
           this.dialogRef.close({
             event: this.action,
             data: this.local_data
@@ -163,7 +163,7 @@ export class UsersDialogBoxComponent implements OnInit {
       }
       break;
       case "Editar": {
-        this._FacultadService.UpdateFacultadFirebase(this.Facultad).then(response => {
+        this._CarreraService.UpdateCarreraFirebase(this.Facultad).then(response => {
           this.dialogRef.close({
             event: this.action,
             data: this.local_data
@@ -175,7 +175,7 @@ export class UsersDialogBoxComponent implements OnInit {
       }
       break;
       case "Borrar": {
-        this._FacultadService.DeleteFacultadFirebase(this.Facultad.$key).then(response => {
+        this._CarreraService.DeleteCarreraFirebase(this.Facultad.$key).then(response => {
           this.dialogRef.close({
             event: this.action,
             data: this.local_data
@@ -199,14 +199,14 @@ export class UsersDialogBoxComponent implements OnInit {
         
       }
       break;
-      case "facultad": {
-        return this.formFacultad.controls[controlName].hasError(errorName);
+      case "carrera": {
+        return this.formCarrera.controls[controlName].hasError(errorName);
 
       }
       break;
   
       default:{
-        return this.formFacultad.controls[controlName].hasError(errorName);
+        return this.formCarrera.controls[controlName].hasError(errorName);
       }
       break
 

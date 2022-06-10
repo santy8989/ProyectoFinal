@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UsersDialogBoxComponent } from './users-dialog-box.component';
+import { CarrerasComponent } from './carrera.component';
 
-describe('UsersDialogBoxComponent', () => {
-  let component: UsersDialogBoxComponent;
-  let fixture: ComponentFixture<UsersDialogBoxComponent>;
+describe('FacultadesComponent', () => {
+  let component: CarrerasComponent;
+  let fixture: ComponentFixture<CarrerasComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UsersDialogBoxComponent ]
+      declarations: [ CarrerasComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UsersDialogBoxComponent);
+    fixture = TestBed.createComponent(CarrerasComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

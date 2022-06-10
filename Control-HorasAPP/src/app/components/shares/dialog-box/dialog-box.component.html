@@ -39,7 +39,7 @@
             </mat-form-field>
           </form>
 
-          <form *ngIf="data.type=='facultad'" [formGroup]="formFacultad"  (ngSubmit)="SubmitFacultad()" class="example-form">
+          <form *ngIf="data.type=='carrera'" [formGroup]="formCarrera"  (ngSubmit)="SubmitFacultad()" class="example-form">
             <mat-form-field class="">
               <input  [(ngModel)]="local_data.nombre" formControlName="name" required  placeholder="Nombre" type="text" matInput >
               <mat-error *ngIf="checkError('name', 'required')">El nombre es requerido</mat-error>
@@ -55,7 +55,7 @@
         <div *ngIf="data.type=='usuario'"  class="fs-5 parrafo">
           ¿Seguro quiere eliminar al usuario con DNI: <b>{{local_data.DNI}}</b>? una vez eliminado no es posible recuperarlo.
         </div> 
-        <div *ngIf="data.type=='facultad'"  class="fs-5 parrafo">
+        <div *ngIf="data.type=='carrera'"  class="fs-5 parrafo">
           ¿Seguro quiere eliminar la facultad <b>{{local_data.nombre}}</b>? una vez eliminada no es posible recuperarla.
         </div> 
       </ng-template>
@@ -66,7 +66,7 @@
     <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancelar</button>
     <!-- <button type="submit"  [disabled]="!isValid" mat-flat-button color="primary" (click)="Submit()">{{action}}</button> -->
     <button type="submit" *ngIf="data.type=='usuario'"   [disabled]="!formUsuario.valid" (click)="SubmitUser()"  mat-flat-button color="primary">{{action}}</button>
-    <button type="submit" *ngIf="data.type=='facultad'"   [disabled]="!formFacultad.valid" (click)="SubmitFacultad()"  mat-flat-button color="primary">{{action}}</button>
+    <button type="submit" *ngIf="data.type=='carrera'"   [disabled]="!formCarrera.valid" (click)="SubmitFacultad()"  mat-flat-button color="primary">{{action}}</button>
     
   
   </div>

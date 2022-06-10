@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/routes/dashboard/dashboard.component';
-import { FacultadesComponent } from './components/routes/facultades/facultades.component';
+import { CarrerasComponent } from './components/routes/carreras/carrera.component';
 import { LoginComponent } from './components/routes/login/login.component';
+import { MateriasComponent } from './components/routes/materias/materias.component';
 import { UsuariosComponent } from './components/routes/usuarios/usuarios.component';
 import { AdminGuard } from './guards/admin.guard';
 import { LoginGuard } from './guards/login-guard.guard';
@@ -30,8 +31,14 @@ const routes: Routes = [
     canActivate: [LoginGuard,AdminGuard]
   },
   {
-    path: 'facultades',
-    component: FacultadesComponent,
+    path: 'carreras',
+    component: CarrerasComponent,
+    pathMatch:'full',
+    canActivate: [LoginGuard,AdminGuard]
+  },
+  {
+    path: 'materias',
+    component: MateriasComponent,
     pathMatch:'full',
     canActivate: [LoginGuard,AdminGuard]
   },

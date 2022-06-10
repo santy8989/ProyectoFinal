@@ -9,7 +9,8 @@ import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SharesModule } from '../shares/shares.module';
 import { UsuariosComponent } from './usuarios/usuarios.component';
-import { FacultadesComponent } from './facultades/facultades.component';
+import { CarrerasComponent } from './carreras/carrera.component';
+import { MateriasComponent } from './materias/materias.component';
 // import { RoutesModule } from './components/routes/routes.module';
 
 
@@ -19,14 +20,14 @@ import { FacultadesComponent } from './facultades/facultades.component';
     LoginComponent,
     DashboardComponent,
     UsuariosComponent,
-    FacultadesComponent,
+    CarrerasComponent,
+    MateriasComponent,
     
   ],
   imports: [
     CommonModule,
-    // AngularMaterialModule,
     MatButtonModule,
-    FormsModule,    //import here
+    FormsModule,   
     ReactiveFormsModule,
     RouterModule,
     SharesModule
@@ -35,7 +36,8 @@ import { FacultadesComponent } from './facultades/facultades.component';
   exports:[
     LoginComponent,
     DashboardComponent,
-    UsuariosComponent
+    UsuariosComponent,
+    CarrerasComponent
   ]
   
   

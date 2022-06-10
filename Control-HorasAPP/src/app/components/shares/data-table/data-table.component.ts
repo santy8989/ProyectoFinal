@@ -3,12 +3,13 @@ import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core'
 import {MatSort, Sort} from '@angular/material/sort';
 import { MatDialog , MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
-import { UsersDialogBoxComponent } from '../users-dialog-box/users-dialog-box.component';
+import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import {MatTableDataSource} from '@angular/material/table';
 // import { AuthServiceService } from 'src/app/services/auth-service.service';
 import { usuario } from 'src/app/interfaces/usuario';
 import { UserService } from 'src/app/services/User-service';
-import { FacultadService } from 'src/app/services/facultad.service';
+import { CarreraService } from 'src/app/services/carrera.service';
+import { MateriasService } from 'src/app/services/materias.service';
 
 
 
@@ -27,10 +28,16 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   }
   // @Input() pageSize = 6;
   UserDisplayedColumns: string[] = ['nombre', 'apellido', 'DNI', 'tipo','Acciones'];
-  FacultadDisplayedColumns: string[] = ['nombre', 'Sigla','Acciones'];
+  CarreraDisplayedColumns: string[] = ['nombre', 'Sigla','Acciones'];
+  MateriasDisplayedColumns: string[] = ['nombre', 'carrera','profesor','encargado','canthoras','Acciones'];
   dataSource: MatTableDataSource < any > ;
 
-  constructor(private _liveAnnouncer: LiveAnnouncer,private _UserService:UserService,public dialog: MatDialog,private _FacultadService:FacultadService) {}
+  constructor(
+    private _liveAnnouncer: LiveAnnouncer,
+    private _UserService:UserService,
+    public dialog: MatDialog,
+    private _CarreraServoce:CarreraService,
+    private _MateriaService:MateriasService) {}
 
   @ViewChild('empTbSort') empTbSort = new MatSort();
   ngOnInit(): void {
@@ -53,8 +60,19 @@ export class DataTableComponent implements AfterViewInit, OnInit{
         });
       }
       break;
-      case "facultad": {
-        this._FacultadService.GetFacultadListFirebase().then(resultado => {
+      case "carrera": {
+        this._CarreraServoce.GetFacultadListFirebase().then(resultado => {
+          // console.log("hi",resultado)
+          if(resultado.length>0){
+            this.dataSource = new MatTableDataSource(resultado);
+            this.dataSource.sort = this.empTbSort;
+          }
+        });
+       
+      }
+      break;
+      case "materia": {
+        this._MateriaService.GetMateriaListFirebase().then(resultado => {
           // console.log("hi",resultado)
           if(resultado.length>0){
             this.dataSource = new MatTableDataSource(resultado);
@@ -73,7 +91,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
     obj.action = action;
     obj.type=this.type
     console.log(obj)
-    const dialogRef = this.dialog.open(UsersDialogBoxComponent, {
+    const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '500px',
       data: obj,
       
