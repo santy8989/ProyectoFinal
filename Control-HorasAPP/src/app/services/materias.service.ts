@@ -28,30 +28,24 @@ export class MateriasService {
        }))
        console.log("query",this.materia)
        console.log("test",this.profesor)
-       this.materia.forEach( (element: any) => {
-         console.log("profesor",element)
-         this.user(element).then(response => {
-           if(this.profesor.length>0){
-            element.profesorNya=this.profesor[0].nombre+" "+ this.profesor[0].apellido
-           }else{
-            element.profesorNya="Profesor invalido"
-           }
-           if(this.encargado.length>0){
-            element.encargadoNya=this.encargado[0].nombre+" "+ this.encargado[0].apellido
-           }else{
-            element.encargadoNya="Encargado invalido"
-           }
-
-         
-         
-        }, error => {
-          console.error("tuve un Error" + error)
-    
-        })
-
-         
-         
-       })
+      //  this.materia.forEach( (element: any) => {
+      //    console.log("profesor",element)
+      //    this.user(element).then(response => {
+      //      if(this.profesor.length>0){
+      //       element.profesorNya=this.profesor[0].nombre+" "+ this.profesor[0].apellido
+      //      }else{
+      //       element.profesorNya="Profesor invalido"
+      //      }
+      //      if(this.encargado.length>0){
+      //       element.encargadoNya=this.encargado[0].nombre+" "+ this.encargado[0].apellido
+      //      }else{
+      //       element.encargadoNya="Encargado invalido"
+      //      }
+      //   }, error => {
+      //     console.error("tuve un Error" + error)
+      //   })
+      //  })
+      // deprecado
 
   
    return  this.materia
@@ -60,37 +54,36 @@ export class MateriasService {
      return null
    }
   }
-  async user(element:any){
-    try{
-      const  query1 = await this.Firestore.firestore.collection(`users`).where("DNI","==",element.profesorDNI).get()
-      this.profesor =query1.docs.map((doc2:any)=> ({
-       id_firebase: doc2.id,
-        ...doc2.data()
-      }));
-      const  query2 = await this.Firestore.firestore.collection(`users`).where("DNI","==",element.encargadoDNI).get()
-      this.encargado =query2.docs.map((doc2:any)=> ({
-       id_firebase: doc2.id,
-        ...doc2.data()
-      }));
-      console.log("naiz",this.profesor)
-    }
-    catch{
+  // async user(element:any){
+  //   try{
+  //     const  query1 = await this.Firestore.firestore.collection(`users`).where("DNI","==",Number(element.profesorDNI)).get()
+  //     this.profesor =query1.docs.map((doc2:any)=> ({
+  //      id_firebase: doc2.id,
+  //       ...doc2.data()
+  //     }));
+  //     const  query2 = await this.Firestore.firestore.collection(`users`).where("DNI","==",Number(element.encargadoDNI)).get()
+  //     this.encargado =query2.docs.map((doc2:any)=> ({
+  //      id_firebase: doc2.id,
+  //       ...doc2.data()
+  //     }));
+  //     console.log("naiz",this.profesor)
+  //   }
+  //   catch{
 
-    }
-  }
-
-  async UpdateFacultadFirebase(Materia:materia){
+  //   }
+  // }
+// deprecado
+  async UpdateMateriaFirebase(Materia:materia){
     try{
       const query=  await this.Firestore.firestore.collection(`materias`).doc(Materia.$key).update(
        {
         nombre: Materia.nombre,
-        facultad: Materia.carrera,
-        profesor: Materia.profesor,
-        admin: Materia.admin,
+        carrera: Materia.carrera,
+        profesorDNI: Materia.profesorDNI,
+        encargadoDNI: Materia.encargadoDNI,
+        profesorNya: Materia.profesorNya,
+        encargadoNya: Materia.encargadoNya,
         cantHoras: Materia.cantHoras,
-       
-      
-        
        }
         );
     return  this.materia
@@ -99,19 +92,19 @@ export class MateriasService {
       return null
     }
    }
-   async AddFacultadFirebase(Materia:materia){
-     console.log(Materia,"thisones")
+   async AddMateriaFirebase(Materia:materia){
+     console.log("materia en service", Materia)
     try{
 
       const query=  await this.Firestore.firestore.collection(`materias`).add(
        {
         nombre: Materia.nombre,
-        facultad: Materia.carrera,
-        profesor: Materia.profesor,
-        admin: Materia.admin,
+        carrera: Materia.carrera,
+        profesorDNI: Materia.profesorDNI,
+        encargadoDNI: Materia.encargadoDNI,
+        profesorNya: Materia.profesorNya,
+        encargadoNya: Materia.encargadoNya,
         cantHoras: Materia.cantHoras,
-       
-
        }
         );
     return  this.materia
@@ -120,7 +113,8 @@ export class MateriasService {
       return null
     }
    }
-   async DeleteFacultadFirebase(id:string){
+   async DeleteMateriaFirebase(id:string){
+     console.log("naseh",id)
     try{
     return  this.Firestore.firestore.collection(`materias`).doc(id).delete()
     }catch(err){

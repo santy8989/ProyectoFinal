@@ -2,7 +2,6 @@ import {LiveAnnouncer} from '@angular/cdk/a11y';
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatSort, Sort} from '@angular/material/sort';
 import { MatDialog , MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import {MatTableDataSource} from '@angular/material/table';
 // import { AuthServiceService } from 'src/app/services/auth-service.service';
@@ -11,7 +10,8 @@ import { UserService } from 'src/app/services/User-service';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { MateriasService } from 'src/app/services/materias.service';
 
-
+//TODO
+// cuando se borran todos los registros de la tabla mostarar un estado BaseAudioContext, y actualizar para que no quede uno siemre
 
 
 
@@ -29,7 +29,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   // @Input() pageSize = 6;
   UserDisplayedColumns: string[] = ['nombre', 'apellido', 'DNI', 'tipo','Acciones'];
   CarreraDisplayedColumns: string[] = ['nombre', 'Sigla','Acciones'];
-  MateriasDisplayedColumns: string[] = ['nombre', 'carrera','profesor','encargado','canthoras','Acciones'];
+  MateriasDisplayedColumns: string[] = ['nombre', 'carrera','profesor','encargado','cantHoras','Acciones'];
   dataSource: MatTableDataSource < any > ;
 
   constructor(
@@ -90,7 +90,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   openDialog(action:string, obj:any) {
     obj.action = action;
     obj.type=this.type
-    console.log(obj)
+    console.log("hola, testeando ando",obj)
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '500px',
       data: obj,

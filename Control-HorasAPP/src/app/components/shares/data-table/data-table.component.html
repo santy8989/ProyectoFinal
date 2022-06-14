@@ -45,11 +45,11 @@
     </th>
     <td mat-cell *matCellDef="let element"> {{element.encargadoNya}} </td>
   </ng-container>
-  <ng-container *ngIf="type=='materia'" matColumnDef="canthoras">
+  <ng-container *ngIf="type=='materia'" matColumnDef="cantHoras">
     <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header >
       Cant horas
     </th>
-    <td mat-cell *matCellDef="let element"> {{element.canthoras}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.cantHoras}} </td>
   </ng-container>
   <ng-container *ngIf="type=='usuario' ||  type=='carrera'" matColumnDef="apellido">
     <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
@@ -71,9 +71,8 @@
       Tipo
     </th>
     <ng-container *matCellDef="let element">
-      <td *ngIf="element.tipo==1" mat-cell > Admin </td>
-      <td *ngIf="element.tipo==2" mat-cell > Profesor </td>
-      <td *ngIf="element.tipo==3" mat-cell > Encargado </td>
+      <td mat-cell > {{element.tipo}} </td>
+   
     </ng-container>
   </ng-container>
   <ng-container matColumnDef="Acciones">

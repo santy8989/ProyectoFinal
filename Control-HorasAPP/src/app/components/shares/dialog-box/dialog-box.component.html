@@ -25,20 +25,62 @@
             </mat-form-field>
             <mat-form-field >
               <mat-select formControlName="tipo" [(ngModel)]="local_data.tipo" required placeholder="Tipo" >
-                  <mat-option value=1>
+                  <mat-option value='Admin'>
                     Admin
                   </mat-option>
-                  <mat-option value=2>
+                  <mat-option value='Profesor'>
                       Profesor
                     </mat-option>
-                    <mat-option value=3>
+                    <mat-option value='Encargado'>
                       Encargado
                     </mat-option>
                 </mat-select>  
                 <mat-error *ngIf="checkError('tipo', 'required')">Seleccione un tipo</mat-error>
             </mat-form-field>
           </form>
-
+          <form *ngIf="data.type=='materia'" [formGroup]="formMateria"  (ngSubmit)="SubmitMateria()" class="example-form">
+            <mat-form-field >
+              <input  [(ngModel)]="local_data.nombre" formControlName="name" required  placeholder="Nombre" type="text" matInput >
+              <mat-error *ngIf="checkError('name', 'required')">El nombre es requerido</mat-error>
+              <!-- <mat-error *ngIf="checkError('name', 'minlength')">El nombre tiene que ser de mas de 3 caractares</mat-error>
+              <mat-error *ngIf="checkError('name', 'maxlength')">El nombre tiene que ser de menos de 30 caractares</mat-error> -->
+            </mat-form-field>
+              <mat-form-field >
+                <mat-select formControlName="carrera" [(ngModel)]="local_data.carrera" required placeholder="Carrera" >
+                    <mat-option *ngFor="let carrera of Carreras" value={{carrera.nombre}}>
+                      {{carrera.nombre}}
+                    </mat-option>
+                  </mat-select>  
+                  <mat-error *ngIf="checkError('carrera', 'required')">Seleccione una carrera</mat-error>
+              </mat-form-field>
+              <mat-form-field >
+                <mat-select formControlName="profesor" [(ngModel)]="local_data.profesorDNI" required placeholder="Profesor" >
+                  <div *ngFor="let profesor of Users">
+                    <mat-option *ngIf="profesor.tipo=='Profesor'"  value={{profesor.DNI}}>
+                      {{profesor.nombre}} {{profesor.apellido}}
+                    </mat-option>
+                  </div>
+                  
+                  </mat-select>  
+                  <mat-error *ngIf="checkError('profesor', 'required')">Seleccione un profesor</mat-error>
+              </mat-form-field>
+              <mat-form-field >
+                <mat-select formControlName="encargado" [(ngModel)]="local_data.encargadoDNI" required placeholder="Encargado" >
+                  <div *ngFor="let encargado of Users">
+                    <mat-option *ngIf="encargado.tipo=='Encargado'"  value={{encargado.DNI}}>
+                      {{encargado.nombre}} {{encargado.apellido}}
+                    </mat-option>
+                  </div>
+                  </mat-select>  
+                  <mat-error *ngIf="checkError('encargado', 'required')">Seleccione un encargado</mat-error>
+              </mat-form-field>
+              <mat-form-field >
+                <input  [(ngModel)]="local_data.cantHoras" formControlName="cantHoras" required  placeholder="Cantidad Horas" type="number" matInput >
+                <mat-error *ngIf="checkError('name', 'required')">Ingrese una cantidad de horas</mat-error>
+                <!-- <mat-error *ngIf="checkError('name', 'minlength')">El nombre tiene que ser de mas de 3 caractares</mat-error>
+                <mat-error *ngIf="checkError('name', 'maxlength')">El nombre tiene que ser de menos de 30 caractares</mat-error> -->
+              </mat-form-field>
+          </form>
           <form *ngIf="data.type=='carrera'" [formGroup]="formCarrera"  (ngSubmit)="SubmitFacultad()" class="example-form">
             <mat-form-field class="">
               <input  [(ngModel)]="local_data.nombre" formControlName="name" required  placeholder="Nombre" type="text" matInput >
@@ -47,7 +89,7 @@
               <!-- <mat-error *ngIf="checkError('name', 'maxlength')">El nombre tiene que ser de menos de 30 caractares</mat-error> -->
             </mat-form-field>
             <mat-form-field >
-                <input required placeholder="Sigla" [(ngModel)]="local_data.sigla" formControlName="sigla" matInput >
+                <input  placeholder="Sigla" [(ngModel)]="local_data.sigla" formControlName="sigla" matInput >
             </mat-form-field>
             </form>
       </ng-container>
@@ -56,7 +98,10 @@
           ¿Seguro quiere eliminar al usuario con DNI: <b>{{local_data.DNI}}</b>? una vez eliminado no es posible recuperarlo.
         </div> 
         <div *ngIf="data.type=='carrera'"  class="fs-5 parrafo">
-          ¿Seguro quiere eliminar la facultad <b>{{local_data.nombre}}</b>? una vez eliminada no es posible recuperarla.
+          ¿Seguro quiere eliminar la carrera <b>{{local_data.nombre}}</b>? una vez eliminada no es posible recuperarla.
+        </div> 
+        <div *ngIf="data.type=='materia'"  class="fs-5 parrafo">
+          ¿Seguro quiere eliminar la materia <b>{{local_data.nombre}}</b>? una vez eliminada no es posible recuperarla.
         </div> 
       </ng-template>
       
@@ -67,6 +112,7 @@
     <!-- <button type="submit"  [disabled]="!isValid" mat-flat-button color="primary" (click)="Submit()">{{action}}</button> -->
     <button type="submit" *ngIf="data.type=='usuario'"   [disabled]="!formUsuario.valid" (click)="SubmitUser()"  mat-flat-button color="primary">{{action}}</button>
     <button type="submit" *ngIf="data.type=='carrera'"   [disabled]="!formCarrera.valid" (click)="SubmitFacultad()"  mat-flat-button color="primary">{{action}}</button>
+    <button type="submit" *ngIf="data.type=='materia'"   [disabled]="!formMateria.valid" (click)="SubmitMateria()"  mat-flat-button color="primary">{{action}}</button>
     
   
   </div>

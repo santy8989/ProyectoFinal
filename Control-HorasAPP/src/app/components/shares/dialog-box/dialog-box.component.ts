@@ -11,6 +11,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import { style } from '@angular/animations';
 import { carrera } from 'src/app/interfaces/carrera';
 import { CarreraService } from 'src/app/services/carrera.service';
+import { materia } from 'src/app/interfaces/materias';
+import { MateriasService } from 'src/app/services/materias.service';
 
 
 @Component({
@@ -22,6 +24,9 @@ export class DialogBoxComponent implements OnInit {
   local_data:any;
   public formUsuario: FormGroup; 
   public formCarrera: FormGroup; 
+  public formMateria: FormGroup;
+  Carreras:any[]
+  Users:any[]
   action:string;
   type:string;
   nombre:string;
@@ -35,13 +40,23 @@ export class DialogBoxComponent implements OnInit {
     nombre:"none",
     apellido:"none",
     contra:"none",
-    tipo:1,
+    tipo:"none",
     DNI:1,
 
   }
   Facultad:carrera={
     nombre:"none",
     sigla:"none"
+
+  }
+  Materia:materia={
+    nombre:"none",
+    carrera: "none",
+    profesorDNI: 0,
+    encargadoDNI: 0,
+    profesorNya:"none",
+    encargadoNya:"none",
+    cantHoras: 0,
 
   }
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
@@ -55,13 +70,15 @@ export class DialogBoxComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private _UserService:UserService,
     private _CarreraService:CarreraService,
+    private _MateriaService:MateriasService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
-      console.log(data,"niceeeeeee")
+      console.log("niceeeeeee",data)
     this.local_data = {...data};
+    
     this.action = this.local_data.action;
     this.isValid=this.action=="Agregar" ? false : true 
     this.type= this.local_data.tipo
-    console.log(this.local_data.DNI,"laskjdlkasjdlaksjd")
+    // console.log(this.local_data.DNI,"laskjdlkasjdlaksjd")
     this.DNI= this.local_data.DNI
     this.nombre= this.local_data.nombre
     this.apellido= this.local_data.apellido
@@ -71,7 +88,6 @@ export class DialogBoxComponent implements OnInit {
     
   }
   ngOnInit() {
-  console.log("helou",this.data.type)
     this.formUsuario = new FormGroup({
       name : new FormControl(this.local_data.nombre, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
       apellido : new FormControl(this.local_data.apellido, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
@@ -83,6 +99,46 @@ export class DialogBoxComponent implements OnInit {
       sigla : new FormControl(this.local_data.nombre,[])
      
     });
+   
+     this.local_data.encargadoDNI = this.local_data.encargadoDNI?.toString();
+     this.local_data.profesorDNI = this.local_data.profesorDNI?.toString();
+     
+   
+    this.formMateria = new FormGroup({
+      name : new FormControl(this.local_data.nombre, [Validators.required, Validators.minLength(3)]),
+      carrera : new FormControl(this.local_data.carrera, [Validators.required]),
+      profesor : new FormControl(this.local_data.profesorDNI, [Validators.required]),
+      encargado : new FormControl(this.local_data.encargadoDNI, [Validators.required]),
+      cantHoras : new FormControl(this.local_data.cantHoras, [Validators.required]), 
+    });
+   
+    console.log('pene', this.local_data);
+    console.log('pene', this.formMateria);
+    if (this.local_data.type=="materia")
+    {
+      this.getCarreras()
+      this.getUsers()
+    }
+  }
+  getCarreras(){
+    this._CarreraService.GetFacultadListFirebase().then(resultado => {
+      if(resultado.length>0){
+      this.Carreras=resultado
+      }
+    });
+    
+  }
+  getUsers(){
+    this._UserService.GetUserListFirebase().then(resultado => {
+      // console.log("hi",resultado)
+      if(resultado.length>0){
+        // this.dataSource = new MatTableDataSource(resultado);
+      this.Users=resultado
+      // console.log("profes",this.Users)
+        // this.dataSource.sort = this.empTbSort;
+      }
+    });
+    
   }
   SubmitUser() {
     this.User.DNI= this.local_data.DNI
@@ -94,7 +150,6 @@ export class DialogBoxComponent implements OnInit {
     switch (this.action) {
       case "Agregar": {
         this._UserService.AuthWithFirebase(this.User.DNI).then(resultado => {
-          console.log("hi",resultado)
           if(resultado.length>0){
             this._snackBar.open("El DNI del Usuario deber único", "X",{
               horizontalPosition: "center",
@@ -113,9 +168,7 @@ export class DialogBoxComponent implements OnInit {
               console.error("tuve un Error" + error)
             })
           }
-          
         });
-       
       }
       break;
       case "Editar": {
@@ -189,7 +242,72 @@ export class DialogBoxComponent implements OnInit {
   }
    
   }
+  SubmitMateria() {
+    console.log("cacafrita",this.local_data)
+     let dniProfesor =this.local_data.profesorDNI
+     let dniEncargado =this.local_data.encargadoDNI
+     let nombreProfesor ="Profesor Invalido"
+     let nombreEncargado = "Encargado Invalido"
+    this.Users.forEach(function (element) {
+      if (element.DNI.toString()==dniProfesor)
+        nombreProfesor=element.nombre+" "+ element.apellido; 
+      if (element.DNI.toString()==dniEncargado)
+        nombreEncargado=element.nombre+" "+ element.apellido; 
+      return 
+  });
+
+    this.Materia.nombre= this.local_data.nombre
+    this.Materia.carrera= this.local_data.carrera
+    this.Materia.profesorDNI= this.local_data.profesorDNI
+    this.Materia.encargadoDNI= this.local_data.encargadoDNI
+    this.Materia.profesorNya= nombreProfesor
+    this.Materia.encargadoNya=nombreEncargado
+    this.Materia.cantHoras= this.local_data.cantHoras
+    this.Materia.$key= this.local_data.id_firebase
+    switch (this.action) {
+      case "Agregar": {
+        this._MateriaService.AddMateriaFirebase(this.Materia).then(response => {
+          this.dialogRef.close({
+            event: this.action,
+            data: this.local_data
+          });
+        }, error => {
+          console.error("tuve un Error" + error)
+        })
+       
+      }
+      break;
+      case "Editar": {
+        this._MateriaService.UpdateMateriaFirebase(this.Materia).then(response => {
+          this.dialogRef.close({
+            event: this.action,
+            data: this.local_data
+          });
+        }, error => {
+          console.error("tuve un Error" + error)
+        })
+       
+      }
+      break;
+      case "Borrar": {
+        this._MateriaService.DeleteMateriaFirebase(this.Materia.$key).then(response => {
+          console.log("si")
+          this.dialogRef.close({
+            event: this.action,
+            data: this.local_data
+          });
+        }, error => {
+          console.error("tuve un Error" + error)
+        })
+       
+      }
+      break;
+  }
+   
+  }
   closeDialog(){
+    console.log("cerrrado")
+
     this.dialogRef.close({event:'Cancel'});
   }
   public checkError = (controlName: string, errorName: string) => {
@@ -202,6 +320,11 @@ export class DialogBoxComponent implements OnInit {
       case "carrera": {
         return this.formCarrera.controls[controlName].hasError(errorName);
 
+      }
+      break;
+      case "materia": {
+        return this.formMateria.controls[controlName].hasError(errorName);
+        
       }
       break;
   

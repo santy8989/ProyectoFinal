@@ -4,6 +4,6 @@ export interface usuario {
   apellido:     string;
   DNI: number ;
   contra:   string;
-  tipo:    number;
+  tipo:    string;
  
 }
