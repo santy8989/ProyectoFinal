@@ -11,7 +11,7 @@ import { CarreraService } from 'src/app/services/carrera.service';
 import { MateriasService } from 'src/app/services/materias.service';
 
 //TODO
-// cuando se borran todos los registros de la tabla mostarar un estado BaseAudioContext, y actualizar para que no quede uno siemre
+// cuando se borran todos los registros de la tabla mostarar un estado por defecto o vacio de la tabla, y actualizar para que no quede uno siemre
 
 
 

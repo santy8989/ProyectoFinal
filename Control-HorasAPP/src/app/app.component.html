@@ -5,18 +5,18 @@
       <h1 class="example-app-name">FCEE</h1>
     </mat-toolbar>
     <mat-sidenav-container class="mediumContainer">
-      <mat-sidenav  #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+      <mat-sidenav  class="side" #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                    [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
         <mat-nav-list class="side-nav">
           <a mat-list-item routerLink="/dashboard">Inicio</a>
-          <a *ngIf="tipo=='Admin'" mat-list-item routerLink="/usuarios">Usuarios</a>
-          <a *ngIf="tipo=='Admin'" mat-list-item routerLink="/carreras">Carreras</a>
-          <a *ngIf="tipo=='Admin'" mat-list-item routerLink="/materias">Materias</a>
+        <a *ngIf="tipo=='Admin'" mat-list-item routerLink="/usuarios" class="item">Usuarios</a>
+          <a *ngIf="tipo=='Admin'" mat-list-item routerLink="/carreras" class="item">Carreras</a>
+          <a *ngIf="tipo=='Admin'" mat-list-item routerLink="/materias" class="item">Materias</a>
 
           <a mat-list-item (click)="salir()">Salir</a>
         </mat-nav-list>
       </mat-sidenav>
-      <mat-sidenav-content>
+      <mat-sidenav-content class="content">
         <router-outlet></router-outlet>
       </mat-sidenav-content>
     </mat-sidenav-container>
