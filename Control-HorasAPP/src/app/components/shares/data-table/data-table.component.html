@@ -5,6 +5,7 @@
     <input *ngIf="type=='usuario'" matInput (keyup)="applyFilter($event.target)" placeholder="Buscar {{type|titlecase }}s">
     <input *ngIf="type=='carrera'" matInput (keyup)="applyFilter($event.target)" placeholder="Buscar {{type|titlecase }}es">
     <input *ngIf="type=='materia'" matInput (keyup)="applyFilter($event.target)" placeholder="Buscar {{type|titlecase }}s">
+    <input *ngIf="type=='periodo'" matInput (keyup)="applyFilter($event.target)" placeholder="Buscar {{type|titlecase }}s">
   </mat-form-field>
 </div>
 
@@ -19,13 +20,30 @@
     </th>
     <td mat-cell *matCellDef="let element"> {{element.DNI}} </td>
   </ng-container>
-
   <!-- Name Column -->
-  <ng-container matColumnDef="nombre">
+  <ng-container *ngIf="type!='periodo'" matColumnDef="nombre">
     <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
       Nombre
     </th>
     <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+  </ng-container>
+  <ng-container *ngIf="type=='periodo'" matColumnDef="Fecha_str">
+    <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+      Fecha de inicio
+    </th>
+    <td mat-cell  *matCellDef="let element"> {{element.fecha_INI}} </td>
+  </ng-container>
+  <ng-container *ngIf="type=='periodo'" matColumnDef="Fecha_fn">
+    <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+      Fecha de fin
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.fecha_FIN}} </td>
+  </ng-container>
+  <ng-container  *ngIf="type=='periodo'" matColumnDef="CantSemanas">
+    <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+      Cantidad de semanas
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.Cant_Semanas}} </td>
   </ng-container>
   <ng-container *ngIf="type=='materia'" matColumnDef="carrera">
     <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header >
@@ -80,7 +98,7 @@
       <button mat-icon-button color="primary" class="acciones"  >
         <a *ngIf="type=='carrera'"(click)="openDialog('Agregar',{})"><button   matTooltip="Crear una nueva facultad"  matTooltipPosition="above" type="button" class="btn btn-success ">Nueva {{type}}</button></a>
         <a *ngIf="type=='materia'"(click)="openDialog('Agregar',{})"><button   matTooltip="Crear una nueva materia"  matTooltipPosition="above" type="button" class="btn btn-success ">Nueva {{type}}</button></a>
-
+        <a *ngIf="type=='periodo'"(click)="openDialog('Agregar',{})"><button   matTooltip="Crear un nuevo periodo"  matTooltipPosition="above" type="button" class="btn btn-success ">Nuevo {{type}}</button></a>
         <a *ngIf="type=='usuario'"(click)="openDialog('Agregar',{})"><button   matTooltip="Crear un nuevo usuario"  matTooltipPosition="above" type="button" class="btn btn-success ">Nuevo {{type}}</button></a>
       </button>
     </th>
@@ -104,4 +122,9 @@
     <tr  mat-header-row *matHeaderRowDef="MateriasDisplayedColumns"></tr>
     <tr  mat-row *matRowDef="let row; columns: MateriasDisplayedColumns;"></tr>
   </ng-container> 
+  <ng-container *ngIf="type=='periodo'" matColumnDef="userColumns"> 
+    <tr  mat-header-row *matHeaderRowDef="PeriodosDisplayedColumns"></tr>
+    <tr  mat-row *matRowDef="let row; columns: PeriodosDisplayedColumns;"></tr>
+  </ng-container> 
+  
 </table>

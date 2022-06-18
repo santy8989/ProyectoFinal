@@ -7,6 +7,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MatInputModule } from "@angular/material/input";
+
+// MatDatepickerModule
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //firebase
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
@@ -18,6 +20,8 @@ import { RouterModule } from '@angular/router';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { AngularMaterialModule } from './angular-material.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 @NgModule({
   declarations: [
     AppComponent
@@ -25,6 +29,8 @@ import { MatDialogModule } from '@angular/material/dialog';
   imports: [
     BrowserModule,
     MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,

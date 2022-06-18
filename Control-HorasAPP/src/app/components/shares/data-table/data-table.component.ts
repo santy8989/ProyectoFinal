@@ -9,6 +9,7 @@ import { usuario } from 'src/app/interfaces/usuario';
 import { UserService } from 'src/app/services/User-service';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { MateriasService } from 'src/app/services/materias.service';
+import { PeriodosService } from 'src/app/services/periodos.service';
 
 //TODO
 // cuando se borran todos los registros de la tabla mostarar un estado por defecto o vacio de la tabla, y actualizar para que no quede uno siemre
@@ -30,6 +31,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   UserDisplayedColumns: string[] = ['nombre', 'apellido', 'DNI', 'tipo','Acciones'];
   CarreraDisplayedColumns: string[] = ['nombre', 'Sigla','Acciones'];
   MateriasDisplayedColumns: string[] = ['nombre', 'carrera','profesor','encargado','cantHoras','Acciones'];
+  PeriodosDisplayedColumns: string[] = ['Fecha_str','Fecha_fn','CantSemanas','Acciones'];
   dataSource: MatTableDataSource < any > ;
 
   constructor(
@@ -37,6 +39,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
     private _UserService:UserService,
     public dialog: MatDialog,
     private _CarreraServoce:CarreraService,
+    private _PeriodoService:PeriodosService,
     private _MateriaService:MateriasService) {}
 
   @ViewChild('empTbSort') empTbSort = new MatSort();
@@ -61,7 +64,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
       }
       break;
       case "carrera": {
-        this._CarreraServoce.GetFacultadListFirebase().then(resultado => {
+        this._CarreraServoce.GetCarreraListFirebase().then(resultado => {
           // console.log("hi",resultado)
           if(resultado.length>0){
             this.dataSource = new MatTableDataSource(resultado);
@@ -82,6 +85,16 @@ export class DataTableComponent implements AfterViewInit, OnInit{
        
       }
       break;
+      case "periodo": {
+        this._PeriodoService.GetPeriodosListFirebase().then(resultado => {
+          // console.log("hi",resultado)
+          if(resultado.length>0){
+            this.dataSource = new MatTableDataSource(resultado);
+            this.dataSource.sort = this.empTbSort;
+          }
+        });
+      }
+      break;
   }
   }
   ngAfterViewInit() {
@@ -90,7 +103,6 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   openDialog(action:string, obj:any) {
     obj.action = action;
     obj.type=this.type
-    console.log("hola, testeando ando",obj)
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '500px',
       data: obj,

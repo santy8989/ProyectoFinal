@@ -11,6 +11,7 @@ import { SharesModule } from '../shares/shares.module';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { CarrerasComponent } from './carreras/carrera.component';
 import { MateriasComponent } from './materias/materias.component';
+import { PeriodosComponent } from './periodos/periodos.component';
 // import { RoutesModule } from './components/routes/routes.module';
 
 
@@ -22,6 +23,7 @@ import { MateriasComponent } from './materias/materias.component';
     UsuariosComponent,
     CarrerasComponent,
     MateriasComponent,
+    PeriodosComponent,
     
   ],
   imports: [

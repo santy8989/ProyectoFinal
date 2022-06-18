@@ -12,50 +12,50 @@ import { carrera } from '../interfaces/carrera';
   providedIn: 'root'
 })
 export class CarreraService {
-  facultad!:any
+  carrera!:any
 
   constructor(public Firestore: AngularFirestore,private afauth:AngularFireAuth) {}
-  async GetFacultadListFirebase(){
+  async GetCarreraListFirebase(){
    try{
-     const query=  await this.Firestore.firestore.collection(`facultades`).get()
-       this.facultad =query.docs.map((doc:any)=> ({
+     const query=  await this.Firestore.firestore.collection(`carreras`).get()
+       this.carrera =query.docs.map((doc:any)=> ({
         id_firebase: doc.id, 
          ...doc.data()
        }));
-       console.log("query",this.facultad)
-       console.log("test",this.facultad)
+       console.log("query",this.carrera)
+       console.log("test",this.carrera)
   
-   return  this.facultad
+   return  this.carrera
    }catch(err){
      console.log("error al ingresar",err)
      return null
    }
   }
-  async UpdateCarreraFirebase(Facultad:carrera){
+  async UpdateCarreraFirebase(Carrera:carrera){
     try{
-      const query=  await this.Firestore.firestore.collection(`facultades`).doc(Facultad.$key).update(
+      const query=  await this.Firestore.firestore.collection(`carreras`).doc(Carrera.$key).update(
        {
-        nombre: Facultad.nombre,
-        sigla: Facultad.sigla,
+        nombre: Carrera.nombre,
+        sigla: Carrera.sigla,
         
        }
         );
-    return  this.facultad
+    return  this.carrera
     }catch(err){
       console.log("error al Editar",err)
       return null
     }
    }
-   async AddCarreraFirebase(Facultad:carrera){
-     console.log(Facultad,"thisones")
+   async AddCarreraFirebase(Carrera:carrera){
+     console.log(Carrera,"thisones")
     try{
-      const query=  await this.Firestore.firestore.collection(`facultades`).add(
+      const query=  await this.Firestore.firestore.collection(`carreras`).add(
        {
-        nombre: Facultad.nombre,
-        sigla: Facultad.sigla
+        nombre: Carrera.nombre,
+        sigla: Carrera.sigla
        }
         );
-    return  this.facultad
+    return  this.carrera
     }catch(err){
       console.log("error al agregar",err)
       return null
@@ -63,7 +63,7 @@ export class CarreraService {
    }
    async DeleteCarreraFirebase(id:string){
     try{
-    return  this.Firestore.firestore.collection(`facultades`).doc(id).delete()
+    return  this.Firestore.firestore.collection(`carreras`).doc(id).delete()
     }catch(err){
       console.log("error al ingresar",err)
       return null

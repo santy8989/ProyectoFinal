@@ -7,6 +7,7 @@ import { MateriasComponent } from './components/routes/materias/materias.compone
 import { UsuariosComponent } from './components/routes/usuarios/usuarios.component';
 import { AdminGuard } from './guards/admin.guard';
 import { LoginGuard } from './guards/login-guard.guard';
+import { PeriodosComponent } from './components/routes/periodos/periodos.component';
 
 
 
@@ -27,6 +28,12 @@ const routes: Routes = [
   {
     path: 'usuarios',
     component: UsuariosComponent,
+    pathMatch:'full',
+    canActivate: [LoginGuard,AdminGuard]
+  },
+  {
+    path: 'periodos',
+    component: PeriodosComponent,
     pathMatch:'full',
     canActivate: [LoginGuard,AdminGuard]
   },

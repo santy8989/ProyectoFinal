@@ -25,6 +25,7 @@ export class DialogBoxComponent implements OnInit {
   public formUsuario: FormGroup; 
   public formCarrera: FormGroup; 
   public formMateria: FormGroup;
+  public formPeriodo: FormGroup;
   Carreras:any[]
   Users:any[]
   action:string;
@@ -111,9 +112,14 @@ export class DialogBoxComponent implements OnInit {
       encargado : new FormControl(this.local_data.encargadoDNI, [Validators.required]),
       cantHoras : new FormControl(this.local_data.cantHoras, [Validators.required]), 
     });
+    this.formPeriodo = new FormGroup({
+      fecha_ini : new FormControl(this.local_data.fecha_ini, [Validators.required]),
+      fecha_fn : new FormControl(this.local_data.fecha_fn, [Validators.required]),
+ 
+    });
    
-    console.log('pene', this.local_data);
-    console.log('pene', this.formMateria);
+    // console.log('pene', this.local_data);
+    console.log('pene', this.formPeriodo);
     if (this.local_data.type=="materia")
     {
       this.getCarreras()
@@ -121,7 +127,7 @@ export class DialogBoxComponent implements OnInit {
     }
   }
   getCarreras(){
-    this._CarreraService.GetFacultadListFirebase().then(resultado => {
+    this._CarreraService.GetCarreraListFirebase().then(resultado => {
       if(resultado.length>0){
       this.Carreras=resultado
       }
@@ -256,6 +262,8 @@ export class DialogBoxComponent implements OnInit {
       return 
   });
 
+
+
     this.Materia.nombre= this.local_data.nombre
     this.Materia.carrera= this.local_data.carrera
     this.Materia.profesorDNI= this.local_data.profesorDNI
@@ -305,6 +313,10 @@ export class DialogBoxComponent implements OnInit {
   }
    
   }
+  SubmitPeriodo() {
+    console.log("cacafrita",this.formPeriodo)
+     
+   }
   closeDialog(){
     console.log("cerrrado")
 
