@@ -8,6 +8,7 @@ import {
   AngularFireObject,
 } from '@angular/fire/compat/database';
 import { carrera } from '../interfaces/carrera';
+import { periodo } from '../interfaces/periodo';
 
 @Injectable({
   providedIn: 'root'
@@ -46,13 +47,16 @@ export class PeriodosService {
       return null
     }
    }
-   async AddPeriodoFirebase(Periodo:carrera){
+   async AddPeriodoFirebase(Periodo:periodo){
      console.log(Periodo,"thisones")
     try{
       const query=  await this.Firestore.firestore.collection(`periodos`).add(
        {
-        nombre: Periodo.nombre,
-        sigla: Periodo.sigla
+        fecha_INI:   Periodo.fecha_INI.toString(),
+        fecha_INI_formated:     Periodo.fecha_INI_formated,
+        fecha_FIN:     Periodo.fecha_FIN.toString(),
+        fecha_FIN_formated:     Periodo.fecha_FIN_formated,
+        Cant_Semanas: Periodo.Cant_Semanas 
        }
         );
     return  this.periodo
@@ -62,6 +66,7 @@ export class PeriodosService {
     }
    }
    async DeletePeriodoFirebase(id:string){
+    console.log(id)
     try{
     return  this.Firestore.firestore.collection(`periodos`).doc(id).delete()
     }catch(err){

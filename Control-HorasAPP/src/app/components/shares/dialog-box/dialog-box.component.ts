@@ -13,7 +13,9 @@ import { carrera } from 'src/app/interfaces/carrera';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { materia } from 'src/app/interfaces/materias';
 import { MateriasService } from 'src/app/services/materias.service';
-
+import { periodo } from 'src/app/interfaces/periodo';
+import * as moment from 'moment';
+import { PeriodosService } from 'src/app/services/periodos.service';
 
 @Component({
   selector: 'app-users-dialog-box',
@@ -22,6 +24,8 @@ import { MateriasService } from 'src/app/services/materias.service';
 })
 export class DialogBoxComponent implements OnInit {
   local_data:any;
+  fecha:Date;
+  
   public formUsuario: FormGroup; 
   public formCarrera: FormGroup; 
   public formMateria: FormGroup;
@@ -60,6 +64,12 @@ export class DialogBoxComponent implements OnInit {
     cantHoras: 0,
 
   }
+  Periodo:periodo={ 
+    fecha_INI  :"none",
+    fecha_FIN  : "none",
+    Cant_Semanas  : 0,
+
+  }
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
   @ViewChild('name') name: ElementRef;
   triggerResize() {
@@ -72,6 +82,7 @@ export class DialogBoxComponent implements OnInit {
     private _UserService:UserService,
     private _CarreraService:CarreraService,
     private _MateriaService:MateriasService,
+    private _PeriodoService:PeriodosService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
       console.log("niceeeeeee",data)
     this.local_data = {...data};
@@ -89,6 +100,7 @@ export class DialogBoxComponent implements OnInit {
     
   }
   ngOnInit() {
+    
     this.formUsuario = new FormGroup({
       name : new FormControl(this.local_data.nombre, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
       apellido : new FormControl(this.local_data.apellido, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
@@ -113,13 +125,14 @@ export class DialogBoxComponent implements OnInit {
       cantHoras : new FormControl(this.local_data.cantHoras, [Validators.required]), 
     });
     this.formPeriodo = new FormGroup({
-      fecha_ini : new FormControl(this.local_data.fecha_ini, [Validators.required]),
-      fecha_fn : new FormControl(this.local_data.fecha_fn, [Validators.required]),
+      fecha_ini : new FormControl(this.local_data.fecha_INI, [Validators.required]),
+      fecha_fn : new FormControl(this.local_data.fecha_FIN, [Validators.required]),
+      Cant_Semanas:new FormControl(this.local_data.Cant_Semanas, [Validators.required]),
  
     });
    
     // console.log('pene', this.local_data);
-    console.log('pene', this.formPeriodo);
+    console.log('pene', this.local_data);
     if (this.local_data.type=="materia")
     {
       this.getCarreras()
@@ -314,12 +327,48 @@ export class DialogBoxComponent implements OnInit {
    
   }
   SubmitPeriodo() {
-    console.log("cacafrita",this.formPeriodo)
-     
+    console.log("LOCAL DATE IN SUBMIT PERIOD FUNCTION",this.local_data)
+    this.Periodo.$key=this.local_data.id_firebase
+    this.Periodo.Cant_Semanas=this.local_data.Cant_Semanas
+    this.Periodo.fecha_FIN=this.local_data.fecha_FIN
+    let milisecond_fn:number=Date.parse(this.Periodo.fecha_FIN)
+    this.Periodo.fecha_FIN_formated=moment(milisecond_fn).format("DD/MM/YYYY")
+    this.Periodo.fecha_INI=this.local_data.fecha_INI
+    let milisecond_ini:number=Date.parse(this.Periodo.fecha_INI)
+    this.Periodo.fecha_INI_formated=moment(milisecond_ini).format("DD/MM/YYYY")
+  //  this.local_data.fecha_INI="asd"
+    // console.log("periodosd",this.local_data.fecha_INI)
+    switch (this.action) {
+      case "Agregar": {
+        this._PeriodoService.AddPeriodoFirebase(this.Periodo).then(response => {
+          this.dialogRef.close({
+            event: this.action,
+            data: this.local_data
+          });
+        }, error => {
+          console.error("tuve un Error" + error)
+        })
+       
+      }
+      break;
+    
+      case "Borrar": {
+        this._PeriodoService.DeletePeriodoFirebase(this.Periodo.$key).then(response => {
+          console.log("si")
+          this.dialogRef.close({
+            event: this.action,
+            data: this.local_data
+          });
+        }, error => {
+          console.error("tuve un Error" + error)
+        })
+       
+      }
+      break;
+  }
    }
   closeDialog(){
     console.log("cerrrado")
-
     this.dialogRef.close({event:'Cancel'});
   }
   public checkError = (controlName: string, errorName: string) => {
@@ -339,7 +388,11 @@ export class DialogBoxComponent implements OnInit {
         
       }
       break;
-  
+      case "periodo": {
+        return this.formPeriodo.controls[controlName].hasError(errorName);
+        
+      }
+      break;
       default:{
         return this.formCarrera.controls[controlName].hasError(errorName);
       }

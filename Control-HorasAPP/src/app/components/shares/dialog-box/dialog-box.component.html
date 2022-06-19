@@ -101,23 +101,27 @@
             </mat-form-field>
             </form>
             <form *ngIf="data.type=='periodo'" [formGroup]="formPeriodo"  (ngSubmit)="SubmitFacultad()" class="example-form">
-              <mat-form-field class="">
-                <!-- <mat-error *ngIf="checkError('fecha_ini', 'required')">Selecciones una fecha de inicio para el periodo</mat-error>  -->
-                <mat-label>Seleccion el rango del periodo</mat-label>
-                <mat-date-range-input [rangePicker]="picker" required >
-                  <input matStartDate  [(ngModel)]="local_data.fecha_ini" formControlName="fecha_ini" required  placeholder="Fecha de inicio" type="text" matInput>
-                  <input matEndDate  [(ngModel)]="local_data.fecha_fn" formControlName="fecha_fn" required  placeholder="Fecha de fin" type="text" matInput>
-                 
-                  <!-- <mat-error *ngIf="checkError('picker', 'required')">Selecciones una fecha de inicio para el periodo</mat-error> -->
-                </mat-date-range-input>
-                <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker>             
-                 
-                <!-- <mat-error *ngIf="checkError('name', 'minlength')">El nombre tiene que ser de mas de 3 caractares</mat-error> -->
-                <!-- <mat-error *ngIf="checkError('name', 'maxlength')">El nombre tiene que ser de menos de 30 caractares</mat-error> -->
-              </mat-form-field>
-              
+                <mat-form-field class="">
+                  <!-- <mat-error *ngIf="checkError('fecha_ini', 'required')">Selecciones una fecha de inicio para el periodo</mat-error>  -->
+                  <mat-label>Seleccion el rango del periodo</mat-label>
+                  <mat-date-range-input [rangePicker]="picker" required >
+                    <input matStartDate  [(ngModel)]="local_data.fecha_INI" formControlName="fecha_ini" required  placeholder="Fecha de inicio" type="text" matInput>
+                    <input matEndDate  [(ngModel)]="local_data.fecha_FIN" formControlName="fecha_fn" required  placeholder="Fecha de fin" type="text" matInput>
+                  
+                    <mat-error *ngIf="checkError('fecha_ini', 'required')">Selecciones una fecha de inicio para el periodo</mat-error>
+                    <mat-error *ngIf="checkError('fecha_fn', 'required')">Selecciones una fecha de fin para el periodo</mat-error>
+                  </mat-date-range-input>
+                  <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-date-range-picker #picker></mat-date-range-picker>             
+                  
+                  <!-- <mat-error *ngIf="checkError('name', 'minlength')">El nombre tiene que ser de mas de 3 caractares</mat-error> -->
+                  <!-- <mat-error *ngIf="checkError('name', 'maxlength')">El nombre tiene que ser de menos de 30 caractares</mat-error> -->
+                </mat-form-field>
+                <mat-form-field >
+                  <input  placeholder="Cantidad de Semanas" type="number" [(ngModel)]="local_data.Cant_Semanas" formControlName="Cant_Semanas" matInput >
+                  <mat-error *ngIf="checkError('Cant_Semanas', 'minlength')">Ingrese la cantidad de semanas del periodo</mat-error>
+                </mat-form-field>
               </form>
       </ng-container>
       <ng-template #deleteview>
@@ -129,6 +133,9 @@
         </div> 
         <div *ngIf="data.type=='materia'"  class="fs-5 parrafo">
           ¿Seguro quiere eliminar la materia <b>{{local_data.nombre}}</b>? una vez eliminada no es posible recuperarla.
+        </div> 
+        <div *ngIf="data.type=='periodo'"  class="fs-5 parrafo">
+          ¿Seguro quiere eliminar el periodo que va desde <b>{{local_data.fecha_INI_formated}}</b> hasta <b>{{local_data.fecha_FIN_formated}}</b> ? una vez eliminado no es posible recuperarla.
         </div> 
       </ng-template>
       
