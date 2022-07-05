@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
 import { UserService } from 'src/app/services/User-service';
 import { usuario } from 'src/app/interfaces/usuario';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { style } from '@angular/animations';
@@ -16,6 +16,8 @@ import { MateriasService } from 'src/app/services/materias.service';
 import { periodo } from 'src/app/interfaces/periodo';
 import * as moment from 'moment';
 import { PeriodosService } from 'src/app/services/periodos.service';
+import { TeamMateriasService } from 'src/app/services/team-materias.service';
+// import { EMLINK } from 'constants';
 
 @Component({
   selector: 'app-users-dialog-box',
@@ -30,8 +32,13 @@ export class DialogBoxComponent implements OnInit {
   public formCarrera: FormGroup; 
   public formMateria: FormGroup;
   public formPeriodo: FormGroup;
+  public formteam: FormGroup;
+  public form: FormGroup;
   Carreras:any[]
   Users:any[]
+  Teams:any[]
+  TeamsToDelete:any[]
+  ContentLoaded:boolean =false;
   action:string;
   type:string;
   nombre:string;
@@ -70,6 +77,18 @@ export class DialogBoxComponent implements OnInit {
     Cant_Semanas  : 0,
 
   }
+  Team:any={ 
+ 
+      NombreMiembro  :"",
+      ApellidoMiembro  : "",
+      DNI_miembro  : "",
+      PuestoMiembro:"",
+      status:"new"
+
+  }
+  
+  array=["santi","juan","sig"]
+
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
   @ViewChild('name') name: ElementRef;
   triggerResize() {
@@ -83,7 +102,10 @@ export class DialogBoxComponent implements OnInit {
     private _CarreraService:CarreraService,
     private _MateriaService:MateriasService,
     private _PeriodoService:PeriodosService,
+    private _TeamMateriasService:TeamMateriasService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
+      this.array[0]="banana"
+    // this.array[1]="anana"
       console.log("niceeeeeee",data)
     this.local_data = {...data};
     
@@ -130,13 +152,58 @@ export class DialogBoxComponent implements OnInit {
       Cant_Semanas:new FormControl(this.local_data.Cant_Semanas, [Validators.required]),
  
     });
+    this.formteam = new FormGroup({
+      nombre : new FormControl( [Validators.required]),
+      apellido : new FormControl( [Validators.required]),
+      dni : new FormControl( [Validators.required]),
+      puesto : new FormControl( [Validators.required]),
+      
+ 
+    });
    
+    this.formteam = new FormGroup({
+      name: new FormControl(''),
+        
+        items: new FormArray([
+          new FormGroup({
+            name: new FormControl('name2'),
+            apellido: new FormControl('apellido2'),
+      }),
+          new FormGroup({
+            name: new FormControl('name'),
+            apellido: new FormControl('apellido3'),
+      }),
+          new FormGroup({
+            name: new FormControl('name'),
+            apellido: new FormControl('apellido4'),
+          })
+        ])
+      });
+      this.form = new FormGroup({
+        name: new FormControl(''),
+          
+          addresses: new FormArray([
+            new FormGroup({
+              address: new FormControl('address1')
+        }),
+            new FormGroup({
+              address: new FormControl('address2')
+        }),
+            new FormGroup({
+              address: new FormControl('address3')
+            })
+          ])
+        });
     // console.log('pene', this.local_data);
-    console.log('pene', this.local_data);
+    // console.log('pene', this.local_data);
     if (this.local_data.type=="materia")
     {
       this.getCarreras()
       this.getUsers()
+      this.ContentLoaded=true
+    }
+    if(this.local_data.type=="team"){
+      this.getTeams()
     }
   }
   getCarreras(){
@@ -144,6 +211,38 @@ export class DialogBoxComponent implements OnInit {
       if(resultado.length>0){
       this.Carreras=resultado
       }
+    });
+    
+  }
+  agregarMember(){
+    this.Teams.push(this.Team)
+  }
+
+  borrarMember(index:number){
+    if(this.Teams[index].status!="new")
+    {
+      this.TeamsToDelete.push(this.Teams[index])
+    }
+    this.Teams.splice(index,1)
+    // console.log(this.TeamsToDelete)
+  }
+  getTeams(){
+    this._TeamMateriasService.GetTeamMembersListFirebase(this.local_data.nombre).then(resultado => {
+      if(resultado.length>0){
+          resultado.map(function(elemnt:any ) {
+            elemnt.status="old"
+            return ;
+        });
+        this.Teams=resultado
+        this.ContentLoaded=true
+        this.TeamsToDelete=[];
+      }else{
+        this.Teams=[]
+        this.ContentLoaded=true
+        this.TeamsToDelete=[];
+      }
+      
+    console.log("teste",resultado)
     });
     
   }
@@ -217,6 +316,9 @@ export class DialogBoxComponent implements OnInit {
   }
    
   }
+  SubmitTeam(){
+
+  }
   SubmitFacultad() {
     this.Facultad.sigla= this.local_data.sigla
     this.Facultad.nombre= this.local_data.nombre
@@ -262,7 +364,7 @@ export class DialogBoxComponent implements OnInit {
    
   }
   SubmitMateria() {
-    console.log("cacafrita",this.local_data)
+    
      let dniProfesor =this.local_data.profesorDNI
      let dniEncargado =this.local_data.encargadoDNI
      let nombreProfesor ="Profesor Invalido"
@@ -287,14 +389,28 @@ export class DialogBoxComponent implements OnInit {
     this.Materia.$key= this.local_data.id_firebase
     switch (this.action) {
       case "Agregar": {
-        this._MateriaService.AddMateriaFirebase(this.Materia).then(response => {
-          this.dialogRef.close({
-            event: this.action,
-            data: this.local_data
-          });
-        }, error => {
-          console.error("tuve un Error" + error)
-        })
+        this._MateriaService.GetMateriaFirebase(this.Materia.nombre).then(resultado => {
+          if(resultado.length>0){
+            this._snackBar.open("El nombre de la materia debe ser único", "X",{
+              horizontalPosition: "center",
+              verticalPosition: "top",
+              duration: 3000,
+              panelClass: ['snackBar'] 
+               });
+            }
+          else{
+            this._MateriaService.AddMateriaFirebase(this.Materia).then(response => {
+              this.dialogRef.close({
+                event: this.action,
+                data: this.local_data
+              });
+            }, error => {
+              console.error("tuve un Error" + error)
+            })
+          }
+        });
+
+      
        
       }
       break;

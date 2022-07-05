@@ -101,6 +101,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
    this.GetData();
 }
   openDialog(action:string, obj:any) {
+    console.log(action)
     obj.action = action;
     obj.type=this.type
     const dialogRef = this.dialog.open(DialogBoxComponent, {
@@ -114,6 +115,21 @@ export class DataTableComponent implements AfterViewInit, OnInit{
 
     
   }
+  openDialogTeam(action:string, obj:any) {
+    obj.action = action;
+    obj.type="team"
+    const dialogRef = this.dialog.open(DialogBoxComponent, {
+      width: '500px',
+      data: obj,
+      
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.GetData();
+    });
+
+    
+  }
+  
 
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {

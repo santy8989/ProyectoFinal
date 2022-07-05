@@ -12,6 +12,7 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { CarrerasComponent } from './carreras/carrera.component';
 import { MateriasComponent } from './materias/materias.component';
 import { PeriodosComponent } from './periodos/periodos.component';
+import { CargaHorasComponent } from './carga-horas/carga-horas.component';
 // import { RoutesModule } from './components/routes/routes.module';
 
 
@@ -24,6 +25,7 @@ import { PeriodosComponent } from './periodos/periodos.component';
     CarrerasComponent,
     MateriasComponent,
     PeriodosComponent,
+    CargaHorasComponent,
     
   ],
   imports: [

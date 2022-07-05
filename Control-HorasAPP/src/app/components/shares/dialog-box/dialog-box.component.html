@@ -38,17 +38,94 @@
                 <mat-error *ngIf="checkError('tipo', 'required')">Seleccione un tipo</mat-error>
             </mat-form-field>
           </form>
-          <form *ngIf="data.type=='usuario'" [formGroup]="formPeriodo"  (ngSubmit)="SubmitUser()" class="example-form">
+          <!-- <form *ngIf="data.type=='usuario'" [formGroup]="formPeriodo"  (ngSubmit)="SubmitUser()" class="example-form">
             <mat-form-field class="">
               <input  [(ngModel)]="local_data.nombre" formControlName="name" required  placeholder="Nombre" type="text" matInput >
               <mat-error *ngIf="checkError('name', 'required')">El nombre es requerido</mat-error>
               <mat-error *ngIf="checkError('name', 'minlength')">El nombre tiene que ser de mas de 3 caractares</mat-error>
               <mat-error *ngIf="checkError('name', 'maxlength')">El nombre tiene que ser de menos de 30 caractares</mat-error>
             </mat-form-field>
-            </form>
-          <form *ngIf="data.type=='materia'" [formGroup]="formMateria"  (ngSubmit)="SubmitMateria()" class="example-form">
+            </form> -->
+            <!-- <form [formGroup]="form">
+              <input formControlName="name"/>
+                
+                <div formArrayName="addresses" *ngFor="let address of form.get('addresses').controls; index as i">
+                  <div formGroupName="{{i}}">
+                    <input formControlName="address"/>
+                  </div>
+                </div>
+              </form> -->
+
+            <!-- <form *ngIf="data.type=='team'" [formGroup]="formteam"  (ngSubmit)="SubmitUser()" class="example-form">
+            
+            </form> -->
+            <!-- <div >
+              <mat-spinner class="spiner"></mat-spinner>
+            </div> -->
+            <div *ngIf="data.type=='team'"  >
+              <div class="dataRepeater" *ngIf=" ContentLoaded   ;else loading">
+                <div   class="item " *ngFor="let item of Teams; let i = index"  >
+                  
+                  <p>{{item.status}}</p>
+              
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field>
+                          <input  [(ngModel)]="item.NombreMiembro"  required  placeholder="Nombre" type="text" matInput >
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field>
+                          <input  [(ngModel)]="item.ApellidoMiembro" required  placeholder="Apellido" type="text" matInput >
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field>
+                          <input  [(ngModel)]="item.DNI_miembro" required  placeholder="DNI" type="text" matInput >
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field>
+                          <input  [(ngModel)]="item.PuestoMiembro"  required  placeholder="Puesto" type="text" matInput >
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  
+                  <div class="conteiner-custom">
+                    <!-- <button " mat-icon-button color="warn"  >
+                      <mat-icon >delete</mat-icon>
+                      
+                    </button> -->
+                    <button class="buttonDEL"  mat-fab color="warn" (click)="borrarMember(i)" aria-label="Example icon button with a delete icon">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <!-- <mat-spinner class="spiner"></mat-spinner> -->
+                  </div>
+                  
+                  </div>
+                  <button mat-stroked-button color="primary" (click)="agregarMember()">Agragar otro Miembro</button>
+                  <div   mat-dialog-actions class="boton">
+                    <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancelar</button>
+                    <!-- <button type="submit"  [disabled]="!isValid" mat-flat-button color="primary" (click)="Submit()">{{action}}</button> -->
+                    <button   (click)="SubmitTeam()"  mat-flat-button color="primary">{{action}}</button>
+                  
+                  
+                  </div>
+              </div>
+            </div>
+            <ng-template #loading>
+              <div >
+                <mat-spinner class="spiner"></mat-spinner>
+              </div>
+            </ng-template>
+
+           
+              
+          <form *ngIf="data.type=='materia' " [formGroup]="formMateria"  (ngSubmit)="SubmitMateria()" class="example-form">
             <mat-form-field >
-              <input  [(ngModel)]="local_data.fecha_ini" formControlName="fecha_ini" required  placeholder="Fecha" type="text" matInput >
+              <input  [(ngModel)]="local_data.nombre" formControlName="name" required  placeholder="Nombre" type="text" matInput >
               <mat-error *ngIf="checkError('name', 'required')">El nombre es requerido</mat-error>
               <!-- <mat-error *ngIf="checkError('name', 'minlength')">El nombre tiene que ser de mas de 3 caractares</mat-error>
               <mat-error *ngIf="checkError('name', 'maxlength')">El nombre tiene que ser de menos de 30 caractares</mat-error> -->
@@ -141,7 +218,7 @@
       
   </ng-container>
   </div>
-  <div mat-dialog-actions class="boton">
+  <div *ngIf="data.type!='team'"   mat-dialog-actions class="boton">
     <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancelar</button>
     <!-- <button type="submit"  [disabled]="!isValid" mat-flat-button color="primary" (click)="Submit()">{{action}}</button> -->
     <button type="submit" *ngIf="data.type=='usuario'"   [disabled]="!formUsuario.valid" (click)="SubmitUser()"  mat-flat-button color="primary">{{action}}</button>

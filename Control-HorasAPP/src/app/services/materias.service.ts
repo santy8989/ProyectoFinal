@@ -26,28 +26,20 @@ export class MateriasService {
         id_firebase: doc.id, 
          ...doc.data()
        }))
-       console.log("query",this.materia)
-       console.log("test",this.profesor)
-      //  this.materia.forEach( (element: any) => {
-      //    console.log("profesor",element)
-      //    this.user(element).then(response => {
-      //      if(this.profesor.length>0){
-      //       element.profesorNya=this.profesor[0].nombre+" "+ this.profesor[0].apellido
-      //      }else{
-      //       element.profesorNya="Profesor invalido"
-      //      }
-      //      if(this.encargado.length>0){
-      //       element.encargadoNya=this.encargado[0].nombre+" "+ this.encargado[0].apellido
-      //      }else{
-      //       element.encargadoNya="Encargado invalido"
-      //      }
-      //   }, error => {
-      //     console.error("tuve un Error" + error)
-      //   })
-      //  })
-      // deprecado
-
-  
+   return  this.materia
+   }catch(err){
+     console.log("error al ingresar",err)
+     return null
+   }
+  }
+  async GetMateriaFirebase(name:string){
+   
+   try{
+     const query=  await this.Firestore.firestore.collection(`materias`).where("nombre","==",name).get()
+       this.materia =query.docs.map((doc:any)=> ({
+        id_firebase: doc.id, 
+         ...doc.data()
+       }))
    return  this.materia
    }catch(err){
      console.log("error al ingresar",err)

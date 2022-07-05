@@ -33,15 +33,15 @@ export class UserService {
   }
 }
 async GetUserListFirebase(){
-  console.log("test")
+  // console.log("test")
  try{
    const query=  await this.Firestore.firestore.collection(`users`).get()
      this.user =query.docs.map((doc:any)=> ({
       id_firebase: doc.id,
        ...doc.data()
      }));
-     console.log("query",this.user)
-     console.log("test",this.user)
+    //  console.log("query",this.user)0'5
+    //  console.log("test",this.user)
 
  return  this.user
  }catch(err){

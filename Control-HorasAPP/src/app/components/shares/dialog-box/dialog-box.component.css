@@ -12,3 +12,27 @@ button{
 .parrafo{
     line-height:1.2em !important;
 }
+
+.item{
+    border: 2px solid rgba(146, 144, 144, 0.747);
+    padding:10px;
+    margin-bottom:10px ;
+}
+.spiner{
+    margin: 0 auto;
+
+}
+.dataRepeater{
+    height: 500px !important;
+    overflow-y:visible;
+    margin-bottom: 100px;
+}
+.buttonDEL{
+    /* text-align: center; */
+    margin-left:42% !important ;
+}
+.conteiner-custom{
+    /* background-color: red; */
+    width: 100%;
+}
+
