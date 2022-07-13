@@ -59,12 +59,14 @@ export class LoginComponent implements OnInit {
       if(resultado.length>0){
         for (let index = 0; index < resultado.length; index++) {
           const element:usuario = resultado[index];
-          console.log($event.value.password)
+          // console.log(element,"elemtooooooooooooo")
           if (element.contra==$event.value.password) {
             console.log(btoa(element.nombre),"nice",element.nombre)
             localStorage.setItem('Nombre', btoa(element.nombre));
             localStorage.setItem('Apellido', btoa(element.apellido));    
             localStorage.setItem('Tipo', btoa(element.tipo.toString()));
+            localStorage.setItem('DNI', element.DNI.toString() );
+
             // location.reload();
             this.router.navigate(["/dashboard/2"])
           }else{

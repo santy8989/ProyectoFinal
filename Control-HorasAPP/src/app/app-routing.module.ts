@@ -8,6 +8,7 @@ import { UsuariosComponent } from './components/routes/usuarios/usuarios.compone
 import { AdminGuard } from './guards/admin.guard';
 import { LoginGuard } from './guards/login-guard.guard';
 import { PeriodosComponent } from './components/routes/periodos/periodos.component';
+import { ProfeGuard } from './guards/profe.guard';
 
 
 
@@ -47,7 +48,7 @@ const routes: Routes = [
     path: 'materias',
     component: MateriasComponent,
     pathMatch:'full',
-    canActivate: [LoginGuard,AdminGuard]
+    canActivate: [LoginGuard,ProfeGuard]
   },
   
   

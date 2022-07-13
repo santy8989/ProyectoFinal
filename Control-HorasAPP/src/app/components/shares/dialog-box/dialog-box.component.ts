@@ -317,6 +317,39 @@ export class DialogBoxComponent implements OnInit {
    
   }
   SubmitTeam(){
+    {
+    console.log(this.Teams)
+    console.log(this.local_data)
+    this.Teams.forEach(element => {
+      if(element.status=="new"){
+        this._TeamMateriasService.AddTeamMembersListFirebase(element,this.local_data).then(response => {
+           console.log("created")
+          }, error => {
+            console.error("tuve un Error" + error)
+          })
+      }
+      if(element.status=="old"){
+        this._TeamMateriasService.UpdateTeamMembersListFirebase(element).then(response => {
+           console.log("edited")
+          }, error => {
+            console.error("tuve un Error" + error)
+          })
+      }
+      
+    });
+    this.TeamsToDelete.forEach(element => {
+      this._TeamMateriasService.DeleteTeamMembersListFirebase(element.id_firebase).then(response => {
+        console.log("deleted")
+       }, error => {
+         console.error("tuve un Error" + error)
+       })
+    });
+    this.dialogRef.close({
+      event: this.action,
+      data: this.local_data
+    });
+     
+    }
 
   }
   SubmitFacultad() {

@@ -37,6 +37,7 @@ export class AppComponent implements OnDestroy,OnInit {
   ngOnInit(): void {
     this.usuario = localStorage.getItem('Nombre');
     this.tipo = atob(localStorage.getItem('Tipo'));
+    console.log(this.tipo)
     // this.id = ;
 
   }

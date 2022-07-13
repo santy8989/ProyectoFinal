@@ -24,6 +24,8 @@ import { PeriodosService } from 'src/app/services/periodos.service';
 export class DataTableComponent implements AfterViewInit, OnInit{
   @Input() type: string;
   usersList: usuario[];
+  CurrentDNI:string;
+  TipoUser:string;
   Usuario:any={
     $key:"void",
   }
@@ -44,6 +46,8 @@ export class DataTableComponent implements AfterViewInit, OnInit{
 
   @ViewChild('empTbSort') empTbSort = new MatSort();
   ngOnInit(): void {
+    this.CurrentDNI=localStorage.getItem('DNI')
+    this.TipoUser=atob(localStorage.getItem('Tipo'));
     console.log("tipo",this.type)
     console.log(); 
     
@@ -118,6 +122,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   openDialogTeam(action:string, obj:any) {
     obj.action = action;
     obj.type="team"
+    console.log(obj)
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '500px',
       data: obj,
