@@ -9,6 +9,7 @@ import { AdminGuard } from './guards/admin.guard';
 import { LoginGuard } from './guards/login-guard.guard';
 import { PeriodosComponent } from './components/routes/periodos/periodos.component';
 import { ProfeGuard } from './guards/profe.guard';
+import { CargaHorasComponent } from './components/routes/carga-horas/carga-horas.component';
 
 
 
@@ -49,6 +50,11 @@ const routes: Routes = [
     component: MateriasComponent,
     pathMatch:'full',
     canActivate: [LoginGuard,ProfeGuard]
+  },
+  {
+    path: 'cargaHoras',
+    component: CargaHorasComponent,
+    pathMatch:'full',
   },
   
   

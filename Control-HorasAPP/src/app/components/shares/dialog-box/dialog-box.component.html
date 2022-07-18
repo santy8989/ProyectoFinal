@@ -121,7 +121,27 @@
               </div>
             </ng-template>
 
-           
+            <form *ngIf="data.type=='cargaHoras' " [formGroup]="formHoras"  (ngSubmit)="SubmitHoras()" class="example-form">
+                <mat-form-field >
+                  <mat-select formControlName="periodo" [(ngModel)]="local_data.periodo" required placeholder="Periodo" >
+                      <mat-option *ngFor="let periodo of periodos" value={{periodo.id_firebase}}>
+                       {{periodo.fecha_INI_formated}}<b> - </b>  {{periodo.fecha_FIN_formated}}
+                      </mat-option>
+                    </mat-select>  
+                    <mat-error *ngIf="checkError('periodo', 'required')">Seleccione un periodo</mat-error>
+                </mat-form-field>
+                <mat-form-field >
+                  <mat-select formControlName="profesional" [(ngModel)]="local_data.profesional" required placeholder="Profesional" >
+                      <mat-option *ngFor="let profesional of profesionales" value={{profesional.id_firebase}}>
+                       {{profesional.nombre}}
+                      </mat-option>
+                    </mat-select>  
+                    <mat-error *ngIf="checkError('periodo', 'required')">Seleccione un Profesional</mat-error>
+                </mat-form-field>
+                
+                
+                
+            </form>
               
           <form *ngIf="data.type=='materia' " [formGroup]="formMateria"  (ngSubmit)="SubmitMateria()" class="example-form">
             <mat-form-field >
@@ -225,6 +245,7 @@
     <button type="submit" *ngIf="data.type=='carrera'"   [disabled]="!formCarrera.valid" (click)="SubmitFacultad()"  mat-flat-button color="primary">{{action}}</button>
     <button type="submit" *ngIf="data.type=='materia'"   [disabled]="!formMateria.valid" (click)="SubmitMateria()"  mat-flat-button color="primary">{{action}}</button>
     <button type="submit" *ngIf="data.type=='periodo'"   [disabled]="!formPeriodo.valid" (click)="SubmitPeriodo()"  mat-flat-button color="primary">{{action}}</button>
+    <button type="submit" *ngIf="data.type=='cargaHoras'"   [disabled]="!formHoras.valid" (click)="SubmitHoras()"  mat-flat-button color="primary">{{action}}</button>
     
   
   </div>

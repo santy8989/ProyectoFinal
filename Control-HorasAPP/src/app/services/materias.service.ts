@@ -32,8 +32,23 @@ export class MateriasService {
      return null
    }
   }
+  async GetMateriaListByprofesionalFirebase(ProfesionDNI:string){
+    var test
+    var cont=0
+   try{
+     const query=  await this.Firestore.firestore.collection(`materias`).where("profesorDNI","==",ProfesionDNI).get()
+       this.materia =query.docs.map((doc:any)=> ({
+        id_firebase: doc.id, 
+         ...doc.data()
+       }))
+   return  this.materia
+   }catch(err){
+     console.log("error al ingresar",err)
+     return null
+   }
+  }
+
   async GetMateriaFirebase(name:string){
-   
    try{
      const query=  await this.Firestore.firestore.collection(`materias`).where("nombre","==",name).get()
        this.materia =query.docs.map((doc:any)=> ({
@@ -46,25 +61,7 @@ export class MateriasService {
      return null
    }
   }
-  // async user(element:any){
-  //   try{
-  //     const  query1 = await this.Firestore.firestore.collection(`users`).where("DNI","==",Number(element.profesorDNI)).get()
-  //     this.profesor =query1.docs.map((doc2:any)=> ({
-  //      id_firebase: doc2.id,
-  //       ...doc2.data()
-  //     }));
-  //     const  query2 = await this.Firestore.firestore.collection(`users`).where("DNI","==",Number(element.encargadoDNI)).get()
-  //     this.encargado =query2.docs.map((doc2:any)=> ({
-  //      id_firebase: doc2.id,
-  //       ...doc2.data()
-  //     }));
-  //     console.log("naiz",this.profesor)
-  //   }
-  //   catch{
-
-  //   }
-  // }
-// deprecado
+  
   async UpdateMateriaFirebase(Materia:materia){
     try{
       const query=  await this.Firestore.firestore.collection(`materias`).doc(Materia.$key).update(

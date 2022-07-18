@@ -10,6 +10,7 @@ import { UserService } from 'src/app/services/User-service';
 import { CarreraService } from 'src/app/services/carrera.service';
 import { MateriasService } from 'src/app/services/materias.service';
 import { PeriodosService } from 'src/app/services/periodos.service';
+import { CargaHorasService } from 'src/app/services/carga-horas.service';
 
 //TODO
 // cuando se borran todos los registros de la tabla mostarar un estado por defecto o vacio de la tabla, y actualizar para que no quede uno siemre
@@ -34,6 +35,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   CarreraDisplayedColumns: string[] = ['nombre', 'Sigla','Acciones'];
   MateriasDisplayedColumns: string[] = ['nombre', 'carrera','profesor','encargado','cantHoras','Acciones'];
   PeriodosDisplayedColumns: string[] = ['Fecha_str','Fecha_fn','CantSemanas','Acciones'];
+  HorasDisplayedColumns: string[] = ['periodo','Materia','cantHoras','profesional','cargo','encargado','Acciones'];
   dataSource: MatTableDataSource < any > ;
 
   constructor(
@@ -42,7 +44,9 @@ export class DataTableComponent implements AfterViewInit, OnInit{
     public dialog: MatDialog,
     private _CarreraServoce:CarreraService,
     private _PeriodoService:PeriodosService,
-    private _MateriaService:MateriasService) {}
+    private _MateriaService:MateriasService,
+    private _CargaHoras:CargaHorasService,
+    ) {}
 
   @ViewChild('empTbSort') empTbSort = new MatSort();
   ngOnInit(): void {
@@ -75,7 +79,6 @@ export class DataTableComponent implements AfterViewInit, OnInit{
             this.dataSource.sort = this.empTbSort;
           }
         });
-       
       }
       break;
       case "materia": {
@@ -97,6 +100,41 @@ export class DataTableComponent implements AfterViewInit, OnInit{
             this.dataSource.sort = this.empTbSort;
           }
         });
+      }
+      break;
+      case "cargaHoras": {
+        switch(this.TipoUser){
+          case "Admin":{
+            this._CargaHoras.GetCargaHorasAdminFirebase().then(resultado => {
+              // console.log("hi",resultado)
+              if(resultado.length>0){
+                this.dataSource = new MatTableDataSource(resultado);
+                this.dataSource.sort = this.empTbSort;
+              }
+            });
+          }
+          break
+          case "Profesor":{
+            this._CargaHoras.GetCargaHorasAdminFirebase().then(resultado => {
+              // console.log("hi",resultado)
+              if(resultado.length>0){
+                this.dataSource = new MatTableDataSource(resultado);
+                this.dataSource.sort = this.empTbSort;
+              }
+            });
+          }
+          break
+          case "Encargado":{
+            this._CargaHoras.GetCargaHorasAdminFirebase().then(resultado => {
+              // console.log("hi",resultado)
+              if(resultado.length>0){
+                this.dataSource = new MatTableDataSource(resultado);
+                this.dataSource.sort = this.empTbSort;
+              }
+            });
+          }
+          break
+        }
       }
       break;
   }

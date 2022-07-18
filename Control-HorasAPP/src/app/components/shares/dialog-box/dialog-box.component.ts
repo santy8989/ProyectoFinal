@@ -32,9 +32,14 @@ export class DialogBoxComponent implements OnInit {
   public formCarrera: FormGroup; 
   public formMateria: FormGroup;
   public formPeriodo: FormGroup;
+  public formHoras: FormGroup;
   public formteam: FormGroup;
   public form: FormGroup;
   Carreras:any[]
+  CurrentDNI:string
+  materias:any[]
+  periodos:any[]
+  profesionales:any[]
   Users:any[]
   Teams:any[]
   TeamsToDelete:any[]
@@ -122,6 +127,7 @@ export class DialogBoxComponent implements OnInit {
     
   }
   ngOnInit() {
+    this.CurrentDNI=localStorage.getItem('DNI')
     
     this.formUsuario = new FormGroup({
       name : new FormControl(this.local_data.nombre, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
@@ -151,6 +157,12 @@ export class DialogBoxComponent implements OnInit {
       fecha_fn : new FormControl(this.local_data.fecha_FIN, [Validators.required]),
       Cant_Semanas:new FormControl(this.local_data.Cant_Semanas, [Validators.required]),
  
+    });
+    this.formHoras = new FormGroup({
+      periodo : new FormControl(this.local_data.periodo, [Validators.required]),
+      materia : new FormControl(this.local_data.materia, [Validators.required]),
+      cantHoras : new FormControl(this.local_data.cantHoras,[Validators.required]),
+      profesional : new FormControl(this.local_data.profesional, [Validators.required]),
     });
     this.formteam = new FormGroup({
       nombre : new FormControl( [Validators.required]),
@@ -194,8 +206,8 @@ export class DialogBoxComponent implements OnInit {
             })
           ])
         });
-    // console.log('pene', this.local_data);
-    // console.log('pene', this.local_data);
+       
+
     if (this.local_data.type=="materia")
     {
       this.getCarreras()
@@ -205,6 +217,10 @@ export class DialogBoxComponent implements OnInit {
     if(this.local_data.type=="team"){
       this.getTeams()
     }
+    if(this.local_data.type=="cargaHoras"){
+      this.getPeriodos()
+      this.getmateriaByProfesional()
+    }
   }
   getCarreras(){
     this._CarreraService.GetCarreraListFirebase().then(resultado => {
@@ -213,6 +229,22 @@ export class DialogBoxComponent implements OnInit {
       }
     });
     
+  }
+  getmateriaByProfesional(){
+    this._MateriaService.GetMateriaListByprofesionalFirebase(this.CurrentDNI).then(resultado => {
+      if(resultado.length>0){
+      this.profesionales=resultado
+      }
+    });
+    
+  }
+  getPeriodos(){
+    this._PeriodoService.GetPeriodosListFirebase().then(resultado => {
+      if(resultado.length>0){
+        console.log(resultado)
+      this.periodos=resultado
+      }
+    });
   }
   agregarMember(){
     this.Teams.push(this.Team)
@@ -396,6 +428,9 @@ export class DialogBoxComponent implements OnInit {
   }
    
   }
+  SubmitHoras(){
+
+  }
   SubmitMateria() {
     
      let dniProfesor =this.local_data.profesorDNI
@@ -521,6 +556,7 @@ export class DialogBoxComponent implements OnInit {
     this.dialogRef.close({event:'Cancel'});
   }
   public checkError = (controlName: string, errorName: string) => {
+    console.log(controlName)
     switch (this.data.type) {
       case "usuario": {
         return this.formUsuario.controls[controlName].hasError(errorName);
@@ -539,6 +575,11 @@ export class DialogBoxComponent implements OnInit {
       break;
       case "periodo": {
         return this.formPeriodo.controls[controlName].hasError(errorName);
+        
+      }
+      break;
+      case "cargaHoras": {
+        return this.formHoras.controls[controlName].hasError(errorName);
         
       }
       break;

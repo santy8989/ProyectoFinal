@@ -31,6 +31,20 @@ export class CargaHorasService {
      return null
    }
   }
+  async GetCargaHorasAdminFirebase(){
+    try{
+      const query=  await this.Firestore.firestore.collection(`CargaHoras`).get()
+        this.CargaHoras =query.docs.map((doc:any)=> ({
+         id_firebase: doc.id, 
+          ...doc.data()
+        }));
+        console.log("query",this.CargaHoras)
+    return  this.CargaHoras
+    }catch(err){
+      console.log("error al obtener los cargas de horas",err)
+      return null
+    }
+   }
   async UpdateCargaHorasFirebase(CargaHoras:any){
     try{
       const query=  await this.Firestore.firestore.collection(`CargaHoras`).doc(CargaHoras.$key).update(

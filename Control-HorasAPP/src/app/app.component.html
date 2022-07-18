@@ -13,6 +13,8 @@
           <a *ngIf="tipo=='Admin' " mat-list-item routerLink="/carreras" class="item">Carreras</a>
           <a *ngIf="tipo=='Admin' || tipo=='Profesor'" mat-list-item routerLink="/materias" class="item">Materias</a>
           <a *ngIf="tipo=='Admin'" mat-list-item routerLink="/periodos" class="item">Periodos</a>
+          <a mat-list-item routerLink="/cargaHoras" class="item">Carga de horas</a>
+          
 
           <a mat-list-item (click)="salir()">Salir</a>
         </mat-nav-list>

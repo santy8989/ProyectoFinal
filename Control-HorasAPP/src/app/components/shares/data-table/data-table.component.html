@@ -6,19 +6,46 @@
     <input *ngIf="type=='carrera'" matInput (keyup)="applyFilter($event.target)" placeholder="Buscar {{type|titlecase }}es">
     <input *ngIf="type=='materia'" matInput (keyup)="applyFilter($event.target)" placeholder="Buscar {{type|titlecase }}s">
     <input *ngIf="type=='periodo'" matInput (keyup)="applyFilter($event.target)" placeholder="Buscar {{type|titlecase }}s">
+    <input *ngIf="type=='cargaHoras'" matInput (keyup)="applyFilter($event.target)" placeholder="Buscar horas cargadas">
   </mat-form-field>
 </div>
 
 <table mat-table [dataSource]="dataSource" matSort #empTbSort="matSort"
     class="mat-elevation-z8">
-    
-    
   <!-- Position Column -->
   <ng-container *ngIf="type=='usuario'" matColumnDef="DNI">
     <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
       DNI
     </th>
     <td mat-cell *matCellDef="let element"> {{element.DNI}} </td>
+  </ng-container>
+  
+  
+  <ng-container *ngIf="type=='cargaHoras'" matColumnDef="Materia">
+    <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+      Materia
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.materia}} </td>
+  </ng-container>
+  <ng-container *ngIf="type=='cargaHoras'" matColumnDef="periodo">
+    <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+      Periodo
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.periodo}} </td>
+  </ng-container>
+ 
+  <ng-container *ngIf="type=='cargaHoras'" matColumnDef="profesional">
+    <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+      Profesional
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.materia}} </td>
+  </ng-container>
+
+  <ng-container *ngIf="type=='cargaHoras'" matColumnDef="cargo">
+    <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+      Cargo
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.materia}} </td>
   </ng-container>
   <!-- Name Column -->
   <ng-container *ngIf="type!='periodo'" matColumnDef="nombre">
@@ -27,13 +54,13 @@
     </th>
     <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
   </ng-container>
-  <ng-container *ngIf="type=='periodo'" matColumnDef="Fecha_str">
+  <ng-container *ngIf="type=='periodo'  || type=='cargaHoras'" matColumnDef="Fecha_str">
     <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
       Fecha de inicio
     </th>
     <td mat-cell  *matCellDef="let element"> {{element.fecha_INI_formated}} </td>
   </ng-container>
-  <ng-container *ngIf="type=='periodo'" matColumnDef="Fecha_fn">
+  <ng-container *ngIf="type=='periodo'|| type=='cargaHoras'" matColumnDef="Fecha_fn">
     <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
       Fecha de fin
     </th>
@@ -57,13 +84,13 @@
     </th>
     <td mat-cell *matCellDef="let element"> {{element.profesorNya}} </td>
   </ng-container>
-  <ng-container *ngIf="type=='materia'"  matColumnDef="encargado">
+  <ng-container *ngIf="type=='materia' || type=='cargaHoras'"  matColumnDef="encargado">
     <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header >
       Encargado
     </th>
     <td mat-cell *matCellDef="let element"> {{element.encargadoNya}} </td>
   </ng-container>
-  <ng-container *ngIf="type=='materia'" matColumnDef="cantHoras">
+  <ng-container *ngIf="type=='materia' || type=='cargaHoras'" matColumnDef="cantHoras">
     <th mat-header-cell class="hide-arrow" *matHeaderCellDef mat-sort-header >
       Cant horas
     </th>
@@ -100,16 +127,17 @@
         <a *ngIf="type=='materia' && TipoUser=='Admin'"(click)="openDialog('Agregar',{})"><button   matTooltip="Crear una nueva materia"  matTooltipPosition="above" type="button" class="btn btn-success ">Nueva {{type}}</button></a>
         <a *ngIf="type=='periodo'"(click)="openDialog('Agregar',{})"><button   matTooltip="Crear un nuevo periodo"  matTooltipPosition="above" type="button" class="btn btn-success ">Nuevo {{type}}</button></a>
         <a *ngIf="type=='usuario'"(click)="openDialog('Agregar',{})"><button   matTooltip="Crear un nuevo usuario"  matTooltipPosition="above" type="button" class="btn btn-success ">Nuevo {{type}}</button></a>
-      </button>
+        <a *ngIf="type=='cargaHoras'"(click)="openDialog('Agregar',{})"><button   matTooltip="cargar Horas"  matTooltipPosition="above" type="button" class="btn btn-success ">Nueva carga</button></a>
+
+    </button>
     </th>
     <td mat-cell *matCellDef="let element">
       <!-- <a ><button type="button" class="btn btn-success m-1 "><mat-icon aria-hidden="false" >visibility</mat-icon></button></a> -->
           <a *ngIf="type!='periodo' && TipoUser=='Admin'" (click)="openDialog('Editar',element)" ><button type="button" class="btn btn-primary m-1 action"><mat-icon aria-hidden="false" >edit</mat-icon></button></a>
-        
           <a  *ngIf=" TipoUser=='Admin'"(click)="openDialog('Borrar',element)" ><button type="button" class="btn btn-danger m-1 action"><mat-icon aria-hidden="false" >delete</mat-icon></button></a>
           <a *ngIf="type=='materia' && CurrentDNI==element.profesorDNI"   matTooltip="Editar equipo"  (click)="openDialogTeam('Editar Equipo',element)" ><button type="button" class="btn btn-success m-1 action"><mat-icon aria-hidden="false" >people</mat-icon></button></a>   
         </td>
-          
+
   </ng-container>
 
   <!-- Symbol Column -->
@@ -129,6 +157,10 @@
   <ng-container *ngIf="type=='periodo'" matColumnDef="userColumns"> 
     <tr  mat-header-row *matHeaderRowDef="PeriodosDisplayedColumns"></tr>
     <tr  mat-row *matRowDef="let row; columns: PeriodosDisplayedColumns;"></tr>
+  </ng-container> 
+  <ng-container *ngIf="type=='cargaHoras'" matColumnDef="userColumns"> 
+    <tr  mat-header-row *matHeaderRowDef="HorasDisplayedColumns"></tr>
+    <tr  mat-row *matRowDef="let row; columns: HorasDisplayedColumns;"></tr>
   </ng-container> 
   
 </table>
