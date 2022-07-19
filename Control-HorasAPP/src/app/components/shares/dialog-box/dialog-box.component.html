@@ -130,14 +130,41 @@
                     </mat-select>  
                     <mat-error *ngIf="checkError('periodo', 'required')">Seleccione un periodo</mat-error>
                 </mat-form-field>
-                <mat-form-field >
-                  <mat-select formControlName="profesional" [(ngModel)]="local_data.profesional" required placeholder="Profesional" >
-                      <mat-option *ngFor="let profesional of profesionales" value={{profesional.id_firebase}}>
-                       {{profesional.nombre}}
+                <mat-form-field   >
+                  <mat-select formControlName="materia"  (selectionChange)="verificarProfesional()" [(ngModel)]="local_data.materia" required placeholder="Seleccione una materia" >
+                      <mat-option *ngFor="let materia of materiasByprofesional" value={{materia.nombre}}-{{materia.encargadoDNI}}-{{materia.encargadoNya}}>
+                       {{materia.nombre}}
                       </mat-option>
                     </mat-select>  
-                    <mat-error *ngIf="checkError('periodo', 'required')">Seleccione un Profesional</mat-error>
+                    <mat-error *ngIf="checkError('periodo', 'required')">Seleccione una materia</mat-error>
                 </mat-form-field>
+                <mat-form-field >
+                 
+                  <mat-select [disabled]="ProfesionalDisabled"  formControlName="profesional"  (selectionChange)="prefesionaSelected()" required placeholder="Profesional" >
+                    <div *ngFor="let profesional of  profesionales">
+                      <mat-option   value={{profesional.DNI_miembro}}-{{profesional.PuestoMiembro}}>
+                        {{profesional.NombreMiembro}} {{profesional.ApellidoMiembro}}
+                      </mat-option>
+                    </div>
+                    
+                    </mat-select>  
+                    <mat-error *ngIf="checkError('profesional', 'required')">Seleccione un Profesional</mat-error>
+                </mat-form-field>
+                <mat-form-field >
+                    <mat-select disabled="true"   [(ngModel)]="local_data.profesional"  placeholder="{{cargo}}"  >
+                    </mat-select>  
+                </mat-form-field>
+                <mat-form-field >
+                  <mat-select disabled="true"   [(ngModel)]="local_data.encargado"  placeholder="{{encargado}}"  >
+                  </mat-select>  
+              </mat-form-field>
+              <mat-form-field >
+                <input formControlName="cantHoras" required  [(ngModel)]="local_data.cantHoras" placeholder="Cantidad de horas" type="number"  matInput   >
+                <mat-error *ngIf="checkError('cantHoras', 'required')">Ingrese la cantidad de horas</mat-error>
+                
+              </mat-form-field>
+           
+              
                 
                 
                 

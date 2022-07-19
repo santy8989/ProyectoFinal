@@ -40,6 +40,7 @@ export class DialogBoxComponent implements OnInit {
   materias:any[]
   periodos:any[]
   profesionales:any[]
+  materiasByprofesional:any[]
   Users:any[]
   Teams:any[]
   TeamsToDelete:any[]
@@ -53,6 +54,8 @@ export class DialogBoxComponent implements OnInit {
   _id:string
   sigla:string;
   isValid:boolean;
+  cargo:string
+  encargado:string
   User:usuario={
     nombre:"none",
     apellido:"none",
@@ -91,6 +94,7 @@ export class DialogBoxComponent implements OnInit {
       status:"new"
 
   }
+  ProfesionalDisabled=true;
   
   array=["santi","juan","sig"]
 
@@ -114,9 +118,11 @@ export class DialogBoxComponent implements OnInit {
       console.log("niceeeeeee",data)
     this.local_data = {...data};
     
+    
     this.action = this.local_data.action;
     this.isValid=this.action=="Agregar" ? false : true 
     this.type= this.local_data.tipo
+    
     // console.log(this.local_data.DNI,"laskjdlkasjdlaksjd")
     this.DNI= this.local_data.DNI
     this.nombre= this.local_data.nombre
@@ -218,7 +224,8 @@ export class DialogBoxComponent implements OnInit {
       this.getTeams()
     }
     if(this.local_data.type=="cargaHoras"){
-      this.getPeriodos()
+      this.getPeriodos();
+      this.getUsers();
       this.getmateriaByProfesional()
     }
   }
@@ -230,10 +237,39 @@ export class DialogBoxComponent implements OnInit {
     });
     
   }
+  verificarProfesional(){
+    let materiaLocal=this.formHoras.controls['materia'].value.split('-')
+    this.encargado=materiaLocal[2]
+    // let =this.formHoras.controls[''].value
+    this._TeamMateriasService.GetTeamMembersListFirebase(materiaLocal[0]).then(resultado => {
+      if(resultado.length>0){
+        this.profesionales=resultado
+        this.ProfesionalDisabled=false
+        this.Team.NombreMiembro=atob(localStorage.getItem('Nombre'));
+        this.Team.ApellidoMiembro=atob(localStorage.getItem('Apellido'));
+        this.Team.DNI_miembro=localStorage.getItem('DNI');
+        this.Team.PuestoMiembro="titular";
+
+       this.profesionales.push(this.Team)
+      }else{
+        this.profesionales=[]
+        this.ProfesionalDisabled=false
+      }
+      
+    console.log("teste",this.profesionales)
+    });
+   
+  }
+  prefesionaSelected(){
+    console.log(this.formHoras.controls['profesional'].value)
+    let profesional=this.formHoras.controls['profesional'].value.split('-')
+    console.log(profesional)
+    this.cargo=profesional[1]
+  }
   getmateriaByProfesional(){
     this._MateriaService.GetMateriaListByprofesionalFirebase(this.CurrentDNI).then(resultado => {
       if(resultado.length>0){
-      this.profesionales=resultado
+      this.materiasByprofesional=resultado
       }
     });
     
@@ -552,11 +588,9 @@ export class DialogBoxComponent implements OnInit {
   }
    }
   closeDialog(){
-    console.log("cerrrado")
     this.dialogRef.close({event:'Cancel'});
   }
   public checkError = (controlName: string, errorName: string) => {
-    console.log(controlName)
     switch (this.data.type) {
       case "usuario": {
         return this.formUsuario.controls[controlName].hasError(errorName);
