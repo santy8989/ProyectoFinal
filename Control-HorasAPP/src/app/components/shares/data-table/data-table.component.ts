@@ -11,6 +11,7 @@ import { CarreraService } from 'src/app/services/carrera.service';
 import { MateriasService } from 'src/app/services/materias.service';
 import { PeriodosService } from 'src/app/services/periodos.service';
 import { CargaHorasService } from 'src/app/services/carga-horas.service';
+import { ThemePalette } from '@angular/material/core';
 
 //TODO
 // cuando se borran todos los registros de la tabla mostarar un estado por defecto o vacio de la tabla, y actualizar para que no quede uno siemre
@@ -31,11 +32,13 @@ export class DataTableComponent implements AfterViewInit, OnInit{
     $key:"void",
   }
   // @Input() pageSize = 6;
+  color: ThemePalette = 'primary';
+  HabilitarAprobado:boolean;
   UserDisplayedColumns: string[] = ['nombre', 'apellido', 'DNI', 'tipo','Acciones'];
   CarreraDisplayedColumns: string[] = ['nombre', 'Sigla','Acciones'];
   MateriasDisplayedColumns: string[] = ['nombre', 'carrera','profesor','encargado','cantHoras','Acciones'];
   PeriodosDisplayedColumns: string[] = ['Fecha_str','Fecha_fn','CantSemanas','Acciones'];
-  HorasDisplayedColumns: string[] = ['periodo','Materia','cantHoras','profesional','cargo','encargado','Acciones'];
+  HorasDisplayedColumns: string[] = ['periodo','Materia','cantHoras','profesional','cargo','encargado','aprobado','Acciones'];
   dataSource: MatTableDataSource < any > ;
 
   constructor(
@@ -52,6 +55,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   ngOnInit(): void {
     this.CurrentDNI=localStorage.getItem('DNI')
     this.TipoUser=atob(localStorage.getItem('Tipo'));
+    this.HabilitarAprobado=this.TipoUser!="Encargado"
     console.log("tipo",this.type)
     console.log(); 
     

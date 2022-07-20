@@ -17,6 +17,7 @@ import { periodo } from 'src/app/interfaces/periodo';
 import * as moment from 'moment';
 import { PeriodosService } from 'src/app/services/periodos.service';
 import { TeamMateriasService } from 'src/app/services/team-materias.service';
+import { CargaHorasService } from 'src/app/services/carga-horas.service';
 // import { EMLINK } from 'constants';
 
 @Component({
@@ -54,8 +55,17 @@ export class DialogBoxComponent implements OnInit {
   _id:string
   sigla:string;
   isValid:boolean;
-  cargo:string
-  encargado:string
+  cargo:string="seleccione un profesional"
+  encargado:string="seleccione una materia";
+  CargaHoras:any={ 
+  
+    periodo  :"",
+    materia  : "",
+    profesional  : "",
+    cantHoras:"",
+    cargo:""
+
+};
   User:usuario={
     nombre:"none",
     apellido:"none",
@@ -112,6 +122,7 @@ export class DialogBoxComponent implements OnInit {
     private _MateriaService:MateriasService,
     private _PeriodoService:PeriodosService,
     private _TeamMateriasService:TeamMateriasService,
+    private _cargaHoras:CargaHorasService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
       this.array[0]="banana"
     // this.array[1]="anana"
@@ -237,6 +248,7 @@ export class DialogBoxComponent implements OnInit {
     });
     
   }
+
   verificarProfesional(){
     let materiaLocal=this.formHoras.controls['materia'].value.split('-')
     this.encargado=materiaLocal[2]
@@ -465,6 +477,43 @@ export class DialogBoxComponent implements OnInit {
    
   }
   SubmitHoras(){
+    let materiaLocal=this.formHoras.controls['materia'].value.split('-')
+    let profesional=this.formHoras.controls['profesional'].value.split('-')
+    let periodoForm=this.formHoras.controls['periodo'].value.split('$')
+    
+    this.CargaHoras.periodo=periodoForm[0]
+    this.CargaHoras.periodoFormated=periodoForm[1]
+    this.CargaHoras.materia=materiaLocal[0]
+    this.CargaHoras.profesional=profesional[0]
+    this.CargaHoras.profesionalNya=profesional[2].replace('$', ' ')
+    // this.CargaHoras.profesionalNya
+    this.CargaHoras.cargo=profesional[1]
+    this.CargaHoras.encargadoDNI=materiaLocal[1]
+    this.CargaHoras.encargadoNya=materiaLocal[2]
+    this.CargaHoras.cantHoras=this.local_data.cantHoras
+    console.log(this.CargaHoras)
+    switch (this.action) {
+      case "Agregar": {
+            this._cargaHoras.AddCargaHorasFirebase(this.CargaHoras).then(response => {
+              this.dialogRef.close({
+                event: this.action,
+                data: this.local_data
+              });
+            }, error => {
+              console.error("tuve un Error" + error)
+            })
+          
+        
+      }
+      break;
+      case "Editar": {
+      }
+      break;
+      case "Borrar": {
+      }
+      break;
+  }
+
 
   }
   SubmitMateria() {

@@ -65,11 +65,16 @@ export class CargaHorasService {
     try{
       const query=  await this.Firestore.firestore.collection(`CargaHoras`).add(
        {
-        fecha_INI:   CargaHoras.fecha_INI.toString(),
-        fecha_INI_formated:     CargaHoras.fecha_INI_formated,
-        fecha_FIN:     CargaHoras.fecha_FIN.toString(),
-        fecha_FIN_formated:     CargaHoras.fecha_FIN_formated,
-        Cant_Semanas: CargaHoras.Cant_Semanas 
+        periodo:CargaHoras.periodo,
+        materia:CargaHoras.materia,
+        profesional:CargaHoras.profesional,
+        cargo:CargaHoras.cargo,
+        cantHoras:CargaHoras.cantHoras,
+        periodoFormated:CargaHoras.periodoFormated,
+        encargadoDNI:CargaHoras.encargadoDNI,
+        encargadoNya:CargaHoras.encargadoNya,
+        profesionalNya:CargaHoras.profesionalNya,
+        aprobado:false
        }
         );
     return  this.CargaHoras

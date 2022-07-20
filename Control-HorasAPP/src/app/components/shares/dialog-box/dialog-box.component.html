@@ -124,7 +124,7 @@
             <form *ngIf="data.type=='cargaHoras' " [formGroup]="formHoras"  (ngSubmit)="SubmitHoras()" class="example-form">
                 <mat-form-field >
                   <mat-select formControlName="periodo" [(ngModel)]="local_data.periodo" required placeholder="Periodo" >
-                      <mat-option *ngFor="let periodo of periodos" value={{periodo.id_firebase}}>
+                      <mat-option *ngFor="let periodo of periodos" value={{periodo.id_firebase}}${{periodo.fecha_INI_formated}}-{{periodo.fecha_FIN_formated}}>
                        {{periodo.fecha_INI_formated}}<b> - </b>  {{periodo.fecha_FIN_formated}}
                       </mat-option>
                     </mat-select>  
@@ -142,7 +142,7 @@
                  
                   <mat-select [disabled]="ProfesionalDisabled"  formControlName="profesional"  (selectionChange)="prefesionaSelected()" required placeholder="Profesional" >
                     <div *ngFor="let profesional of  profesionales">
-                      <mat-option   value={{profesional.DNI_miembro}}-{{profesional.PuestoMiembro}}>
+                      <mat-option   value={{profesional.DNI_miembro}}-{{profesional.PuestoMiembro}}-{{profesional.NombreMiembro}}${{profesional.ApellidoMiembro}}>
                         {{profesional.NombreMiembro}} {{profesional.ApellidoMiembro}}
                       </mat-option>
                     </div>

@@ -1,7 +1,12 @@
 
-table {
+.lilTabe {
     width: 90% !important;
     min-width: 700px;
+    margin:1rem auto;
+ }
+ .BigTable {
+    width: 100% !important;
+    min-width: 1400px;
     margin:1rem auto;
  }
 .filter{
