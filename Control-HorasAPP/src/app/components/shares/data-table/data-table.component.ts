@@ -12,6 +12,7 @@ import { MateriasService } from 'src/app/services/materias.service';
 import { PeriodosService } from 'src/app/services/periodos.service';
 import { CargaHorasService } from 'src/app/services/carga-horas.service';
 import { ThemePalette } from '@angular/material/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 //TODO
 // cuando se borran todos los registros de la tabla mostarar un estado por defecto o vacio de la tabla, y actualizar para que no quede uno siemre
@@ -33,12 +34,14 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   }
   // @Input() pageSize = 6;
   color: ThemePalette = 'primary';
+  // color2: ThemePalette = 'success';
   HabilitarAprobado:boolean;
+  HabilitarAbonado:boolean;
   UserDisplayedColumns: string[] = ['nombre', 'apellido', 'DNI', 'tipo','Acciones'];
   CarreraDisplayedColumns: string[] = ['nombre', 'Sigla','Acciones'];
   MateriasDisplayedColumns: string[] = ['nombre', 'carrera','profesor','encargado','cantHoras','Acciones'];
   PeriodosDisplayedColumns: string[] = ['Fecha_str','Fecha_fn','CantSemanas','Acciones'];
-  HorasDisplayedColumns: string[] = ['periodo','Materia','cantHoras','profesional','cargo','encargado','aprobado','Acciones'];
+  HorasDisplayedColumns: string[] = ['periodo','Materia','cantHoras','profesional','cargo','encargado','aprobado','Abonado','Acciones'];
   dataSource: MatTableDataSource < any > ;
 
   constructor(
@@ -49,6 +52,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
     private _PeriodoService:PeriodosService,
     private _MateriaService:MateriasService,
     private _CargaHoras:CargaHorasService,
+    private _snackBar: MatSnackBar,
     ) {}
 
   @ViewChild('empTbSort') empTbSort = new MatSort();
@@ -56,10 +60,43 @@ export class DataTableComponent implements AfterViewInit, OnInit{
     this.CurrentDNI=localStorage.getItem('DNI')
     this.TipoUser=atob(localStorage.getItem('Tipo'));
     this.HabilitarAprobado=this.TipoUser!="Encargado"
+    this.HabilitarAbonado=this.TipoUser!="Admin"
     console.log("tipo",this.type)
     console.log(); 
     
     // this.dataSource.sort = this.sort;
+  }
+  AprobadoChange(event:any,element:any){
+    console.log(event.checked,element.id_firebase)
+    this._CargaHoras.UpdateAprobadoCargaHorasFirebase(element.id_firebase,event.checked).then(resultado => {
+      this._snackBar.open("La entrada Fue aprobada con éxito", "X",{
+        horizontalPosition: "center",
+        verticalPosition: "top",
+        duration: 3000,
+        panelClass: ['snackBar'] 
+         });
+    }, error => {
+      console.error("tuve un Error" + error)
+
+    });
+   
+
+  }
+  AbonadoChange(event:any,element:any){
+    console.log(event.checked,element.id_firebase)
+    this._CargaHoras.UpdateAbonadoCargaHorasFirebase(element.id_firebase,event.checked).then(resultado => {
+      this._snackBar.open("La entrada fue marcada como abonada con éxito", "X",{
+        horizontalPosition: "center",
+        verticalPosition: "top",
+        duration: 3000,
+        panelClass: ['snackBar'] 
+         });
+    }, error => {
+      console.error("tuve un Error" + error)
+
+    });
+   
+
   }
   GetData(){
     switch (this.type) {
@@ -119,7 +156,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
           }
           break
           case "Profesor":{
-            this._CargaHoras.GetCargaHorasAdminFirebase().then(resultado => {
+            this._CargaHoras.GetCargaHorasProfeFirebase(this.CurrentDNI).then(resultado => {
               // console.log("hi",resultado)
               if(resultado.length>0){
                 this.dataSource = new MatTableDataSource(resultado);
@@ -129,7 +166,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
           }
           break
           case "Encargado":{
-            this._CargaHoras.GetCargaHorasAdminFirebase().then(resultado => {
+            this._CargaHoras.GetCargaHorasByEncargadoFirebase(this.CurrentDNI).then(resultado => {
               // console.log("hi",resultado)
               if(resultado.length>0){
                 this.dataSource = new MatTableDataSource(resultado);

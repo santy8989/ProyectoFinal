@@ -45,13 +45,52 @@ export class CargaHorasService {
       return null
     }
    }
-  async UpdateCargaHorasFirebase(CargaHoras:any){
+   async GetCargaHorasProfeFirebase(dni:string){
     try{
-      const query=  await this.Firestore.firestore.collection(`CargaHoras`).doc(CargaHoras.$key).update(
+      const query=  await this.Firestore.firestore.collection(`CargaHoras`).where("profesorDNI","==",dni).get()
+        this.CargaHoras =query.docs.map((doc:any)=> ({
+         id_firebase: doc.id, 
+          ...doc.data()
+        }));
+        console.log("query",this.CargaHoras)
+    return  this.CargaHoras
+    }catch(err){
+      console.log("error al obtener los cargas de horas",err)
+      return null
+    }
+   }
+   async GetCargaHorasByEncargadoFirebase(dni:string){
+    try{
+      const query=  await this.Firestore.firestore.collection(`CargaHoras`).where("encargadoDNI","==",dni).get()
+        this.CargaHoras =query.docs.map((doc:any)=> ({
+         id_firebase: doc.id, 
+          ...doc.data()
+        }));
+        console.log("query",this.CargaHoras)
+    return  this.CargaHoras
+    }catch(err){
+      console.log("error al obtener los cargas de horas",err)
+      return null
+    }
+   }
+  async UpdateAprobadoCargaHorasFirebase(id:string,aprobadoValue:boolean){
+    try{
+      const query=  await this.Firestore.firestore.collection(`CargaHoras`).doc(id).update(
        {
-        nombre: CargaHoras.nombre,
-        sigla: CargaHoras.sigla,
-        
+        aprobado:aprobadoValue
+       }
+        );
+    return  this.CargaHoras
+    }catch(err){
+      console.log("error al Editar",err)
+      return null
+    }
+   }
+   async UpdateAbonadoCargaHorasFirebase(id:string,abonadoValue:boolean){
+    try{
+      const query=  await this.Firestore.firestore.collection(`CargaHoras`).doc(id).update(
+       {
+        abonado:abonadoValue
        }
         );
     return  this.CargaHoras
@@ -74,7 +113,9 @@ export class CargaHorasService {
         encargadoDNI:CargaHoras.encargadoDNI,
         encargadoNya:CargaHoras.encargadoNya,
         profesionalNya:CargaHoras.profesionalNya,
-        aprobado:false
+        profesorDNI:CargaHoras.profesorDNI,
+        aprobado:false,
+        abonado:false
        }
         );
     return  this.CargaHoras

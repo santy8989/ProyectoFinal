@@ -55,6 +55,7 @@ const routes: Routes = [
     path: 'cargaHoras',
     component: CargaHorasComponent,
     pathMatch:'full',
+    canActivate: [LoginGuard]
   },
   
   

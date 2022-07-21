@@ -128,6 +128,7 @@ export class DialogBoxComponent implements OnInit {
     // this.array[1]="anana"
       console.log("niceeeeeee",data)
     this.local_data = {...data};
+    console.log("niceeeeeee",this.local_data)
     
     
     this.action = this.local_data.action;
@@ -257,16 +258,17 @@ export class DialogBoxComponent implements OnInit {
       if(resultado.length>0){
         this.profesionales=resultado
         this.ProfesionalDisabled=false
-        this.Team.NombreMiembro=atob(localStorage.getItem('Nombre'));
-        this.Team.ApellidoMiembro=atob(localStorage.getItem('Apellido'));
-        this.Team.DNI_miembro=localStorage.getItem('DNI');
-        this.Team.PuestoMiembro="titular";
-
-       this.profesionales.push(this.Team)
+       
       }else{
         this.profesionales=[]
         this.ProfesionalDisabled=false
       }
+      this.Team.NombreMiembro=atob(localStorage.getItem('Nombre'));
+      this.Team.ApellidoMiembro=atob(localStorage.getItem('Apellido'));
+      this.Team.DNI_miembro=localStorage.getItem('DNI');
+      this.Team.PuestoMiembro="titular";
+
+     this.profesionales.push(this.Team)
       
     console.log("teste",this.profesionales)
     });
@@ -480,7 +482,6 @@ export class DialogBoxComponent implements OnInit {
     let materiaLocal=this.formHoras.controls['materia'].value.split('-')
     let profesional=this.formHoras.controls['profesional'].value.split('-')
     let periodoForm=this.formHoras.controls['periodo'].value.split('$')
-    
     this.CargaHoras.periodo=periodoForm[0]
     this.CargaHoras.periodoFormated=periodoForm[1]
     this.CargaHoras.materia=materiaLocal[0]
@@ -490,6 +491,7 @@ export class DialogBoxComponent implements OnInit {
     this.CargaHoras.cargo=profesional[1]
     this.CargaHoras.encargadoDNI=materiaLocal[1]
     this.CargaHoras.encargadoNya=materiaLocal[2]
+    this.CargaHoras.profesorDNI=localStorage.getItem('DNI');
     this.CargaHoras.cantHoras=this.local_data.cantHoras
     console.log(this.CargaHoras)
     switch (this.action) {

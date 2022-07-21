@@ -2,16 +2,16 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-.snackBar{
+/* .snackBar{
      background-color: rgb(244, 67, 54);
-     /* background-color: white; */
+     background-color: white;
     color: white;
     font-weight: 500;
     font-size: x-large;
     align-items: center;
     left: 50px;
-    
-}
+     */
+/* } */
 .mat-simple-snackbar-action {
     color: white !important;
 }
@@ -20,8 +20,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     height: 100vh !important    ;
     width: 100%;
 }
-.snackBar{
+/* .snackBar{
     background-color: white;
     color: red;
-}
+} */
 
