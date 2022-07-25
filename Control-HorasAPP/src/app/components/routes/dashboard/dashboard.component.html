@@ -1,1 +1,14 @@
-<img src="../../../../assets/construccion.jpg" alt="" class="center">
+<img src="../../../../assets/fcee.footer.jpg" alt="" class="center">
+<br>
+<div class="mainSection">
+    <h1 class="titleas">Bienvenido al sistema de control de personal de la Facultad de ciencias económicas y empresariales</h1>
+
+    <div class="secondSection">
+      <!-- <h1 class="titleas">Bienvenido al sistema de control de personal de la Facultad de ciencia económicas y empresariales</h1> -->
+      
+      <p *ngIf="tipo=='Profesor'">Como usuario de tipo profesor dentro de este sistema tu responsabilidad será la de registrar el equipo de trabajo en cada materia en donde tu eres el profesor titular y realizar la carga de horas correspondientes a cada uno de los integrantes de tu equipo por periodo para que estos puedan recibir la liquidación correspondiente. Si hay materias en donde eres titular y no están en el sistema comunicate con <a  href="mailto:sec.economicas@uccuyo.edu.ar?subject=Sistema%20de%20control%20de%20horas&body=Soy%20{{nombre}}%20{{apellido}}%20usuario%20de%20tipo%20{{tipo}}%20del%20sistema%20de%20control%20de%20horas%20de%20horas%20de%20la%20universidad,%20mi%20DNI%20es:%20{{DNI}}%20y%20me%20comunico%20con%20usted%20por%20el%20siguiente%20motivo:%20">sec.economicas@uccuyo.edu.ar</a> para solucionar el problema</p>
+      <p *ngIf="tipo=='Encargado'">Como usuario de tipo encargado dentro de este sistema tu responsabilidad será la de verificar, aprobar o reprobar las cargas de horas realizadas por los usuarios de tipo profesor, solo verás las horas cargadas por los profesores que te tengan de encargado y podrás aprobarlas o reprobarlas según creas conveniente si ves usuarios de los que no deberías ser encargado o no ves usuarios de los que deberías ser encargado puedes usar el siguiente mail para comunicarte con administración <a  href="mailto:sec.economicas@uccuyo.edu.ar?subject=Sistema%20de%20control%20de%20horas&body=Soy%20{{nombre}}%20{{apellido}}%20usuario%20de%20tipo%20{{tipo}}%20del%20sistema%20de%20control%20de%20horas%20de%20horas%20de%20la%20universidad,%20mi%20DNI%20es:%20{{DNI}}%20y%20me%20comunico%20con%20usted%20por%20el%20siguiente%20motivo:%20">sec.economicas@uccuyo.edu.ar</a> y solucionar el problema</p>
+      <p *ngIf="tipo=='Admin'">Como usuario de tipo administrador dentro de este sistema tú responsabilidades serán: crear, editar y eliminar usuarios carreras, periodos y materias, también serás  el encargado de asignar materias a los usuarios de tipo profesor  y de asignarle un encargado a cada profesor, la única edición que podrás realizar en la carga de horas será para marcala como paga o impaga y ademas podrás descarga un reporte de horas. </p>
+
+    </div>
+  </div>

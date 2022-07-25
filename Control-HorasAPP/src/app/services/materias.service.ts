@@ -82,7 +82,6 @@ export class MateriasService {
     }
    }
    async AddMateriaFirebase(Materia:materia){
-     console.log("materia en service", Materia)
     try{
 
       const query=  await this.Firestore.firestore.collection(`materias`).add(
@@ -103,7 +102,6 @@ export class MateriasService {
     }
    }
    async DeleteMateriaFirebase(id:string){
-     console.log("naseh",id)
     try{
     return  this.Firestore.firestore.collection(`materias`).doc(id).delete()
     }catch(err){

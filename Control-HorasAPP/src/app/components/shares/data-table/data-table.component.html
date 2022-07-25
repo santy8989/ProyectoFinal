@@ -1,16 +1,29 @@
 
 
 <div class="filter">
-  <mat-form-field class="input-filter">
+  <mat-form-field  *ngIf="type!='cargaHoras'" class="input-filter">
     <input *ngIf="type=='usuario'" matInput (keyup)="applyFilter($event.target)" placeholder="Buscar {{type|titlecase }}s">
     <input *ngIf="type=='carrera'" matInput (keyup)="applyFilter($event.target)" placeholder="Buscar {{type|titlecase }}es">
     <input *ngIf="type=='materia'" matInput (keyup)="applyFilter($event.target)" placeholder="Buscar {{type|titlecase }}s">
     <input *ngIf="type=='periodo'" matInput (keyup)="applyFilter($event.target)" placeholder="Buscar {{type|titlecase }}s">
-    <input *ngIf="type=='cargaHoras'" matInput (keyup)="applyFilter($event.target)" placeholder="Buscar horas cargadas">
+    
+  </mat-form-field >
+  <div class="row">
+    <div class="col-10">
+  <mat-form-field  *ngIf="type=='cargaHoras'"class="input-filter ">
+    
+      <input matInput (keyup)="applyFilter($event.target)" placeholder="Buscar horas cargadas">  
+      
+    
   </mat-form-field>
+  </div>
+  <!-- <button >Primary</button> -->
+  <button   *ngIf="type=='cargaHoras'" mat-raised-button color="primary" class="col-2 downloadButton " [disabled]="DownloadDisabled" (click)="pdf()">Descargar  <mat-icon aria-hidden="false" >picture_as_pdf</mat-icon></button>
+</div>
+  
 </div>
 
-<table [ngClass]="type=='cargaHoras'?  'BigTable': 'lilTabe'"mat-table [dataSource]="dataSource" matSort #empTbSort="matSort"
+<table *ngIf=" ContentLoaded   ;else loading" [ngClass]="type=='cargaHoras'?  'BigTable': 'lilTabe'"mat-table [dataSource]="dataSource" matSort #empTbSort="matSort"
     class="mat-elevation-z8">
   <!-- Position Column -->
   <ng-container *ngIf="type=='usuario'" matColumnDef="DNI">
@@ -188,3 +201,8 @@
   </ng-container> 
   
 </table>
+<ng-template #loading>
+  <div >
+    <mat-spinner class="spiner"></mat-spinner>
+  </div>
+</ng-template>

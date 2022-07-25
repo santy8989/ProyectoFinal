@@ -1,7 +1,9 @@
 <!-- dialog-box.component.html -->
 
 <div mat-dialog-content>
-    <h1 mat-dialog-title class="text-center"> <strong>{{action}} {{data.type}}</strong></h1>
+    <h1 mat-dialog-title *ngIf="data.type!='cargaHoras'&& data.type!='team'" class="text-center"> <strong>{{action}} {{data.type}}</strong></h1>
+    <h1 mat-dialog-title *ngIf="data.type=='cargaHoras' "  class="text-center"> <strong>{{action}} Horas</strong></h1>
+    <h1 mat-dialog-title *ngIf="data.type=='team' "  class="text-center"> <strong>{{action}} </strong></h1>
     <ng-container >
       <ng-container *ngIf="action!='Borrar';else deleteview" >
         <form *ngIf="data.type=='usuario'" [formGroup]="formUsuario"  (ngSubmit)="SubmitUser()" class="example-form">
@@ -66,7 +68,7 @@
               <div class="dataRepeater" *ngIf=" ContentLoaded   ;else loading">
                 <div   class="item " *ngFor="let item of Teams; let i = index"  >
                   
-                  <p>{{item.status}}</p>
+                  <!-- <p>{{item.status}}</p> -->
               
                     <div class="row">
                       <div class="col">
@@ -140,23 +142,32 @@
                 </mat-form-field>
                 <mat-form-field >
                  
-                  <mat-select [disabled]="ProfesionalDisabled"  formControlName="profesional"  (selectionChange)="prefesionaSelected()" required placeholder="Profesional" >
+                  <mat-select  [disabled]="ProfesionalDisabled"  formControlName="profesional"  (selectionChange)="prefesionaSelected()" class="flecha" required placeholder="Profesional" >
                     <div *ngFor="let profesional of  profesionales">
                       <mat-option   value={{profesional.DNI_miembro}}-{{profesional.PuestoMiembro}}-{{profesional.NombreMiembro}}${{profesional.ApellidoMiembro}}>
                         {{profesional.NombreMiembro}} {{profesional.ApellidoMiembro}}
                       </mat-option>
                     </div>
                     
+                    
+
                     </mat-select>  
                     <mat-error *ngIf="checkError('profesional', 'required')">Seleccione un Profesional</mat-error>
                 </mat-form-field>
-                <mat-form-field >
-                    <mat-select disabled="true"   [(ngModel)]="local_data.profesional"  placeholder="{{cargo}}"  >
+                
+                <!-- <mat-form-field >
+                    <mat-select disabled="true"   [(ngModel)]="local_data.profesional"    >
                     </mat-select>  
+                </mat-form-field> -->
+                <mat-form-field>
+                  <input [readonly]="true" [(ngModel)]="local_data.profesional"  required  placeholder="Cargo" value="{{cargo}}" type="text" matInput >
                 </mat-form-field>
-                <mat-form-field >
+                <!-- <mat-form-field >
                   <mat-select disabled="true"   [(ngModel)]="local_data.encargadoDNI"  placeholder="{{encargado}}"  >
                   </mat-select>  
+              </mat-form-field> -->
+              <mat-form-field>
+                <input [readonly]="true" [(ngModel)]="local_data.encargadoDNI"   required  placeholder="Encargado" value="{{encargado}}" type="text" matInput >
               </mat-form-field>
               <mat-form-field >
                 <input formControlName="cantHoras" required  [(ngModel)]="local_data.cantHoras" placeholder="Cantidad de horas" type="number"  matInput   >
@@ -260,6 +271,9 @@
         </div> 
         <div *ngIf="data.type=='periodo'"  class="fs-5 parrafo">
           ¿Seguro quiere eliminar el periodo que va desde <b>{{local_data.fecha_INI_formated}}</b> hasta <b>{{local_data.fecha_FIN_formated}}</b> ? una vez eliminado no es posible recuperarla.
+        </div> 
+        <div *ngIf="data.type=='cargaHoras'"  class="fs-5 parrafo">
+          ¿Seguro quiere eliminar la hora seleccionada ? una vez eliminada no es posible recuperarla.
         </div> 
       </ng-template>
       

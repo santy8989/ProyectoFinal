@@ -25,7 +25,6 @@ export class PeriodosService {
         id_firebase: doc.id, 
          ...doc.data()
        }));
-       console.log("query",this.periodo)
    return  this.periodo
    }catch(err){
      console.log("error al obtener los periodos",err)
@@ -33,7 +32,6 @@ export class PeriodosService {
    }
   }
    async AddPeriodoFirebase(Periodo:periodo){
-     console.log(Periodo,"thisones")
     try{
       const query=  await this.Firestore.firestore.collection(`periodos`).add(
        {
@@ -52,7 +50,6 @@ export class PeriodosService {
     }
    }
    async DeletePeriodoFirebase(id:string){
-    console.log(id)
     try{
     return  this.Firestore.firestore.collection(`periodos`).doc(id).delete()
     }catch(err){

@@ -22,6 +22,9 @@ button{
     margin: 0 auto;
 
 }
+.flecha{
+    appearance:none;
+}
 .dataRepeater{
     height: 500px !important;
     overflow-y:visible;

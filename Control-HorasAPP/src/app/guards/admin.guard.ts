@@ -9,9 +9,7 @@ export class AdminGuard implements CanActivate {
   constructor(private router: Router){}
 
   canActivate() {
-    console.log("asdasd",localStorage.getItem('Tipo'))
     let tipo = atob(localStorage.getItem('Tipo'));
-    console.log("testeo guard",tipo)
     if (tipo != "Admin") {
         this.router.navigate(['/dashboard']);
         return false;

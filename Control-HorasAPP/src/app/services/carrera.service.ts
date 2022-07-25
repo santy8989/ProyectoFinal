@@ -22,8 +22,6 @@ export class CarreraService {
         id_firebase: doc.id, 
          ...doc.data()
        }));
-       console.log("query",this.carrera)
-       console.log("test",this.carrera)
   
    return  this.carrera
    }catch(err){
@@ -47,7 +45,6 @@ export class CarreraService {
     }
    }
    async AddCarreraFirebase(Carrera:carrera){
-     console.log(Carrera,"thisones")
     try{
       const query=  await this.Firestore.firestore.collection(`carreras`).add(
        {

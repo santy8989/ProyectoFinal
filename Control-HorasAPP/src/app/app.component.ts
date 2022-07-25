@@ -10,8 +10,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AppComponent implements OnDestroy,OnInit {
   mobileQuery: MediaQueryList;
   usuario:string
+  apellido:string
   tipo:any
-
+  UserFlag:boolean=false
   fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
 
   fillerContent = Array.from(
@@ -35,10 +36,12 @@ export class AppComponent implements OnDestroy,OnInit {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
   ngOnInit(): void {
-    this.usuario = localStorage.getItem('Nombre');
+    if(localStorage.getItem('Nombre')){
+      this.UserFlag=true
+    }
+    this.usuario = atob(localStorage.getItem('Nombre'));
+    this.apellido = atob(localStorage.getItem('Apellido'));
     this.tipo = atob(localStorage.getItem('Tipo'));
-    console.log(this.tipo)
-    // this.id = ;
 
   }
   salir(){
@@ -47,7 +50,6 @@ export class AppComponent implements OnDestroy,OnInit {
     localStorage.removeItem("Apellido");
     localStorage.removeItem("FlagLogged");
     location.reload()
-    // this.router2.navigate(["/login"])
   }
 
   

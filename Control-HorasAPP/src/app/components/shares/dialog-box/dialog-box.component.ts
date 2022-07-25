@@ -125,17 +125,14 @@ export class DialogBoxComponent implements OnInit {
     private _cargaHoras:CargaHorasService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
       this.array[0]="banana"
-    // this.array[1]="anana"
-      console.log("niceeeeeee",data)
+    
     this.local_data = {...data};
-    console.log("niceeeeeee",this.local_data)
     
     
     this.action = this.local_data.action;
     this.isValid=this.action=="Agregar" ? false : true 
     this.type= this.local_data.tipo
     
-    // console.log(this.local_data.DNI,"laskjdlkasjdlaksjd")
     this.DNI= this.local_data.DNI
     this.nombre= this.local_data.nombre
     this.apellido= this.local_data.apellido
@@ -146,7 +143,7 @@ export class DialogBoxComponent implements OnInit {
   }
   ngOnInit() {
     this.CurrentDNI=localStorage.getItem('DNI')
-    
+    console.log(this.data.type)
     this.formUsuario = new FormGroup({
       name : new FormControl(this.local_data.nombre, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
       apellido : new FormControl(this.local_data.apellido, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
@@ -270,14 +267,13 @@ export class DialogBoxComponent implements OnInit {
 
      this.profesionales.push(this.Team)
       
-    console.log("teste",this.profesionales)
+   
     });
    
   }
   prefesionaSelected(){
-    console.log(this.formHoras.controls['profesional'].value)
     let profesional=this.formHoras.controls['profesional'].value.split('-')
-    console.log(profesional)
+    
     this.cargo=profesional[1]
   }
   getmateriaByProfesional(){
@@ -291,7 +287,7 @@ export class DialogBoxComponent implements OnInit {
   getPeriodos(){
     this._PeriodoService.GetPeriodosListFirebase().then(resultado => {
       if(resultado.length>0){
-        console.log(resultado)
+       
       this.periodos=resultado
       }
     });
@@ -306,7 +302,6 @@ export class DialogBoxComponent implements OnInit {
       this.TeamsToDelete.push(this.Teams[index])
     }
     this.Teams.splice(index,1)
-    // console.log(this.TeamsToDelete)
   }
   getTeams(){
     this._TeamMateriasService.GetTeamMembersListFirebase(this.local_data.nombre).then(resultado => {
@@ -324,17 +319,14 @@ export class DialogBoxComponent implements OnInit {
         this.TeamsToDelete=[];
       }
       
-    console.log("teste",resultado)
     });
     
   }
   getUsers(){
     this._UserService.GetUserListFirebase().then(resultado => {
-      // console.log("hi",resultado)
       if(resultado.length>0){
         // this.dataSource = new MatTableDataSource(resultado);
       this.Users=resultado
-      // console.log("profes",this.Users)
         // this.dataSource.sort = this.empTbSort;
       }
     });
@@ -355,11 +347,18 @@ export class DialogBoxComponent implements OnInit {
               horizontalPosition: "center",
               verticalPosition: "top",
               duration: 3000,
-              panelClass: ['snackBar'] 
+              panelClass: ['Error'] 
                });
             }
           else{
             this._UserService.AddUserFirebase(this.User).then(response => {
+              this._snackBar.open("Usuario agregado con éxito", "X",{
+                horizontalPosition: "center",
+                verticalPosition: "top",
+                duration: 3000,
+                // panelClass:"test",
+                panelClass: ['Exito'] 
+                 });
               this.dialogRef.close({
                 event: this.action,
                 data: this.local_data
@@ -373,6 +372,13 @@ export class DialogBoxComponent implements OnInit {
       break;
       case "Editar": {
         this._UserService.UpdateUserFirebase(this.User).then(response => {
+          this._snackBar.open("Usuario editado con éxito", "X",{
+            horizontalPosition: "center",
+            verticalPosition: "top",
+            duration: 3000,
+            // panelClass:"test",
+            panelClass: ['Exito'] 
+             });
           this.dialogRef.close({
             event: this.action,
             data: this.local_data
@@ -385,6 +391,13 @@ export class DialogBoxComponent implements OnInit {
       break;
       case "Borrar": {
         this._UserService.DeleteUserFirebase(this.User.$key).then(response => {
+          this._snackBar.open("Usuario eliminado con éxito", "X",{
+            horizontalPosition: "center",
+            verticalPosition: "top",
+            duration: 3000,
+            // panelClass:"test",
+            panelClass: ['Exito'] 
+             });
           this.dialogRef.close({
             event: this.action,
             data: this.local_data
@@ -400,19 +413,15 @@ export class DialogBoxComponent implements OnInit {
   }
   SubmitTeam(){
     {
-    console.log(this.Teams)
-    console.log(this.local_data)
     this.Teams.forEach(element => {
       if(element.status=="new"){
         this._TeamMateriasService.AddTeamMembersListFirebase(element,this.local_data).then(response => {
-           console.log("created")
           }, error => {
             console.error("tuve un Error" + error)
           })
       }
       if(element.status=="old"){
         this._TeamMateriasService.UpdateTeamMembersListFirebase(element).then(response => {
-           console.log("edited")
           }, error => {
             console.error("tuve un Error" + error)
           })
@@ -421,11 +430,17 @@ export class DialogBoxComponent implements OnInit {
     });
     this.TeamsToDelete.forEach(element => {
       this._TeamMateriasService.DeleteTeamMembersListFirebase(element.id_firebase).then(response => {
-        console.log("deleted")
        }, error => {
          console.error("tuve un Error" + error)
        })
     });
+    this._snackBar.open("Equipo editado con éxito con éxito", "X",{
+      horizontalPosition: "center",
+      verticalPosition: "top",
+      duration: 3000,
+      // panelClass:"test",
+      panelClass: ['Exito'] 
+       });
     this.dialogRef.close({
       event: this.action,
       data: this.local_data
@@ -441,6 +456,13 @@ export class DialogBoxComponent implements OnInit {
     switch (this.action) {
       case "Agregar": {
         this._CarreraService.AddCarreraFirebase(this.Facultad).then(response => {
+          this._snackBar.open("Carrera agregada con éxito", "X",{
+            horizontalPosition: "center",
+            verticalPosition: "top",
+            duration: 3000,
+            // panelClass:"test",
+            panelClass: ['Exito'] 
+             });
           this.dialogRef.close({
             event: this.action,
             data: this.local_data
@@ -453,6 +475,13 @@ export class DialogBoxComponent implements OnInit {
       break;
       case "Editar": {
         this._CarreraService.UpdateCarreraFirebase(this.Facultad).then(response => {
+          this._snackBar.open("Carrera editada con éxito", "X",{
+            horizontalPosition: "center",
+            verticalPosition: "top",
+            duration: 3000,
+            // panelClass:"test",
+            panelClass: ['Exito'] 
+             });
           this.dialogRef.close({
             event: this.action,
             data: this.local_data
@@ -465,6 +494,14 @@ export class DialogBoxComponent implements OnInit {
       break;
       case "Borrar": {
         this._CarreraService.DeleteCarreraFirebase(this.Facultad.$key).then(response => {
+          this._snackBar.open("Carrera eliminada con éxito", "X",{
+            horizontalPosition: "center",
+            verticalPosition: "top",
+            duration: 3000,
+            // panelClass:"test",
+            panelClass: ['Exito'] 
+             });
+            //  this.getData
           this.dialogRef.close({
             event: this.action,
             data: this.local_data
@@ -486,6 +523,7 @@ export class DialogBoxComponent implements OnInit {
     this.CargaHoras.periodoFormated=periodoForm[1]
     this.CargaHoras.materia=materiaLocal[0]
     this.CargaHoras.profesional=profesional[0]
+    if(profesional[2])
     this.CargaHoras.profesionalNya=profesional[2].replace('$', ' ')
     // this.CargaHoras.profesionalNya
     this.CargaHoras.cargo=profesional[1]
@@ -493,10 +531,16 @@ export class DialogBoxComponent implements OnInit {
     this.CargaHoras.encargadoNya=materiaLocal[2]
     this.CargaHoras.profesorDNI=localStorage.getItem('DNI');
     this.CargaHoras.cantHoras=this.local_data.cantHoras
-    console.log(this.CargaHoras)
     switch (this.action) {
       case "Agregar": {
             this._cargaHoras.AddCargaHorasFirebase(this.CargaHoras).then(response => {
+              this._snackBar.open("Horas agregadas con éxito", "X",{
+                horizontalPosition: "center",
+                verticalPosition: "top",
+                duration: 3000,
+                // panelClass:"test",
+                panelClass: ['Exito'] 
+                 });
               this.dialogRef.close({
                 event: this.action,
                 data: this.local_data
@@ -512,6 +556,22 @@ export class DialogBoxComponent implements OnInit {
       }
       break;
       case "Borrar": {
+        this._cargaHoras.DeleteCargaHorasFirebase(this.local_data.id_firebase).then(response => {
+          this._snackBar.open("Horas eliminadas con éxito", "X",{
+            horizontalPosition: "center",
+            verticalPosition: "top",
+            duration: 3000,
+            // panelClass:"test",
+            panelClass: ['Exito'] 
+             });
+          this.dialogRef.close({
+            event: this.action,
+            data: this.local_data
+          });
+        }, error => {
+          console.error("tuve un Error" + error)
+        })
+      
       }
       break;
   }
@@ -550,11 +610,18 @@ export class DialogBoxComponent implements OnInit {
               horizontalPosition: "center",
               verticalPosition: "top",
               duration: 3000,
-              panelClass: ['snackBar'] 
+              panelClass: ['Error'] 
                });
             }
           else{
             this._MateriaService.AddMateriaFirebase(this.Materia).then(response => {
+              this._snackBar.open("Materia agregada con éxito", "X",{
+                horizontalPosition: "center",
+                verticalPosition: "top",
+                duration: 3000,
+                // panelClass:"test",
+                panelClass: ['Exito'] 
+                 });
               this.dialogRef.close({
                 event: this.action,
                 data: this.local_data
@@ -571,6 +638,13 @@ export class DialogBoxComponent implements OnInit {
       break;
       case "Editar": {
         this._MateriaService.UpdateMateriaFirebase(this.Materia).then(response => {
+          this._snackBar.open("Materia editada con éxito", "X",{
+            horizontalPosition: "center",
+            verticalPosition: "top",
+            duration: 3000,
+            // panelClass:"test",
+            panelClass: ['Exito'] 
+             });
           this.dialogRef.close({
             event: this.action,
             data: this.local_data
@@ -583,7 +657,13 @@ export class DialogBoxComponent implements OnInit {
       break;
       case "Borrar": {
         this._MateriaService.DeleteMateriaFirebase(this.Materia.$key).then(response => {
-          console.log("si")
+          this._snackBar.open("Materia eliminada con éxito", "X",{
+            horizontalPosition: "center",
+            verticalPosition: "top",
+            duration: 3000,
+            // panelClass:"test",
+            panelClass: ['Exito'] 
+             });
           this.dialogRef.close({
             event: this.action,
             data: this.local_data
@@ -598,7 +678,7 @@ export class DialogBoxComponent implements OnInit {
    
   }
   SubmitPeriodo() {
-    console.log("LOCAL DATE IN SUBMIT PERIOD FUNCTION",this.local_data)
+  
     this.Periodo.$key=this.local_data.id_firebase
     this.Periodo.Cant_Semanas=this.local_data.Cant_Semanas
     this.Periodo.fecha_FIN=this.local_data.fecha_FIN
@@ -607,11 +687,17 @@ export class DialogBoxComponent implements OnInit {
     this.Periodo.fecha_INI=this.local_data.fecha_INI
     let milisecond_ini:number=Date.parse(this.Periodo.fecha_INI)
     this.Periodo.fecha_INI_formated=moment(milisecond_ini).format("DD/MM/YYYY")
-  //  this.local_data.fecha_INI="asd"
-    // console.log("periodosd",this.local_data.fecha_INI)
+
     switch (this.action) {
       case "Agregar": {
         this._PeriodoService.AddPeriodoFirebase(this.Periodo).then(response => {
+          this._snackBar.open("Periodo agregado con éxito", "X",{
+            horizontalPosition: "center",
+            verticalPosition: "top",
+            duration: 3000,
+            // panelClass:"test",
+            panelClass: ['Exito'] 
+             });
           this.dialogRef.close({
             event: this.action,
             data: this.local_data
@@ -625,7 +711,13 @@ export class DialogBoxComponent implements OnInit {
     
       case "Borrar": {
         this._PeriodoService.DeletePeriodoFirebase(this.Periodo.$key).then(response => {
-          console.log("si")
+          this._snackBar.open("Periodo eliminado con éxito", "X",{
+            horizontalPosition: "center",
+            verticalPosition: "top",
+            duration: 3000,
+            // panelClass:"test",
+            panelClass: ['Exito'] 
+             });
           this.dialogRef.close({
             event: this.action,
             data: this.local_data

@@ -18,7 +18,6 @@ export class TeamMateriasService {
         id_firebase: doc.id, 
          ...doc.data()
        }));
-       console.log("query",this.TeamMateria)
    return  this.TeamMateria
    }catch(err){
      console.log("error al obtener los miembros del equipo",err)
@@ -26,7 +25,6 @@ export class TeamMateriasService {
    }
   }
   async AddTeamMembersListFirebase(TeamMember:any,local_data:any){
-    console.log(TeamMember,"creating",local_data)
    try{
      const query=  await this.Firestore.firestore.collection(`MemberTeamMateria`).add(
       {
@@ -49,7 +47,6 @@ export class TeamMateriasService {
    }
   }
   async UpdateTeamMembersListFirebase(TeamMember:any){
-    console.log(TeamMember.ProfesorNya,"updating")
     try{
       const query=  await this.Firestore.firestore.collection(`MemberTeamMateria`).doc(TeamMember.id_firebase).update(
        {
@@ -71,7 +68,6 @@ export class TeamMateriasService {
     }
    }
    async DeleteTeamMembersListFirebase(id:string){
-    // console.log("naseh",id)
    try{
    return  this.Firestore.firestore.collection(`MemberTeamMateria`).doc(id).delete()
    }catch(err){

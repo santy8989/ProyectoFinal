@@ -24,7 +24,6 @@ export class CargaHorasService {
         id_firebase: doc.id, 
          ...doc.data()
        }));
-       console.log("query",this.CargaHoras)
    return  this.CargaHoras
    }catch(err){
      console.log("error al obtener los cargas de horas",err)
@@ -38,7 +37,6 @@ export class CargaHorasService {
          id_firebase: doc.id, 
           ...doc.data()
         }));
-        console.log("query",this.CargaHoras)
     return  this.CargaHoras
     }catch(err){
       console.log("error al obtener los cargas de horas",err)
@@ -52,7 +50,6 @@ export class CargaHorasService {
          id_firebase: doc.id, 
           ...doc.data()
         }));
-        console.log("query",this.CargaHoras)
     return  this.CargaHoras
     }catch(err){
       console.log("error al obtener los cargas de horas",err)
@@ -66,7 +63,6 @@ export class CargaHorasService {
          id_firebase: doc.id, 
           ...doc.data()
         }));
-        console.log("query",this.CargaHoras)
     return  this.CargaHoras
     }catch(err){
       console.log("error al obtener los cargas de horas",err)
@@ -100,7 +96,6 @@ export class CargaHorasService {
     }
    }
    async AddCargaHorasFirebase(CargaHoras:any){
-     console.log(CargaHoras,"thisones")
     try{
       const query=  await this.Firestore.firestore.collection(`CargaHoras`).add(
        {
@@ -125,7 +120,6 @@ export class CargaHorasService {
     }
    }
    async DeleteCargaHorasFirebase(id:string){
-    console.log(id)
     try{
     return  this.Firestore.firestore.collection(`CargaHoras`).doc(id).delete()
     }catch(err){

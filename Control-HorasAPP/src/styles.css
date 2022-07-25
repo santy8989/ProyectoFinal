@@ -20,8 +20,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     height: 100vh !important    ;
     width: 100%;
 }
-/* .snackBar{
-    background-color: white;
-    color: red;
-} */
+.Exito{
+    color:white;
+    background-color: #22bb33 !important;
+}
+.Error{
+    color:white;
+    background-color: #ff0e0e !important;
+}
+.spiner{
+    margin: 0 auto;
 
+}

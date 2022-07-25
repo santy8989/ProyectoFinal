@@ -13,6 +13,9 @@ import { PeriodosService } from 'src/app/services/periodos.service';
 import { CargaHorasService } from 'src/app/services/carga-horas.service';
 import { ThemePalette } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {PdfMakeWrapper, Table} from 'pdfmake-wrapper';
+import * as pdfFonts from "pdfmake/build/vfs_fonts"; // fonts provided for pdfmake
+PdfMakeWrapper.setFonts(pdfFonts);
 
 //TODO
 // cuando se borran todos los registros de la tabla mostarar un estado por defecto o vacio de la tabla, y actualizar para que no quede uno siemre
@@ -34,6 +37,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   }
   // @Input() pageSize = 6;
   color: ThemePalette = 'primary';
+  ContentLoaded:boolean=false;
   // color2: ThemePalette = 'success';
   HabilitarAprobado:boolean;
   HabilitarAbonado:boolean;
@@ -43,6 +47,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   PeriodosDisplayedColumns: string[] = ['Fecha_str','Fecha_fn','CantSemanas','Acciones'];
   HorasDisplayedColumns: string[] = ['periodo','Materia','cantHoras','profesional','cargo','encargado','aprobado','Abonado','Acciones'];
   dataSource: MatTableDataSource < any > ;
+  DownloadDisabled:boolean=true;
 
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
@@ -61,36 +66,86 @@ export class DataTableComponent implements AfterViewInit, OnInit{
     this.TipoUser=atob(localStorage.getItem('Tipo'));
     this.HabilitarAprobado=this.TipoUser!="Encargado"
     this.HabilitarAbonado=this.TipoUser!="Admin"
-    console.log("tipo",this.type)
-    console.log(); 
-    
-    // this.dataSource.sort = this.sort;
+  }
+  async pdf(){
+    const pdf:PdfMakeWrapper= new PdfMakeWrapper()
+    pdf.pageSize({
+      width: 1200.28,
+      height: 'auto'
+  });
+    const data:any=this.dataSource
+    pdf.add(this.createTable(this.dataSource));
+    pdf.create().download()
+  }
+  createTable(data: MatTableDataSource < any > ):any{
+    [{}]
+    return new Table([
+      ["Periodo","Materia","Profesional","DNI","Cargo","Total de horas","Estado","Encargado","Estado de pago"],
+      ...this.ExtractData(data)
+    ]).widths([150,100,100,80,150,100,150,100,100])
+    .layout({
+      fillColor: (rowIndex:number, node:any, columnIndex:number)=>{
+        return rowIndex===0?'#CCCCCC':'';
+      }
+    }).end
+  }
+  ExtractData(data: MatTableDataSource < any >){
+    return data.filteredData.map(row=>[row.periodoFormated,row.materia,row.profesionalNya,row.profesional,row.cargo,row.cantHoras,row.aprobado===true?"Aprobado":"Pendiente de aprobación",row.encargadoNya,row.abonado===true?"Realizado":"No realizado"]);
   }
   AprobadoChange(event:any,element:any){
-    console.log(event.checked,element.id_firebase)
+    this.ContentLoaded=false
     this._CargaHoras.UpdateAprobadoCargaHorasFirebase(element.id_firebase,event.checked).then(resultado => {
-      this._snackBar.open("La entrada Fue aprobada con éxito", "X",{
-        horizontalPosition: "center",
-        verticalPosition: "top",
-        duration: 3000,
-        panelClass: ['snackBar'] 
-         });
+      if(!event.checked)
+      {
+        this._snackBar.open("La entrada fue reprobada con éxito", "X",{
+          horizontalPosition: "center",
+          verticalPosition: "top",
+          duration: 3000,
+          // panelClass:"test",
+          panelClass: ['Exito'] 
+           });
+      }else{
+        this._snackBar.open("La entrada fue aprobada con éxito", "X",{
+          horizontalPosition: "center",
+          verticalPosition: "top",
+          duration: 3000,
+          // panelClass:"test",
+          panelClass: ['Exito'] 
+           });
+      }
+      this.GetData()
+
     }, error => {
       console.error("tuve un Error" + error)
 
     });
-   
-
   }
   AbonadoChange(event:any,element:any){
-    console.log(event.checked,element.id_firebase)
-    this._CargaHoras.UpdateAbonadoCargaHorasFirebase(element.id_firebase,event.checked).then(resultado => {
-      this._snackBar.open("La entrada fue marcada como abonada con éxito", "X",{
-        horizontalPosition: "center",
-        verticalPosition: "top",
-        duration: 3000,
-        panelClass: ['snackBar'] 
-         });
+    let evento=event
+    let elemento=element
+    this.ContentLoaded=false
+    this._CargaHoras.UpdateAbonadoCargaHorasFirebase(elemento.id_firebase,evento.checked).then(resultado => {
+      if(!evento.checked)
+      {
+        this._snackBar.open("La entrada fue marcada como impaga con éxito", "X",{
+          horizontalPosition: "center",
+          verticalPosition: "top",
+          duration: 3000,
+          // panelClass:"test",
+          panelClass: ['Exito'] 
+           });
+      }else{
+        this._snackBar.open("La entrada fue marcada como paga con éxito", "X",{
+          horizontalPosition: "center",
+          verticalPosition: "top",
+          duration: 3000,
+          // panelClass:"test",
+          panelClass: ['Exito'] 
+           });
+      }
+      this.GetData()
+      
+        
     }, error => {
       console.error("tuve un Error" + error)
 
@@ -102,44 +157,45 @@ export class DataTableComponent implements AfterViewInit, OnInit{
     switch (this.type) {
       case "usuario": {
         this._UserService.GetUserListFirebase().then(resultado => {
-          console.log("hi",resultado)
-          if(resultado.length>0){
             this.dataSource = new MatTableDataSource(resultado);
             this.dataSource.sort = this.empTbSort;
-          }else{
-            console.log("Revise el Número de DNI")
-          }
+            this.ContentLoaded=true
+          
         });
       }
       break;
       case "carrera": {
         this._CarreraServoce.GetCarreraListFirebase().then(resultado => {
-          // console.log("hi",resultado)
-          if(resultado.length>0){
+          
             this.dataSource = new MatTableDataSource(resultado);
             this.dataSource.sort = this.empTbSort;
-          }
+          
+          this.ContentLoaded=true
+
         });
       }
       break;
       case "materia": {
         this._MateriaService.GetMateriaListFirebase().then(resultado => {
-          // console.log("hi",resultado)
-          if(resultado.length>0){
+          
             this.dataSource = new MatTableDataSource(resultado);
             this.dataSource.sort = this.empTbSort;
-          }
+          
+          this.ContentLoaded=true
+
         });
        
       }
       break;
       case "periodo": {
         this._PeriodoService.GetPeriodosListFirebase().then(resultado => {
-          // console.log("hi",resultado)
+          
           if(resultado.length>0){
             this.dataSource = new MatTableDataSource(resultado);
             this.dataSource.sort = this.empTbSort;
           }
+          this.ContentLoaded=true
+
         });
       }
       break;
@@ -147,31 +203,41 @@ export class DataTableComponent implements AfterViewInit, OnInit{
         switch(this.TipoUser){
           case "Admin":{
             this._CargaHoras.GetCargaHorasAdminFirebase().then(resultado => {
-              // console.log("hi",resultado)
-              if(resultado.length>0){
+              
+             
                 this.dataSource = new MatTableDataSource(resultado);
                 this.dataSource.sort = this.empTbSort;
-              }
+                this.DownloadDisabled=false
+
+              
+              this.ContentLoaded=true
+
             });
           }
           break
           case "Profesor":{
             this._CargaHoras.GetCargaHorasProfeFirebase(this.CurrentDNI).then(resultado => {
-              // console.log("hi",resultado)
-              if(resultado.length>0){
+            
+             
                 this.dataSource = new MatTableDataSource(resultado);
                 this.dataSource.sort = this.empTbSort;
-              }
+                this.DownloadDisabled=false
+
+              
+              this.ContentLoaded=true
+
             });
           }
           break
           case "Encargado":{
             this._CargaHoras.GetCargaHorasByEncargadoFirebase(this.CurrentDNI).then(resultado => {
-              // console.log("hi",resultado)
-              if(resultado.length>0){
+              
+             
                 this.dataSource = new MatTableDataSource(resultado);
                 this.dataSource.sort = this.empTbSort;
-              }
+                this.DownloadDisabled=false
+              
+              this.ContentLoaded=true
             });
           }
           break
@@ -184,7 +250,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
    this.GetData();
 }
   openDialog(action:string, obj:any) {
-    console.log(action)
+    
     obj.action = action;
     obj.type=this.type
     const dialogRef = this.dialog.open(DialogBoxComponent, {
@@ -201,7 +267,6 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   openDialogTeam(action:string, obj:any) {
     obj.action = action;
     obj.type="team"
-    console.log(obj)
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '500px',
       data: obj,
@@ -224,7 +289,6 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   }
   
   applyFilter(filterValue: any) {
-    console.log(filterValue.value)
     this.dataSource.filter = filterValue.value.trim().toLowerCase();
 
     

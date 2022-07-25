@@ -2,3 +2,19 @@
     display: block;
     margin: 0px auto;
 }
+.mainSection{
+    width: 100%;
+    text-align: center;
+}
+.secondSection{
+    display: block;
+    width: 50%;
+    margin: 0px auto;
+    font-size: large;
+    line-height: 25px;
+}
+.titleas{
+    /* background-color:red !important; */
+    margin-bottom: 50px;
+    font-size:xx-large
+}
