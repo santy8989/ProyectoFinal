@@ -10,7 +10,6 @@ export class LoginGuard implements CanActivate {
 
   canActivate() {
     let usuario = localStorage.getItem('Nombre');
-    // console.log("testeo guard",usuario)
     if (usuario == null) {
         this.router.navigate(['/login']);
         return false;

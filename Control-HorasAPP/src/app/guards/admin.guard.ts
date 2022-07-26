@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
 })
 export class AdminGuard implements CanActivate {
   constructor(private router: Router){}
-
   canActivate() {
     let tipo = atob(localStorage.getItem('Tipo'));
     if (tipo != "Admin") {

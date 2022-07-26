@@ -52,7 +52,7 @@ export class CargaHorasService {
         }));
     return  this.CargaHoras
     }catch(err){
-      console.log("error al obtener los cargas de horas",err)
+      console.log("error al obtener las  horas",err)
       return null
     }
    }
@@ -65,7 +65,7 @@ export class CargaHorasService {
         }));
     return  this.CargaHoras
     }catch(err){
-      console.log("error al obtener los cargas de horas",err)
+      console.log("error al obtener las horas",err)
       return null
     }
    }

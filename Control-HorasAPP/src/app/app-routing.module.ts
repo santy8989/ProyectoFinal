@@ -11,10 +11,7 @@ import { PeriodosComponent } from './components/routes/periodos/periodos.compone
 import { ProfeGuard } from './guards/profe.guard';
 import { CargaHorasComponent } from './components/routes/carga-horas/carga-horas.component';
 
-
-
 const routes: Routes = [
- 
   {
     path: 'login',
     component: LoginComponent,
@@ -57,9 +54,6 @@ const routes: Routes = [
     pathMatch:'full',
     canActivate: [LoginGuard]
   },
-  
-  
-  
      {
     path: '**',
     redirectTo:'dashboard',
