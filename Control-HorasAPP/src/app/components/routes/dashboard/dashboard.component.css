@@ -1,6 +1,7 @@
 .center{
     display: block;
     margin: 0px auto;
+    max-width: 100%
 }
 .mainSection{
     width: 100%;
