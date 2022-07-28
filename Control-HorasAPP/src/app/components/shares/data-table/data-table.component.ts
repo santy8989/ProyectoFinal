@@ -1,5 +1,5 @@
 import {LiveAnnouncer} from '@angular/cdk/a11y';
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, HostListener, Input, OnInit, ViewChild} from '@angular/core';
 import {MatSort, Sort} from '@angular/material/sort';
 import { MatDialog , MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
@@ -35,7 +35,9 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   Usuario:any={
     $key:"void",
   }
+  lilButton=false
   // @Input() pageSize = 6;
+  public innerWidth: any;
   color: ThemePalette = 'primary';
   ContentLoaded:boolean=false;
   // color2: ThemePalette = 'success';
@@ -61,7 +63,26 @@ export class DataTableComponent implements AfterViewInit, OnInit{
     ) {}
 
   @ViewChild('empTbSort') empTbSort = new MatSort();
+  @HostListener('window:resize', ['$event'])
+onResize(event:any) {
+  this.innerWidth = window.innerWidth;
+  if (this.innerWidth<1400){
+this.lilButton=true
+  }
+  else{
+    this.lilButton=false
+  }
+  console.log(this.innerWidth)
+}
+  
   ngOnInit(): void {
+    this.innerWidth = window.innerWidth;
+    if (this.innerWidth<1400){
+      this.lilButton=true
+        }
+        else{
+          this.lilButton=false
+        }
     this.CurrentDNI=localStorage.getItem('DNI')
     this.TipoUser=atob(localStorage.getItem('Tipo'));
     this.HabilitarAprobado=this.TipoUser!="Encargado"

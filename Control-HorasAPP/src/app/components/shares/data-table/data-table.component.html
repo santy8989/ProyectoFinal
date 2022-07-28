@@ -140,7 +140,7 @@
   </ng-container>
 
   <ng-container *ngIf="type=='carrera'" matColumnDef="Sigla">
-    <th mat-header-cell class="hide-arrow" *matHeaderCellDef  sortActionDescription="Sort by name">
+    <th mat-header-cell class="hide-arrow" *matHeaderCellDef   sortActionDescription="Sort by name">
       Sigla
     </th>
     <td mat-cell *matCellDef="let element"> {{element.sigla}} </td>
@@ -157,22 +157,28 @@
     </ng-container>
   </ng-container>
   <ng-container matColumnDef="Acciones">
-    <th   mat-header-cell *matHeaderCellDef>
-      <button mat-icon-button color="primary" class="acciones"  >
-        <a *ngIf="type=='carrera'"(click)="openDialog('Agregar',{})"><button   matTooltip="Crear una nueva facultad"  matTooltipPosition="above" type="button" class="btn btn-success ">Nueva {{type}}</button></a>
+    <th   mat-header-cell *matHeaderCellDef  class="center">
+      <button  *ngIf="!lilButton" mat-icon-button color="primary" class="acciones"  >
+        <a *ngIf="type=='carrera' "(click)="openDialog('Agregar',{})"><button   matTooltip="Crear una nueva facultad"  matTooltipPosition="above" type="button" class="btn btn-success ">Nueva {{type}}</button></a>
+        <!-- <a *ngIf="type=='carrera' && lilButton"(click)="openDialog('Agregar',{})"><button   matTooltip="Crear una nueva facultad"  matTooltipPosition="above" type="button" class="btn btn-success "><mat-icon>add</mat-icon></button></a> -->
+       
         <a *ngIf="type=='materia' && TipoUser=='Admin'"(click)="openDialog('Agregar',{})"><button   matTooltip="Crear una nueva materia"  matTooltipPosition="above" type="button" class="btn btn-success ">Nueva {{type}}</button></a>
         <a *ngIf="type=='periodo'"(click)="openDialog('Agregar',{})"><button   matTooltip="Crear un nuevo periodo"  matTooltipPosition="above" type="button" class="btn btn-success ">Nuevo {{type}}</button></a>
         <a *ngIf="type=='usuario'"(click)="openDialog('Agregar',{})"><button   matTooltip="Crear un nuevo usuario"  matTooltipPosition="above" type="button" class="btn btn-success ">Nuevo {{type}}</button></a>
         <a *ngIf="type=='cargaHoras'&& TipoUser=='Profesor'"(click)="openDialog('Agregar',{})"><button   matTooltip="cargar Horas"  matTooltipPosition="above" type="button" class="btn btn-success ">Nueva carga</button></a>
 
     </button>
+    <button *ngIf="lilButton" mat-fab class="lilButton" matTooltip="Agregar" (click)="openDialog('Agregar',{})" aria-label="Example icon button with a bookmark icon">
+    <mat-icon>add</mat-icon>
+    </button>
+
     </th>
-    <td mat-cell *matCellDef="let element">
+    <td mat-cell *matCellDef="let element" class="center">
       <!-- <a ><button type="button" class="btn btn-success m-1 "><mat-icon aria-hidden="false" >visibility</mat-icon></button></a> -->
-          <a *ngIf="type!='periodo' && TipoUser=='Admin'&& type!='cargaHoras'" (click)="openDialog('Editar',element)" ><button type="button" class="btn btn-primary m-1 action"><mat-icon aria-hidden="false" >edit</mat-icon></button></a>
-          <a  *ngIf=" TipoUser=='Profesor' && type=='cargaHoras'"(click)="openDialog('Borrar',element)" ><button type="button" class="btn btn-danger m-1 action"><mat-icon aria-hidden="false" >delete</mat-icon></button></a>
-          <a  *ngIf=" TipoUser=='Admin'&& type!='cargaHoras'"(click)="openDialog('Borrar',element)" ><button type="button" class="btn btn-danger m-1 action"><mat-icon aria-hidden="false" >delete</mat-icon></button></a>
-          <a *ngIf="type=='materia' && CurrentDNI==element.profesorDNI"   matTooltip="Editar equipo"  (click)="openDialogTeam('Editar Equipo',element)" ><button type="button" class="btn btn-success m-1 action"><mat-icon aria-hidden="false" >people</mat-icon></button></a>   
+          <a *ngIf="type!='periodo' && TipoUser=='Admin'&& type!='cargaHoras'" (click)="openDialog('Editar',element)" ><button type="button" class="btn btn-primary m-1 actionEdit"><mat-icon aria-hidden="false" >edit</mat-icon></button></a>
+          <a  *ngIf=" TipoUser=='Profesor' && type=='cargaHoras'"(click)="openDialog('Borrar',element)" ><button type="button" class="btn btn-danger m-1 actionDelete1"><mat-icon aria-hidden="false" >delete</mat-icon></button></a>
+          <a  *ngIf=" TipoUser=='Admin'&& type!='cargaHoras'"(click)="openDialog('Borrar',element)" ><button type="button" class="btn btn-danger m-1 actionDelete1"><mat-icon aria-hidden="false" >delete</mat-icon></button></a>
+          <a *ngIf="type=='materia' && CurrentDNI==element.profesorDNI"   matTooltip="Editar equipo"  (click)="openDialogTeam('Editar Equipo',element)" ><button type="button" class="btn btn-success m-1 actionDelete1"><mat-icon aria-hidden="false" >people</mat-icon></button></a>   
         </td>
 
   </ng-container>

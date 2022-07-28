@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
 import { UserService } from 'src/app/services/User-service';
 import { usuario } from 'src/app/interfaces/usuario';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { style } from '@angular/animations';
@@ -18,6 +18,8 @@ import * as moment from 'moment';
 import { PeriodosService } from 'src/app/services/periodos.service';
 import { TeamMateriasService } from 'src/app/services/team-materias.service';
 import { CargaHorasService } from 'src/app/services/carga-horas.service';
+// import { CustomValidators } from '../../../Clases/CustomValidators';
+
 // import { EMLINK } from 'constants';
 
 @Component({
@@ -33,6 +35,7 @@ export class DialogBoxComponent implements OnInit {
   public formCarrera: FormGroup; 
   public formMateria: FormGroup;
   public formPeriodo: FormGroup;
+  public formInfoUsuario: FormGroup;
   public formHoras: FormGroup;
   public formteam: FormGroup;
   public form: FormGroup;
@@ -143,13 +146,31 @@ export class DialogBoxComponent implements OnInit {
   }
   ngOnInit() {
     this.CurrentDNI=localStorage.getItem('DNI')
+   
+    
     console.log(this.data.type)
+    if(this.data.type=="información de usuario"){
+      this.local_data.DNI= this.CurrentDNI
+      this.local_data.nombre=atob(localStorage.getItem('Nombre'));
+      this.local_data.apellido=atob(localStorage.getItem('Apellido'));
+
+    }
     this.formUsuario = new FormGroup({
       name : new FormControl(this.local_data.nombre, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
       apellido : new FormControl(this.local_data.apellido, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
       NUMDNI : new FormControl(this.local_data.DNI, [Validators.required, Validators.min(10000000), Validators.max(55000000)]),
       tipo : new FormControl(this.local_data.tipo, [Validators.required]),
     });
+    this.formInfoUsuario = new FormGroup({
+      name : new FormControl(this.local_data.nombre, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
+      apellido : new FormControl(this.local_data.apellido, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
+      NUMDNI : new FormControl(this.local_data.DNI, [Validators.required, Validators.min(10000000), Validators.max(55000000)]),
+      // tipo : new FormControl(this.local_data.tipo, [Validators.required]),
+      contra: new FormControl(this.local_data.contra, [Validators.required]),
+      repeatContra: new FormControl(this.local_data.repeatContra, [Validators.required]),
+    },
+    { validators: this.checkPasswords }
+    );
     this.formCarrera = new FormGroup({
       name : new FormControl(this.local_data.nombre, [Validators.required, Validators.minLength(3)]),
       sigla : new FormControl(this.local_data.nombre,[])
@@ -246,7 +267,11 @@ export class DialogBoxComponent implements OnInit {
     });
     
   }
-
+  checkPasswords: ValidatorFn = (group: AbstractControl):  ValidationErrors | null => { 
+    let pass = group.get('contra').value;
+    let confirmPass = group.get('repeatContra').value
+    return pass === confirmPass ? null : { notSame: true }
+  }
   verificarProfesional(){
     let materiaLocal=this.formHoras.controls['materia'].value.split('-')
     this.encargado=materiaLocal[2]
@@ -733,6 +758,26 @@ export class DialogBoxComponent implements OnInit {
   closeDialog(){
     this.dialogRef.close({event:'Cancel'});
   }
+  SubmitInfo(){
+    this.local_data.nombre=atob(localStorage.getItem('Nombre'));
+    this._UserService.UpdateUserFirebaseByid(localStorage.getItem('_id'),this.local_data.contra).then(response => {
+      this._snackBar.open("Usuario editado con éxito", "X",{
+        horizontalPosition: "center",
+        verticalPosition: "top",
+        duration: 3000,
+        // panelClass:"test",
+        panelClass: ['Exito'] 
+         });
+      this.dialogRef.close({
+        event: this.action,
+        data: this.local_data
+      });
+    }, error => {
+      console.error("tuve un Error" + error)
+
+    })
+
+  }
   public checkError = (controlName: string, errorName: string) => {
     switch (this.data.type) {
       case "usuario": {
@@ -758,6 +803,10 @@ export class DialogBoxComponent implements OnInit {
       case "cargaHoras": {
         return this.formHoras.controls[controlName].hasError(errorName);
         
+      }
+      break;
+      case "información de usuario": {
+        return this.formInfoUsuario.controls[controlName].hasError(errorName);
       }
       break;
       default:{

@@ -1,9 +1,10 @@
 
 <div *ngIf="usuario!=null" class="table big-container" [class.example-is-mobile]="mobileQuery.matches" >
     <mat-toolbar color="primary" class="example-toolbar">
-      <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-      <h1 class="example-app-name">FCEE</h1>
-      <div *ngIf="UserFlag" class="name-container"> <h1 class="user">{{usuario}} {{apellido}} ({{tipo}})</h1> </div>
+      <button  *ngIf="UserFlag" mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+      <!-- <h1 class="example-app-name">FCEE</h1> -->
+      <img src="../../../../assets/logo.png" class="logo"alt="">
+      <div *ngIf="UserFlag" class="name-container"> <h1 (click)="openDialog('Editar',{})" class="user">{{usuario}} {{apellido}} ({{tipo}})</h1> </div>
       
     </mat-toolbar>
     <mat-sidenav-container   class="mediumContainer">

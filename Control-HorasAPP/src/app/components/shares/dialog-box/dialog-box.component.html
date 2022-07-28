@@ -21,9 +21,9 @@
             </mat-form-field>
           <mat-form-field >
               <input formControlName="NUMDNI" required  [(ngModel)]="local_data.DNI" placeholder="Número DNI" type="number"   matInput   >
-              <mat-error *ngIf="checkError('NUMDNI', 'required')">Ingrese un DNI valido</mat-error>
-              <mat-error *ngIf="checkError('NUMDNI', 'min')">Ingrese un DNI valido</mat-error>
-              <mat-error *ngIf="checkError('NUMDNI', 'max')">Ingrese un DNI valido</mat-error>
+              <mat-error *ngIf="checkError('NUMDNI', 'required')">Ingrese un DNI válido</mat-error>
+              <mat-error *ngIf="checkError('NUMDNI', 'min')">Ingrese un DNI válido</mat-error>
+              <mat-error *ngIf="checkError('NUMDNI', 'max')">Ingrese un DNI válido</mat-error>
             </mat-form-field>
             <mat-form-field >
               <mat-select formControlName="tipo" [(ngModel)]="local_data.tipo" required placeholder="Tipo" >
@@ -40,6 +40,50 @@
                 <mat-error *ngIf="checkError('tipo', 'required')">Seleccione un tipo</mat-error>
             </mat-form-field>
           </form>
+          <form *ngIf="data.type=='información de usuario'" [formGroup]="formInfoUsuario"  (ngSubmit)="SubmitUser()" class="example-form">
+            <mat-form-field class="">
+              <input   [readonly]="true"  [(ngModel)]="local_data.nombre" formControlName="name" required  placeholder="Nombre" type="text" matInput >
+           
+            </mat-form-field>
+            <mat-form-field >
+                <input   [readonly]="true" required placeholder="Apellido" [(ngModel)]="local_data.apellido" formControlName="apellido" matInput >
+               
+              </mat-form-field>
+            <mat-form-field >
+                <input   [readonly]="true" formControlName="NUMDNI" required  [(ngModel)]="local_data.DNI" placeholder="Número DNI" type="number"   matInput   >
+            
+              </mat-form-field>
+
+              <!-- <mat-form-field>
+                <input [readonly]="true" [(ngModel)]="local_data.profesional"  required  placeholder="Cargo" value="{{cargo}}" type="text" matInput >
+              </mat-form-field> -->
+              
+              <mat-form-field >
+                <input formControlName="contra" required  [(ngModel)]="local_data.contra" placeholder="Contraseña"  type="password"   matInput   >
+                <mat-error *ngIf="checkError('contra', 'required')">Ingrese una contraseña válida</mat-error>
+              </mat-form-field>
+              <mat-form-field >
+                <input formControlName="repeatContra" required  [(ngModel)]="local_data.repeatContra" placeholder="Repita la contraseña" type="password"   matInput   >
+                <!-- <mat-error *ngIf="checkError('repeatContra', 'required')" >Ingrese una contraseña válida</mat-error> -->
+                <mat-error *ngIf="formInfoUsuario.hasError('notSame')">
+                 Las contraseñas deben coincidir
+                </mat-error>  
+              </mat-form-field>
+              <!-- <mat-form-field >
+                <mat-select formControlName="tipo" [(ngModel)]="local_data.tipo" required placeholder="Tipo" >
+                    <mat-option value='Admin'>
+                      Admin
+                    </mat-option>
+                    <mat-option value='Profesor'>
+                        Profesor
+                      </mat-option>
+                      <mat-option value='Encargado'>
+                        Encargado
+                      </mat-option>
+                  </mat-select>  
+                  <mat-error *ngIf="checkError('tipo', 'required')">Seleccione un tipo</mat-error>
+              </mat-form-field> -->
+            </form>
           <!-- <form *ngIf="data.type=='usuario'" [formGroup]="formPeriodo"  (ngSubmit)="SubmitUser()" class="example-form">
             <mat-form-field class="">
               <input  [(ngModel)]="local_data.nombre" formControlName="name" required  placeholder="Nombre" type="text" matInput >
@@ -286,7 +330,8 @@
     <button type="submit" *ngIf="data.type=='carrera'"   [disabled]="!formCarrera.valid" (click)="SubmitFacultad()"  mat-flat-button color="primary">{{action}}</button>
     <button type="submit" *ngIf="data.type=='materia'"   [disabled]="!formMateria.valid" (click)="SubmitMateria()"  mat-flat-button color="primary">{{action}}</button>
     <button type="submit" *ngIf="data.type=='periodo'"   [disabled]="!formPeriodo.valid" (click)="SubmitPeriodo()"  mat-flat-button color="primary">{{action}}</button>
-    <button type="submit" *ngIf="data.type=='cargaHoras'"   [disabled]="!formHoras.valid" (click)="SubmitHoras()"  mat-flat-button color="primary">{{action}}</button>
+   
+    <button type="submit" *ngIf="data.type=='información de usuario'"   [disabled]="!formInfoUsuario.valid" (click)="SubmitInfo()"  mat-flat-button color="primary">{{action}}</button>
     
   
   </div>

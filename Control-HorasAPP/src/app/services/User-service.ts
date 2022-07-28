@@ -63,6 +63,20 @@ async UpdateUserFirebase(User:usuario){
     return null
   }
  }
+ async UpdateUserFirebaseByid(_id:string,contra:string){
+  console.log(_id,contra)
+  try{
+    const query=  await this.Firestore.firestore.collection(`users`).doc(_id).update(
+     {
+      contra:contra
+     }
+      );
+  return  this.user
+  }catch(err){
+    console.log("error al Editar",err)
+    return null
+  }
+ }
  async AddUserFirebase(User:usuario){
   try{
     const query=  await this.Firestore.firestore.collection(`users`).add(

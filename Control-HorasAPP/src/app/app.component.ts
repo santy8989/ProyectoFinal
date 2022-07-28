@@ -1,6 +1,9 @@
 import {MediaMatcher} from '@angular/cdk/layout';
 import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DialogBoxComponent } from 'src/app/components/shares/dialog-box/dialog-box.component';
+
 
 @Component({
   selector: 'app-root',
@@ -9,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AppComponent implements OnDestroy,OnInit {
   mobileQuery: MediaQueryList;
+  
   usuario:string
   apellido:string
   tipo:any
@@ -27,8 +31,9 @@ export class AppComponent implements OnDestroy,OnInit {
 
   private _mobileQueryListener: () => void;
 
-  constructor(private router2: Router,changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private router: ActivatedRoute) {
+  constructor(private router2: Router,changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private router: ActivatedRoute, public dialog: MatDialog,) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
@@ -50,6 +55,19 @@ export class AppComponent implements OnDestroy,OnInit {
     localStorage.removeItem("Apellido");
     localStorage.removeItem("FlagLogged");
     location.reload()
+  }
+  openDialog(action:string, obj:any) {
+    
+    obj.action = action;
+    obj.type="información de usuario"
+    const dialogRef = this.dialog.open(DialogBoxComponent, {
+      width: '500px',
+      data: obj,
+      
+    });
+  
+
+    
   }
 
   

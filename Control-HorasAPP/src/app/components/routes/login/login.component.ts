@@ -35,12 +35,14 @@ export class LoginComponent implements OnInit {
     this._UserService.AuthWithFirebase($event.value.DNI).then(resultado => {
       if(resultado.length>0){
         for (let index = 0; index < resultado.length; index++) {
-          const element:usuario = resultado[index];
+          const element:any = resultado[index];
           if (element.contra==$event.value.password) {
+            console.log(element)
             localStorage.setItem('Nombre', btoa(element.nombre));
             localStorage.setItem('Apellido', btoa(element.apellido));    
             localStorage.setItem('Tipo', btoa(element.tipo.toString()));
             localStorage.setItem('DNI', element.DNI.toString() );
+            localStorage.setItem('_id', element['id_firebase'] );
             this.router.navigate(["/dashboard/2"])
           }else{
             this._snackBar.open("Datos de inicio de sesion incorrectos", "X",{

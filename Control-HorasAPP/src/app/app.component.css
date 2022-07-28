@@ -6,8 +6,16 @@
 .content{
     /* background-color: red; */
 }
+.example-toolbar{
+    background: rgb(27,60,144);
+    background: linear-gradient(90deg, rgba(27,60,144,1) 6%, rgba(27,60,101,1) 79%);
+    color:white
+}
 .mediumContainer{
-    /* background-color: blue !important; */
+  
+    background: rgb(246,246,246);
+    background: linear-gradient(150deg, rgba(246,246,246,1) 0%, rgba(240,237,237,1) 100%);
+    border: none;
     height: 100% !important;
     width: 100%;
 }
@@ -24,4 +32,7 @@
 .name-container{
     width: 100%;
     text-align: right;
+}
+.logo{
+height: 60%;
 }
