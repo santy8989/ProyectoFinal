@@ -261,12 +261,7 @@
                   </mat-select>  
                   <mat-error *ngIf="checkError('encargado', 'required')">Seleccione un encargado</mat-error>
               </mat-form-field>
-              <mat-form-field >
-                <input  [(ngModel)]="local_data.cantHoras" formControlName="cantHoras" required  placeholder="Cantidad Horas" type="number" matInput >
-                <mat-error *ngIf="checkError('name', 'required')">Ingrese una cantidad de horas</mat-error>
-                <!-- <mat-error *ngIf="checkError('name', 'minlength')">El nombre tiene que ser de mas de 3 caractares</mat-error>
-                <mat-error *ngIf="checkError('name', 'maxlength')">El nombre tiene que ser de menos de 30 caractares</mat-error> -->
-              </mat-form-field>
+             
           </form>
           <form *ngIf="data.type=='carrera'" [formGroup]="formCarrera"  (ngSubmit)="SubmitFacultad()" class="example-form">
             <mat-form-field class="">
@@ -330,7 +325,7 @@
     <button type="submit" *ngIf="data.type=='carrera'"   [disabled]="!formCarrera.valid" (click)="SubmitFacultad()"  mat-flat-button color="primary">{{action}}</button>
     <button type="submit" *ngIf="data.type=='materia'"   [disabled]="!formMateria.valid" (click)="SubmitMateria()"  mat-flat-button color="primary">{{action}}</button>
     <button type="submit" *ngIf="data.type=='periodo'"   [disabled]="!formPeriodo.valid" (click)="SubmitPeriodo()"  mat-flat-button color="primary">{{action}}</button>
-   
+    <button type="submit" *ngIf="data.type=='cargaHoras'"   [disabled]="!formHoras.valid" (click)="SubmitHoras()"  mat-flat-button color="primary">{{action}}</button>
     <button type="submit" *ngIf="data.type=='información de usuario'"   [disabled]="!formInfoUsuario.valid" (click)="SubmitInfo()"  mat-flat-button color="primary">{{action}}</button>
     
   

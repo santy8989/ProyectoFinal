@@ -72,7 +72,7 @@ export class MateriasService {
         encargadoDNI: Materia.encargadoDNI,
         profesorNya: Materia.profesorNya,
         encargadoNya: Materia.encargadoNya,
-        cantHoras: Materia.cantHoras,
+        // cantHoras: Materia.cantHoras,
        }
         );
     return  this.materia
@@ -92,7 +92,7 @@ export class MateriasService {
         encargadoDNI: Materia.encargadoDNI,
         profesorNya: Materia.profesorNya,
         encargadoNya: Materia.encargadoNya,
-        cantHoras: Materia.cantHoras,
+        // cantHoras: Materia.cantHoras,
        }
         );
     return  this.materia

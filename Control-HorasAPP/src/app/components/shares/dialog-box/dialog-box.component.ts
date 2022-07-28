@@ -186,7 +186,7 @@ export class DialogBoxComponent implements OnInit {
       carrera : new FormControl(this.local_data.carrera, [Validators.required]),
       profesor : new FormControl(this.local_data.profesorDNI, [Validators.required]),
       encargado : new FormControl(this.local_data.encargadoDNI, [Validators.required]),
-      cantHoras : new FormControl(this.local_data.cantHoras, [Validators.required]), 
+     
     });
     this.formPeriodo = new FormGroup({
       fecha_ini : new FormControl(this.local_data.fecha_INI, [Validators.required]),
@@ -625,7 +625,7 @@ export class DialogBoxComponent implements OnInit {
     this.Materia.encargadoDNI= this.local_data.encargadoDNI
     this.Materia.profesorNya= nombreProfesor
     this.Materia.encargadoNya=nombreEncargado
-    this.Materia.cantHoras= this.local_data.cantHoras
+    // this.Materia.cantHoras= this.local_data.cantHoras
     this.Materia.$key= this.local_data.id_firebase
     switch (this.action) {
       case "Agregar": {

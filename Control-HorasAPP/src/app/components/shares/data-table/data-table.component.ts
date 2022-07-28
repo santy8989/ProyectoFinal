@@ -45,7 +45,7 @@ export class DataTableComponent implements AfterViewInit, OnInit{
   HabilitarAbonado:boolean;
   UserDisplayedColumns: string[] = ['nombre', 'apellido', 'DNI', 'tipo','Acciones'];
   CarreraDisplayedColumns: string[] = ['nombre', 'Sigla','Acciones'];
-  MateriasDisplayedColumns: string[] = ['nombre', 'carrera','profesor','encargado','cantHoras','Acciones'];
+  MateriasDisplayedColumns: string[] = ['nombre', 'carrera','profesor','encargado','Acciones'];
   PeriodosDisplayedColumns: string[] = ['Fecha_str','Fecha_fn','CantSemanas','Acciones'];
   HorasDisplayedColumns: string[] = ['periodo','Materia','cantHoras','profesional','cargo','encargado','aprobado','Abonado','Acciones'];
   dataSource: MatTableDataSource < any > ;
